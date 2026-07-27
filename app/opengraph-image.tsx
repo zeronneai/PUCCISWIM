@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
+// nodejs runtime (not edge): matches the API routes, avoids edge bundling quirks
+// during "Generating static pages", and this route reads no process.env at all.
+export const runtime = "nodejs";
 export const alt = "PUCCII Swim — Endless Summer Collection";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
