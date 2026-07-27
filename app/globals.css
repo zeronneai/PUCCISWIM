@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   PUCCII Swim — design tokens (BRIEF §5)
+   Sun-bleached pink resort maximalism. Soft pillowy radii, deep soft shadows,
+   zero hard corners.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-puccii-pink: #f06bb0;
+  --color-puccii-blush: #fbd3e4;
+  --color-paper-pink: #fbb9d8;
+  --color-butter: #f6dfa0;
+  --color-sky: #a8d2ed;
+  --color-sand: #efdcc0;
+  --color-cream: #fff8f1;
+  --color-ink: #2b1b24;
+  --color-ink-soft: #6b4a5c;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-caveat), ui-sans-serif, cursive;
+  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-pillow: 24px;
+  --radius-pillow-lg: 32px;
+
+  --shadow-soft: 0 18px 40px -18px rgba(43, 27, 36, 0.35);
+  --shadow-lift: 0 26px 60px -22px rgba(240, 107, 176, 0.45);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01";
+  /* #1 mobile bug: kill horizontal scroll. */
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Warm film grain over the whole page — barely there. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+::selection {
+  background: var(--color-puccii-pink);
+  color: white;
+}
+
+/* Pink focus rings everywhere (BRIEF §9). */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-puccii-pink);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* iOS momentum + no rubber-band horizontal on scroll rows. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Handwritten notebook-paper rule lines (breaker sections). */
+.paper-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 37px,
+    rgba(240, 107, 176, 0.28) 38px
+  );
+}
+
+/* Marquee. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
+
+/* SVG line draw-in helper (used with motion, this is the CSS fallback). */
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Respect reduced motion (BRIEF §9). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Safe-area helper for the sticky bottom bar. */
+.pb-safe {
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+}
+
+.pillow {
+  border-radius: var(--radius-pillow);
+}
+.pillow-lg {
+  border-radius: var(--radius-pillow-lg);
+}
