@@ -35,31 +35,25 @@ function BagIcon() {
 export default function Nav() {
   const { count, openCart, cartIconRef } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
-  // While the hero is on screen the nav sits OVER the media (transparent, white).
-  // Once scrolled past the hero it turns cream with ink text.
-  const [overHero, setOverHero] = useState(true);
+  // SAFE DEFAULT: opaque. The nav only goes transparent when we're CONFIDENT the
+  // hero is behind it. If the observer never fires (or there's no hero), the nav
+  // stays opaque and legible rather than see-through.
+  const [overHero, setOverHero] = useState(false);
   const [bump, setBump] = useState(false);
 
   useEffect(() => {
-    // A sentinel sits right after the hero (and its GSAP pin spacer). The nav is
-    // transparent while the sentinel is still below the nav line (hero is the
-    // backdrop) and cream once it reaches the top. A scroll check gives a
-    // PERSISTENT state - IntersectionObserver only pulses on crossing, so it
-    // would wrongly flip back once the sentinel scrolled above the viewport.
-    // (We can't observe #hero itself: pinning sets it position:fixed.)
-    const sentinel = document.getElementById("hero-sentinel");
-    if (!sentinel) {
-      setOverHero(false);
-      return;
-    }
-    const update = () => setOverHero(sentinel.getBoundingClientRect().top > 64);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
+    // Observe the hero itself with a negative top rootMargin (~nav height): the
+    // nav is transparent only while the hero still extends below the nav line,
+    // and flips to opaque the moment it clears. IntersectionObserver is the most
+    // reliable signal here; on any failure the safe default keeps the nav opaque.
+    const hero = document.getElementById("hero");
+    if (!hero) return; // no hero on this page -> stay opaque
+    const io = new IntersectionObserver(
+      ([entry]) => setOverHero(entry.isIntersecting),
+      { rootMargin: "-96px 0px 0px 0px", threshold: 0 },
+    );
+    io.observe(hero);
+    return () => io.disconnect();
   }, []);
 
   // Bump the badge whenever the count changes.
@@ -73,11 +67,13 @@ export default function Nav() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 pt-[env(safe-area-inset-top)] transition-all duration-300 ${
+        className={`nav-pt-safe sticky top-0 z-50 transition-colors duration-300 ${
           overHero
             ? "bg-transparent text-cream"
-            : "border-b border-ink/5 bg-cream/85 text-ink backdrop-blur-md"
+            : "border-b border-ink/10 bg-cream text-ink"
         }`}
+        // Opaque state is a SOLID cream fill — no backdrop-filter, so nothing
+        // can show through even if WebKit fails to composite a blur.
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* Wordmark */}

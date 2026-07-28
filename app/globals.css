@@ -75,9 +75,9 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* /debug isolation route disables the film grain. */
-body.no-grain::before {
-  content: none;
+/* Nav clears the iOS status bar (needs viewport-fit=cover, set in layout). */
+.nav-pt-safe {
+  padding-top: env(safe-area-inset-top);
 }
 
 h1, h2, h3, h4 {
