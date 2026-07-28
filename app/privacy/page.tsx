@@ -17,23 +17,22 @@ export default function Privacy() {
 
       <h2>What we collect</h2>
       <p>
-        To process your pre-order and coordinate delivery, we collect your name, email address, phone
+        To process your pre-order and coordinate pickup, we collect your name, email address, phone
         number, and Instagram handle. Payment is handled by Stripe, so we receive confirmation of your
         purchase but never see your full card number.
       </p>
 
       <h2>How we use it</h2>
       <p>
-        We use your information solely to fulfill your order: to confirm your purchase, to DM or contact
-        you within 24 hours to arrange delivery or pickup, and to provide customer support. We do not
-        sell your information.
+        We use your information solely to fulfill your order: to confirm your purchase, to email you your
+        order number and pickup details, and to provide customer support. We do not sell your information.
       </p>
 
       <h2>Who we share it with</h2>
       <p>
         We share information only with the services that make your order work: Stripe for payment
-        processing and Resend for sending order confirmation emails. Each processes data under its own
-        privacy terms.
+        processing and Google (Apps Script) to record your order and send your confirmation email. Each
+        processes data under its own privacy terms.
       </p>
 
       <h2>Analytics</h2>

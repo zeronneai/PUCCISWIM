@@ -174,8 +174,8 @@ export default function CartDrawer() {
                     </span>
                   </div>
                   <p className="mb-3 text-xs text-ink-soft">
-                    Pre-order now. We&apos;ll DM you within 24 hours to arrange delivery or pickup. No shipping or
-                    tax added here.
+                    Pre-order · pick up at KISSLAB in El Paso. We&apos;ll email your order number and pickup
+                    details. No shipping or tax added here.
                   </p>
                   <button
                     onClick={checkout}

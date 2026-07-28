@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import LegalLayout from "@/components/LegalLayout";
 import { SITE } from "@/lib/site";
+import { PICKUP } from "@/lib/pickup";
 
 export const metadata: Metadata = {
   title: "Pre-order Policy | PUCCII Swim",
-  description: "How PUCCII Swim pre-orders work: fulfillment timing and refund terms.",
+  description: "How PUCCII Swim pre-orders work: in-person pickup, timing and refund terms.",
 };
 
 export default function PreorderPolicy() {
@@ -16,29 +17,39 @@ export default function PreorderPolicy() {
         secure it from the drop.
       </p>
 
-      <h2>Fulfillment timing</h2>
+      <h2>Pickup</h2>
       <p>
-        After your payment is confirmed, a member of the PUCCII team will contact you within{" "}
-        <strong>24 hours</strong>, by Instagram DM, phone, or email, to arrange delivery or local
-        pickup and to confirm the timing for your set. Fulfillment is coordinated directly and
-        personally; we&apos;ll keep you updated every step of the way. If you have not heard from us
-        within 24 hours, please reach out at{" "}
-        <a href={SITE.igUrl}>@{SITE.igHandle}</a>.
+        Orders are <strong>picked up in person</strong> — there is no shipping. Right after checkout we
+        email you your <strong>order number</strong> and these pickup details. Bring the order number
+        (on your phone is fine) to:
+      </p>
+      <p>
+        <strong>{PICKUP.storeName}</strong>
+        <br />
+        {PICKUP.address}
+        <br />
+        {PICKUP.hours.join(" · ")}
+      </p>
+      <p>
+        We hold your order at {PICKUP.storeName} for <strong>{PICKUP.holdDays} days</strong> from the
+        day it&apos;s ready. If you can&apos;t make it in that window, message us at{" "}
+        <a href={SITE.igUrl}>@{SITE.igHandle}</a> and we&apos;ll do our best to arrange something.
       </p>
 
       <h2>What&apos;s included</h2>
       <p>
-        Each order is a complete two-piece set, top and bottom included, for $39.00. No shipping fees
-        or taxes are added at checkout; any delivery arrangements are confirmed with you directly.
+        Each order is a complete two-piece set, top and bottom included, for $39.00. No shipping fees or
+        taxes are added at checkout.
       </p>
 
       <h2>Refunds &amp; cancellations</h2>
       <p>
         Because this is a limited pre-order drop, we ask that you order thoughtfully. If you need to
-        cancel, contact us within <strong>24 hours</strong> of your order and before we&apos;ve
-        confirmed fulfillment, and we will issue a full refund to your original payment method. Once
-        fulfillment has been arranged, cancellations and refunds are handled on a case-by-case basis.
-        Refunds are processed through Stripe and may take 5 to 10 business days to appear.
+        cancel, contact us within <strong>24 hours</strong> of your order and before it&apos;s ready for
+        pickup, and we will issue a full refund to your original payment method. After that,
+        cancellations and refunds are handled on a case-by-case basis. Refunds are processed through
+        Stripe and may take 5 to 10 business days to appear. Orders left unclaimed after{" "}
+        {PICKUP.holdDays} days may be restocked; reach out and we&apos;ll help.
       </p>
 
       <h2>Exchanges</h2>

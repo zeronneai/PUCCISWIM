@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "PUCCII Swim: Endless Summer Collection",
   description:
-    "Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop of two-piece swim sets, $39 each. We'll DM you within 24 hours to arrange delivery.",
+    "Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop of two-piece swim sets, $39 each. Pick up in person at KISSLAB in El Paso.",
   keywords: ["PUCCII Swim", "swimwear", "bikini", "pre-order", "Endless Summer", "Mya Mercedes"],
   openGraph: {
     title: "PUCCII Swim: Endless Summer Collection",

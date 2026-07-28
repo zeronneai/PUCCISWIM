@@ -26,7 +26,3 @@ export const PAYMENTS_MODE =
 // WhatsApp number in international format WITHOUT the + (e.g. 15551234567).
 // Only used when PAYMENTS_MODE === "preorder_dm".
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-
-// Reassurance shown directly under the pre-order button (editable copy).
-export const PREORDER_DELIVERY_NOTE =
-  "Pre-order · we'll DM you within 24 hours to arrange delivery";

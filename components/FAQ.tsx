@@ -1,4 +1,5 @@
 import { SITE } from "@/lib/site";
+import { PICKUP } from "@/lib/pickup";
 import Accordion, { type AccordionItem } from "./Accordion";
 
 const ITEMS: AccordionItem[] = [
@@ -7,7 +8,8 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         You&apos;re reserving your set from the Endless Summer drop now and paying $39 to lock it in.
-        After you check out, we personally DM you within 24 hours to arrange delivery or pickup.
+        Right after checkout we email you your order number and pickup details, and hold your set at{" "}
+        {PICKUP.storeName} for you.
       </p>
     ),
   },
@@ -15,8 +17,18 @@ const ITEMS: AccordionItem[] = [
     q: "When will I get it?",
     a: (
       <p>
-        We reach out within 24 hours of your order to confirm timing and how you&apos;d like to receive
-        your set. Exact fulfillment windows are shared in that DM. See our pre-order policy for details.
+        We email your order number and pickup details right after checkout. Pick it up in person at{" "}
+        {PICKUP.storeName} in El Paso — we hold your order for {PICKUP.holdDays} days. See our pre-order
+        policy for hours and details.
+      </p>
+    ),
+  },
+  {
+    q: "Where do I pick up my order?",
+    a: (
+      <p>
+        At {PICKUP.storeName}, {PICKUP.address}. Hours: {PICKUP.hours.join("; ")}. We hold your order for{" "}
+        {PICKUP.holdDays} days — just show the order number from your confirmation email at pickup.
       </p>
     ),
   },

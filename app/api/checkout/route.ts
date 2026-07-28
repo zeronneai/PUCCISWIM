@@ -80,7 +80,7 @@ export async function POST(req: Request) {
       custom_text: {
         submit: {
           message:
-            "This is a pre-order. We'll DM you within 24 hours to arrange delivery or pickup.",
+            "Pre-order · pick up at KISSLAB in El Paso. We'll email you your order number and pickup details.",
         },
       },
       allow_promotion_codes: true,
