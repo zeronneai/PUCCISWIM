@@ -2,23 +2,13 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import {
+  HERO_IMAGE_URL,
+  HERO_MODE,
+  HERO_VIDEO_DESKTOP,
+  HERO_VIDEO_MOBILE,
+} from "@/lib/media";
 
-/**
- * Swap the hero media by changing ONE constant.
- *   "image"    -> next/image (Cloudinary), priority, fill, cover
- *   "video"    -> autoplay muted loop; vertical file required on mobile
- *   "sequence" -> reserved, not implemented yet (falls back to gradient)
- */
-export const HERO_MODE: "image" | "video" | "sequence" = "image";
-
-// TODO(owner): paste the Cloudinary URL of the 3-models render here.
-// Leave empty and the hero shows the branded gradient until you add it.
-export const HERO_IMAGE_URL = "";
-
-// Only used when HERO_MODE === "video". The vertical file is MANDATORY on mobile
-// (we never CSS-crop the horizontal one).
-const HERO_VIDEO_DESKTOP = "";
-const HERO_VIDEO_MOBILE = "";
 const HERO_POSTER = HERO_IMAGE_URL;
 
 function GradientFallback() {
@@ -36,12 +26,12 @@ function GradientFallback() {
   );
 }
 
+/** Static hero media for "image" / "video" modes ("sequence" is SequenceHero). */
 export default function HeroMedia() {
   const [failed, setFailed] = useState(false);
 
   const useFallback =
     failed ||
-    HERO_MODE === "sequence" || // TODO: implement image-sequence scrubber later
     (HERO_MODE === "image" && !HERO_IMAGE_URL) ||
     (HERO_MODE === "video" && !HERO_VIDEO_DESKTOP);
 
@@ -67,7 +57,7 @@ export default function HeroMedia() {
     );
   }
 
-  // HERO_MODE === "image"
+  // "image"
   return (
     <Image
       src={HERO_IMAGE_URL}
