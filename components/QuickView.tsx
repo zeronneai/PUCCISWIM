@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/cart/CartContext";
 import { formatUSD } from "@/lib/format";
 import { MODEL_REFERENCE, type Product, type Size } from "@/lib/products";
-import { PREORDER_DELIVERY_NOTE } from "@/lib/site";
 import SmartImage from "./SmartImage";
 
 // Hand-drawn trust icons (same stroke style as the rest of the site).
@@ -147,7 +146,18 @@ export default function QuickView({
             }}
             className="relative z-10 flex h-[85dvh] w-full flex-col rounded-t-[28px] bg-cream sm:max-w-lg sm:rounded-[28px]"
           >
-            {/* 1. Fixed header — drag handle + close (does not scroll) */}
+            {/* Close — floats above EVERYTHING (image can never cover it) */}
+            <button
+              onClick={onClose}
+              className="absolute right-3 top-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-cream text-ink shadow-md ring-1 ring-ink/10 transition-transform active:scale-95"
+              aria-label="Close"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+
+            {/* 1. Fixed header — drag handle (does not scroll) */}
             <div
               className="relative shrink-0 cursor-grab touch-none pt-3"
               onPointerDown={(e) => dragControls.start(e)}
@@ -155,16 +165,6 @@ export default function QuickView({
               <div className="flex justify-center pb-2">
                 <span className="h-1.5 w-12 rounded-full bg-ink/20" aria-hidden />
               </div>
-              <button
-                onClick={onClose}
-                onPointerDown={(e) => e.stopPropagation()}
-                className="absolute right-3 top-2 grid h-10 w-10 place-items-center rounded-full bg-cream text-ink ring-1 ring-ink/10"
-                aria-label="Close"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </button>
             </div>
 
             {/* 2. Scrollable body */}
@@ -325,10 +325,7 @@ export default function QuickView({
                 Add to bag · Pre-order {formatUSD(product.priceUSD)}
               </button>
 
-              {/* Delivery promise (point 3) */}
-              <p className="mt-2 text-center text-xs text-ink-soft">{PREORDER_DELIVERY_NOTE}</p>
-
-              {/* Trust row (point 5) — hand-drawn icons, no generic badges */}
+              {/* Trust row — hand-drawn icons, no generic badges */}
               <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-ink-soft">
                 <span className="flex items-center gap-1 text-[11px] font-medium">
                   <LockIcon /> Secure checkout
