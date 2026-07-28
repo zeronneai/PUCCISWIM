@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useCart } from "@/cart/CartContext";
-import { formatCents, formatUSD } from "@/lib/format";
-import { PRODUCTS_BY_ID } from "@/lib/products";
+import { formatCents } from "@/lib/format";
+import { getStyle, getVariant } from "@/lib/products";
 import { SITE } from "@/lib/site";
 import SmartImage from "./SmartImage";
 
@@ -105,32 +105,33 @@ export default function CartDrawer() {
               <>
                 <ul className="flex-1 divide-y divide-ink/8 overflow-y-auto px-5">
                   {lines.map((l) => {
-                    const p = PRODUCTS_BY_ID[l.productId];
-                    if (!p) return null;
+                    const s = getStyle(l.styleId);
+                    const v = getVariant(l.styleId, l.variantId);
+                    if (!s || !v) return null;
                     return (
-                      <li key={`${l.productId}-${l.size}`} className="flex gap-3 py-4">
+                      <li key={`${l.styleId}-${l.variantId}-${l.size}`} className="flex gap-3 py-4">
                         <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-[16px] bg-sand/60">
                           <SmartImage
-                            src={p.imageModel}
-                            alt={p.name}
+                            src={v.imageFlat}
+                            alt={`${s.name} in ${v.colorName}`}
                             fill
                             sizes="80px"
                             className="object-cover"
-                            fallbackLabel={p.name}
+                            fallbackLabel={s.name}
                           />
                         </div>
                         <div className="flex flex-1 flex-col">
                           <div className="flex items-start justify-between gap-2">
                             <div>
-                              <p className="font-semibold leading-tight text-ink">{p.name}</p>
+                              <p className="font-semibold leading-tight text-ink">{s.name}</p>
                               <p className="text-sm text-ink-soft">
-                                {p.colorName} · Size {l.size}
+                                {v.colorName} · Size {l.size}
                               </p>
                             </div>
                             <button
-                              onClick={() => removeItem(l.productId, l.size)}
+                              onClick={() => removeItem(l.styleId, l.variantId, l.size)}
                               className="text-sm font-semibold text-ink-soft underline decoration-ink/20 underline-offset-2 hover:text-puccii-pink"
-                              aria-label={`Remove ${p.name} size ${l.size}`}
+                              aria-label={`Remove ${s.name} in ${v.colorName}, size ${l.size}`}
                             >
                               Remove
                             </button>
@@ -139,7 +140,7 @@ export default function CartDrawer() {
                             {/* Qty stepper */}
                             <div className="flex items-center gap-1 rounded-full bg-cream ring-1 ring-ink/12">
                               <button
-                                onClick={() => setQty(l.productId, l.size, l.qty - 1)}
+                                onClick={() => setQty(l.styleId, l.variantId, l.size, l.qty - 1)}
                                 className="grid h-9 w-9 place-items-center rounded-full text-lg text-ink hover:bg-puccii-blush/50"
                                 aria-label="Decrease quantity"
                               >
@@ -149,7 +150,7 @@ export default function CartDrawer() {
                                 {l.qty}
                               </span>
                               <button
-                                onClick={() => setQty(l.productId, l.size, l.qty + 1)}
+                                onClick={() => setQty(l.styleId, l.variantId, l.size, l.qty + 1)}
                                 disabled={l.qty >= 5}
                                 className="grid h-9 w-9 place-items-center rounded-full text-lg text-ink hover:bg-puccii-blush/50 disabled:opacity-30"
                                 aria-label="Increase quantity"

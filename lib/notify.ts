@@ -5,7 +5,7 @@ export type OrderPayload = {
   email: string;
   phone: string;
   instagram: string;
-  items: { name: string; size: string; qty: number }[];
+  items: { name: string; color: string; size: string; qty: number }[];
   totalUSD: number;
   resend?: boolean; // set true when re-sending; Apps Script dedupes the row by sessionId
 };

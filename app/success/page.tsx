@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getStripe } from "@/lib/stripe";
-import { getProduct } from "@/lib/products";
+import { getStyle, getVariant } from "@/lib/products";
 import { formatUSD } from "@/lib/format";
 import { SITE } from "@/lib/site";
 import { PICKUP } from "@/lib/pickup";
@@ -8,7 +8,7 @@ import SuccessActions from "@/components/SuccessActions";
 
 export const dynamic = "force-dynamic";
 
-type CompactLine = { id: string; size: string; qty: number };
+type CompactLine = { styleId: string; variantId: string; size: string; qty: number };
 
 async function loadSession(sessionId?: string) {
   if (!sessionId) return null;
@@ -142,14 +142,15 @@ export default async function SuccessPage({
       {lines.length > 0 && (
         <ul className="mx-auto mt-5 max-w-sm divide-y divide-ink/10 rounded-[20px] bg-sand/40 px-4 text-left">
           {lines.map((l, i) => {
-            const p = getProduct(l.id);
+            const s = getStyle(l.styleId);
+            const v = getVariant(l.styleId, l.variantId);
             return (
               <li key={i} className="flex items-center justify-between gap-3 py-3 text-sm">
                 <span className="font-semibold text-ink">
-                  {p?.name ?? l.id}
+                  {s?.name ?? l.styleId}
                   <span className="font-normal text-ink-soft">
                     {" "}
-                    · {p?.colorName ?? ""} · Size {l.size}
+                    · {v?.colorName ?? l.variantId} · Size {l.size}
                   </span>
                 </span>
                 <span className="shrink-0 text-ink-soft">× {l.qty}</span>

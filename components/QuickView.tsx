@@ -4,8 +4,11 @@ import { AnimatePresence, motion, useDragControls } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/cart/CartContext";
 import { formatUSD } from "@/lib/format";
-import { MODEL_REFERENCE, type Product, type Size } from "@/lib/products";
+import { CARE, FABRIC, FIT, MODEL_REFERENCE, type Size } from "@/lib/products";
+import { SITE } from "@/lib/site";
+import type { ActiveSheet } from "./Catalog";
 import SmartImage from "./SmartImage";
+import Swatch from "./Swatch";
 
 // Hand-drawn trust icons (same stroke style as the rest of the site).
 function LockIcon() {
@@ -38,37 +41,43 @@ function ReplyIcon() {
 }
 
 export default function QuickView({
-  product,
+  active,
   onClose,
 }: {
-  product: Product | null;
+  active: ActiveSheet | null;
   onClose: () => void;
 }) {
   const { addItem, openCart } = useCart();
+  const [variantId, setVariantId] = useState<string | null>(null);
   const [size, setSize] = useState<Size | null>(null);
   const [hint, setHint] = useState(false);
   const [view, setView] = useState<"model" | "flat">("model");
-  const [atEnd, setAtEnd] = useState(true); // hide the "more below" fade by default
+  const [atEnd, setAtEnd] = useState(true);
   const imgRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
 
-  // Reset when a new product opens.
+  const style = active?.style ?? null;
+  const variant =
+    style?.variants.find((v) => v.id === variantId) ?? style?.variants[0] ?? null;
+
+  // Reset when a new STYLE opens (adopt the variant the card was showing).
   useEffect(() => {
+    if (!active) return;
+    setVariantId(active.variantId);
     setSize(null);
     setHint(false);
     setView("model");
-    // Measure whether the body overflows (to show the "more below" fade).
     requestAnimationFrame(() => {
       const el = bodyRef.current;
       if (el) setAtEnd(el.scrollHeight - el.clientHeight <= 8);
     });
-  }, [product?.id]);
+  }, [active]);
 
   // Background scroll lock (iOS-safe): overflow:hidden alone doesn't hold on
   // iOS, so pin the body with position:fixed + a negative top, then restore.
   useEffect(() => {
-    if (!product) return;
+    if (!active) return;
     const scrollY = window.scrollY;
     const body = document.body;
     const prev = {
@@ -99,15 +108,15 @@ export default function QuickView({
       window.scrollTo(0, scrollY);
       window.removeEventListener("keydown", onKey);
     };
-  }, [product, onClose]);
+  }, [active, onClose]);
 
   function handleAdd() {
-    if (!product) return;
+    if (!style || !variant) return;
     if (!size) {
       setHint(true);
       return;
     }
-    addItem(product.id, size, 1, imgRef.current, product.imageModel);
+    addItem(style.id, variant.id, size, 1, imgRef.current, style.imageModel);
     onClose();
     openCart();
   }
@@ -119,7 +128,7 @@ export default function QuickView({
 
   return (
     <AnimatePresence>
-      {product && (
+      {style && variant && (
         <motion.div
           className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center"
           initial={{ opacity: 0 }}
@@ -131,7 +140,7 @@ export default function QuickView({
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={`${product.name} details`}
+            aria-label={`${style.name} details`}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -175,29 +184,31 @@ export default function QuickView({
                 className="absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-4"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
+                {/* Two slides: model + this variant's flat */}
                 <div
                   ref={imgRef}
                   className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-gradient-to-br from-puccii-blush to-paper-pink"
                 >
                   <SmartImage
-                    src={product.imageModel}
-                    alt={`${product.name} in ${product.colorName}, worn on the beach`}
+                    src={style.imageModel}
+                    alt={`${style.name}, worn on the beach`}
                     fill
                     sizes="(max-width: 640px) 100vw, 32rem"
                     className={`object-cover transition-opacity duration-300 ${
                       view === "model" ? "opacity-100" : "opacity-0"
                     }`}
-                    fallbackLabel={product.name}
+                    fallbackLabel={style.name}
                   />
                   <SmartImage
-                    src={product.imageFlat}
-                    alt={`${product.name} flat lay, two-piece set`}
+                    key={variant.id}
+                    src={variant.imageFlat}
+                    alt={`${SITE.name} ${style.name} in ${variant.colorName}`}
                     fill
                     sizes="(max-width: 640px) 100vw, 32rem"
                     className={`object-cover transition-opacity duration-300 ${
                       view === "flat" ? "opacity-100" : "opacity-0"
                     }`}
-                    fallbackLabel={product.name}
+                    fallbackLabel={style.name}
                   />
                   <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink">
                     Pre-order
@@ -228,38 +239,52 @@ export default function QuickView({
 
                 <div className="mt-4 flex items-start justify-between gap-3">
                   <div>
-                    <h2 className="font-display text-2xl font-extrabold text-ink">{product.name}</h2>
-                    <p className="mt-1 flex items-center gap-1.5 text-sm text-ink-soft">
-                      <span
-                        aria-hidden
-                        className="inline-block h-3 w-3 rounded-full ring-1 ring-ink/15"
-                        style={{ backgroundColor: product.swatch }}
-                      />
-                      {product.colorName} · {product.silhouette}
+                    <h2 className="font-display text-2xl font-extrabold text-ink">{style.name}</h2>
+                    <p className="mt-1 text-sm text-ink-soft">
+                      Color: <span className="font-semibold text-ink">{variant.colorName}</span>
                     </p>
                   </div>
-                  <p className="font-display text-2xl font-extrabold text-ink">{formatUSD(product.priceUSD)}</p>
+                  <p className="font-display text-2xl font-extrabold text-ink">
+                    {formatUSD(style.priceUSD)}
+                  </p>
                 </div>
 
-                <p className="mt-2 rounded-full bg-butter/60 px-3 py-1.5 text-center text-sm font-bold text-ink">
-                  {formatUSD(product.priceUSD)} · complete set, top + bottom included
+                {/* Swatch row — with the color name visible above */}
+                <div className="mt-3 flex flex-wrap items-center gap-2.5" role="radiogroup" aria-label="Choose a color">
+                  {style.variants.map((v) => (
+                    <Swatch
+                      key={v.id}
+                      variant={v}
+                      active={v.id === variant.id}
+                      size={32}
+                      onClick={() => {
+                        setVariantId(v.id);
+                        setView("flat");
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <p className="mt-3 rounded-full bg-butter/60 px-3 py-1.5 text-center text-sm font-bold text-ink">
+                  {formatUSD(style.priceUSD)} · complete set, top + bottom included
                 </p>
 
-                <p className="mt-3 text-ink-soft">{product.blurb}</p>
+                <p className="mt-3 text-ink-soft">{style.blurb}</p>
+                <p className="mt-1 text-xs text-ink-soft">Bottom style varies slightly by color.</p>
 
                 {/* Fit / fabric / care */}
                 <dl className="mt-5 space-y-2 rounded-[20px] bg-sand/50 p-4 text-sm">
                   <div>
                     <dt className="font-bold text-ink">Fit</dt>
-                    <dd className="text-ink-soft">{product.fitNote}</dd>
+                    <dd className="text-ink-soft">{FIT}</dd>
                   </div>
                   <div>
                     <dt className="font-bold text-ink">Fabric</dt>
-                    <dd className="text-ink-soft">{product.fabric}</dd>
+                    <dd className="text-ink-soft">{FABRIC}</dd>
                   </div>
                   <div>
                     <dt className="font-bold text-ink">Care</dt>
-                    <dd className="text-ink-soft">{product.care}</dd>
+                    <dd className="text-ink-soft">{CARE}</dd>
                   </div>
                 </dl>
               </div>
@@ -284,19 +309,19 @@ export default function QuickView({
                   {hint && <p className="text-sm font-semibold text-puccii-pink">Pick your size first ✨</p>}
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Choose a size">
-                  {product.sizes.map((s) => {
-                    const active = size === s;
+                  {style.sizes.map((s) => {
+                    const activeSize = size === s;
                     return (
                       <button
                         key={s}
                         role="radio"
-                        aria-checked={active}
+                        aria-checked={activeSize}
                         onClick={() => {
                           setSize(s);
                           setHint(false);
                         }}
                         className={`grid h-11 min-w-11 flex-1 place-items-center rounded-full px-4 text-base font-bold transition-all ${
-                          active
+                          activeSize
                             ? "bg-ink text-cream shadow-md"
                             : "bg-cream text-ink ring-1 ring-ink/12 hover:ring-puccii-pink"
                         }`}
@@ -307,10 +332,10 @@ export default function QuickView({
                   })}
                 </div>
 
-                {/* Between-sizes note (point 2) */}
+                {/* Between-sizes note */}
                 <p className="mt-2 text-xs text-ink-soft">Between sizes? Size up for more coverage.</p>
 
-                {/* Model reference (point 1) — hidden until a real height is set */}
+                {/* Model reference — hidden until a real height is set */}
                 {MODEL_REFERENCE.height ? (
                   <p className="mt-1 text-xs text-ink-soft">
                     {MODEL_REFERENCE.name} is {MODEL_REFERENCE.height} and wears a {MODEL_REFERENCE.wears}.
@@ -322,7 +347,7 @@ export default function QuickView({
                 onClick={handleAdd}
                 className="flex h-14 w-full items-center justify-center rounded-full bg-puccii-pink text-lg font-bold text-cream shadow-[0_16px_34px_-14px_rgba(240,107,176,0.8)] transition-transform active:scale-[0.98]"
               >
-                Add to bag · Pre-order {formatUSD(product.priceUSD)}
+                Add to bag · Pre-order {formatUSD(style.priceUSD)}
               </button>
 
               {/* Trust row — hand-drawn icons, no generic badges */}
@@ -334,7 +359,7 @@ export default function QuickView({
                   <PayIcon /> Apple Pay &amp; Google Pay
                 </span>
                 <span className="flex items-center gap-1 text-[11px] font-medium">
-                  <ReplyIcon /> We reply in 24h
+                  <ReplyIcon /> Pick up at KISSLAB
                 </span>
               </div>
             </div>

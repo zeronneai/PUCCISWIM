@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
-import { getProduct, isValidSize } from "@/lib/products";
+import { getStyle, getVariant, isValidSize } from "@/lib/products";
 import { SITE, SITE_URL } from "@/lib/site";
 
 export const runtime = "nodejs";
 
-type IncomingItem = { productId?: unknown; size?: unknown; qty?: unknown };
+type IncomingItem = { styleId?: unknown; variantId?: unknown; size?: unknown; qty?: unknown };
 
 export async function POST(req: Request) {
   let body: { items?: IncomingItem[] };
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   }
 
   // Validate + re-derive EVERYTHING on the server. Never trust the client price.
-  const compactLines: { id: string; size: string; qty: number }[] = [];
+  const compactLines: { styleId: string; variantId: string; size: string; qty: number }[] = [];
   const line_items: {
     quantity: number;
     price_data: {
@@ -32,31 +32,39 @@ export async function POST(req: Request) {
   }[] = [];
 
   for (const raw of items) {
-    const productId = String(raw.productId ?? "");
+    const styleId = String(raw.styleId ?? "");
+    const variantId = String(raw.variantId ?? "");
     const size = String(raw.size ?? "");
     const qty = Number(raw.qty);
 
-    const product = getProduct(productId);
-    if (!product) {
-      return NextResponse.json({ error: `Unknown product: ${productId}` }, { status: 400 });
+    const style = getStyle(styleId);
+    if (!style) {
+      return NextResponse.json({ error: `Unknown style: ${styleId}` }, { status: 400 });
     }
-    if (!isValidSize(product, size)) {
-      return NextResponse.json({ error: `Invalid size for ${productId}: ${size}` }, { status: 400 });
+    const variant = getVariant(styleId, variantId);
+    if (!variant) {
+      return NextResponse.json(
+        { error: `Unknown color for ${styleId}: ${variantId}` },
+        { status: 400 },
+      );
+    }
+    if (!isValidSize(style, size)) {
+      return NextResponse.json({ error: `Invalid size for ${styleId}: ${size}` }, { status: 400 });
     }
     if (!Number.isInteger(qty) || qty < 1 || qty > 5) {
-      return NextResponse.json({ error: `Invalid quantity for ${productId}` }, { status: 400 });
+      return NextResponse.json({ error: `Invalid quantity for ${styleId}` }, { status: 400 });
     }
 
-    compactLines.push({ id: product.id, size, qty });
+    compactLines.push({ styleId: style.id, variantId: variant.id, size, qty });
     line_items.push({
       quantity: qty,
       price_data: {
         currency: "usd",
         unit_amount: SITE.priceCents, // authoritative: $39.00
         product_data: {
-          name: `${product.name}, Size ${size}`,
+          name: `${style.name} — ${variant.colorName} — Size ${size}`,
           description: "PUCCII Swim · Endless Summer Collection · Pre-order",
-          images: [product.imageModel],
+          images: [variant.imageFlat],
         },
       },
     });

@@ -1,12 +1,13 @@
 import type Stripe from "stripe";
-import { getProduct } from "./products";
+import { getStyle, getVariant } from "./products";
 import type { OrderPayload } from "./notify";
 
-type CompactLine = { id: string; size: string; qty: number };
+type CompactLine = { styleId: string; variantId: string; size: string; qty: number };
 
 // Turn a completed Stripe Checkout session into the notification payload.
 // Items come from metadata.order (what we stored when creating the session),
-// mapped to real product names.
+// resolved to real style names + color names so Mya knows exactly what to
+// prepare for the customer.
 export function buildOrderPayload(
   session: Stripe.Checkout.Session,
   opts?: { resend?: boolean },
@@ -18,11 +19,16 @@ export function buildOrderPayload(
     lines = [];
   }
 
-  const items = lines.map((l) => ({
-    name: getProduct(l.id)?.name ?? l.id,
-    size: l.size,
-    qty: l.qty,
-  }));
+  const items = lines.map((l) => {
+    const style = getStyle(l.styleId);
+    const variant = getVariant(l.styleId, l.variantId);
+    return {
+      name: style?.name ?? l.styleId,
+      color: variant?.colorName ?? l.variantId,
+      size: l.size,
+      qty: l.qty,
+    };
+  });
 
   const instagram =
     session.custom_fields?.find((f) => f.key === "instagram")?.text?.value ?? "";

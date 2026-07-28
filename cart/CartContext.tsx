@@ -9,10 +9,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { PRODUCTS_BY_ID, type Size } from "@/lib/products";
+import { getStyle, getVariant, type Size } from "@/lib/products";
 import { SITE, PAYMENTS_MODE, WHATSAPP_NUMBER } from "@/lib/site";
 
-export type CartLine = { productId: string; size: Size; qty: number };
+// A cart line is a style + a color + a size. The same style in two colors, or two
+// sizes, is two distinct lines.
+export type CartLine = { styleId: string; variantId: string; size: Size; qty: number };
 
 type Flight = { id: number; src: string; from: DOMRect };
 
@@ -23,9 +25,16 @@ type CartContextValue = {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (productId: string, size: Size, qty?: number, fromEl?: HTMLElement | null, src?: string) => void;
-  setQty: (productId: string, size: Size, qty: number) => void;
-  removeItem: (productId: string, size: Size) => void;
+  addItem: (
+    styleId: string,
+    variantId: string,
+    size: Size,
+    qty?: number,
+    fromEl?: HTMLElement | null,
+    src?: string,
+  ) => void;
+  setQty: (styleId: string, variantId: string, size: Size, qty: number) => void;
+  removeItem: (styleId: string, variantId: string, size: Size) => void;
   clear: () => void;
   checkout: () => Promise<void>;
   isCheckingOut: boolean;
@@ -36,7 +45,11 @@ type CartContextValue = {
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
-const STORAGE_KEY = "puccii-cart-v1";
+const STORAGE_KEY = "puccii-cart-v2";
+
+// Same key as a cart line, for matching.
+const sameLine = (l: CartLine, styleId: string, variantId: string, size: string) =>
+  l.styleId === styleId && l.variantId === variantId && l.size === size;
 
 function readStorage(): CartLine[] {
   if (typeof window === "undefined") return [];
@@ -45,17 +58,17 @@ function readStorage(): CartLine[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    // Drop anything that no longer maps to a real product/size.
-    return parsed.filter(
-      (l): l is CartLine =>
-        l &&
-        typeof l.productId === "string" &&
-        PRODUCTS_BY_ID[l.productId] &&
-        typeof l.size === "string" &&
-        (PRODUCTS_BY_ID[l.productId].sizes as string[]).includes(l.size) &&
-        typeof l.qty === "number" &&
-        l.qty > 0,
-    );
+    // Drop anything that no longer maps to a real style/variant/size.
+    return parsed.filter((l): l is CartLine => {
+      if (!l || typeof l.styleId !== "string" || typeof l.variantId !== "string") return false;
+      if (typeof l.size !== "string" || typeof l.qty !== "number" || l.qty <= 0) return false;
+      const style = getStyle(l.styleId);
+      return (
+        !!style &&
+        !!getVariant(l.styleId, l.variantId) &&
+        (style.sizes as string[]).includes(l.size)
+      );
+    });
   } catch {
     return [];
   }
@@ -90,19 +103,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clampQty = (n: number) => Math.max(1, Math.min(5, Math.round(n)));
 
   const addItem = useCallback<CartContextValue["addItem"]>(
-    (productId, size, qty = 1, fromEl, src) => {
-      const product = PRODUCTS_BY_ID[productId];
-      if (!product || !(product.sizes as string[]).includes(size)) return;
+    (styleId, variantId, size, qty = 1, fromEl, src) => {
+      const style = getStyle(styleId);
+      const variant = getVariant(styleId, variantId);
+      if (!style || !variant || !(style.sizes as string[]).includes(size)) return;
 
       setLines((prev) => {
-        const idx = prev.findIndex((l) => l.productId === productId && l.size === size);
-        if (idx === -1) return [...prev, { productId, size, qty: clampQty(qty) }];
+        const idx = prev.findIndex((l) => sameLine(l, styleId, variantId, size));
+        if (idx === -1) return [...prev, { styleId, variantId, size, qty: clampQty(qty) }];
         const next = [...prev];
         next[idx] = { ...next[idx], qty: clampQty(next[idx].qty + qty) };
         return next;
       });
 
-      setAnnouncement(`${product.name}, size ${size} added to your bag.`);
+      setAnnouncement(`${style.name} in ${variant.colorName}, size ${size} added to your bag.`);
 
       // Flying image → cart icon.
       if (fromEl && typeof window !== "undefined") {
@@ -110,24 +124,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         if (!reduce) {
           const from = fromEl.getBoundingClientRect();
           const id = ++flightId.current;
-          setFlights((f) => [...f, { id, src: src || product.imageModel, from }]);
+          setFlights((f) => [...f, { id, src: src || variant.imageFlat, from }]);
         }
       }
     },
     [],
   );
 
-  const setQty = useCallback<CartContextValue["setQty"]>((productId, size, qty) => {
+  const setQty = useCallback<CartContextValue["setQty"]>((styleId, variantId, size, qty) => {
     setLines((prev) => {
-      if (qty <= 0) return prev.filter((l) => !(l.productId === productId && l.size === size));
+      if (qty <= 0) return prev.filter((l) => !sameLine(l, styleId, variantId, size));
       return prev.map((l) =>
-        l.productId === productId && l.size === size ? { ...l, qty: clampQty(qty) } : l,
+        sameLine(l, styleId, variantId, size) ? { ...l, qty: clampQty(qty) } : l,
       );
     });
   }, []);
 
-  const removeItem = useCallback<CartContextValue["removeItem"]>((productId, size) => {
-    setLines((prev) => prev.filter((l) => !(l.productId === productId && l.size === size)));
+  const removeItem = useCallback<CartContextValue["removeItem"]>((styleId, variantId, size) => {
+    setLines((prev) => prev.filter((l) => !sameLine(l, styleId, variantId, size)));
     setAnnouncement("Item removed from your bag.");
   }, []);
 
@@ -149,8 +163,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         // Fallback path - no Stripe. Build a pre-filled DM (BRIEF §3.3).
         const summary = lines
           .map((l) => {
-            const p = PRODUCTS_BY_ID[l.productId];
-            return `• ${p?.name ?? l.productId}, Size ${l.size} × ${l.qty}`;
+            const s = getStyle(l.styleId);
+            const v = getVariant(l.styleId, l.variantId);
+            const label = s ? `${s.name} — ${v?.colorName ?? ""}` : l.styleId;
+            return `• ${label}, Size ${l.size} × ${l.qty}`;
           })
           .join("\n");
         const total = (subtotalCents / 100).toFixed(2);
@@ -166,7 +182,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: lines.map((l) => ({ productId: l.productId, size: l.size, qty: l.qty })),
+          items: lines.map((l) => ({
+            styleId: l.styleId,
+            variantId: l.variantId,
+            size: l.size,
+            qty: l.qty,
+          })),
         }),
       });
       if (!res.ok) {

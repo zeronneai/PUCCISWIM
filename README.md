@@ -9,7 +9,9 @@ gets notified. No shipping, no addresses, no tax — this is a pre-order drop.
 ## Stack
 Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · `motion/react` · Stripe Checkout
 (hosted) · Google Apps Script (order log + owner/customer emails) · `@vercel/analytics`.
-Product data is a typed `lib/products.ts` — no database. Fulfillment is **in-person pickup**
+Product data is a typed `lib/products.ts` — no database. The catalog is **four styles**
+(The Bandeau, Halter, Underwire, Triangle), each with color **variants** (17 pieces total,
+all $39). A cart line is `{ styleId, variantId, size }`. Fulfillment is **in-person pickup**
 at KISSLAB, El Paso (see `lib/pickup.ts`) — no shipping.
 
 ## Quick start
@@ -35,7 +37,8 @@ on the server in `app/api/checkout/route.ts`.
 
 ## Before you launch — checklist
 1. **Product photos** are served from **Cloudinary** (URLs in `lib/products.ts`, with
-   `f_auto,q_auto` for automatic WebP/AVIF). The id↔image mapping is verified. If a URL
+   `f_auto,q_auto,w_1000` for automatic WebP/AVIF at a capped width). Each style has one
+   on-model photo (`imageModel`) and one flat-lay per color (`variant.imageFlat`). If a URL
    ever fails to load, the card falls back to a branded placeholder.
 2. **(Optional) media:** `public/hero.mp4` + `public/hero-poster.jpg` for the hero, and
    `public/brand/mya.jpg` for the founder portrait. All degrade gracefully if absent.
