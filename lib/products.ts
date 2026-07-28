@@ -182,3 +182,12 @@ export function isValidSize(product: Product, size: string): size is Size {
 }
 
 export const SILHOUETTES: Silhouette[] = ["Halter", "Bandeau", "Underwire"];
+
+// Model reference shown in the product sheet, under the size selector.
+// Fill `height` with Mya's real height and the line renders; left blank it stays
+// hidden (absence over a visible placeholder). `wears` is the size she models.
+export const MODEL_REFERENCE = {
+  name: "Mya",
+  height: "", // e.g. `5'8"` — owner fills this, then the line appears
+  wears: "M" as Size,
+};

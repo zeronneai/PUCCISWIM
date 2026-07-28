@@ -140,6 +140,12 @@ export default function ProductCard({
 
         <p className="text-sm text-ink-soft">{product.blurb}</p>
 
+        {/* Value line (audit D4): make "complete set" read clearly, not fine print */}
+        <p className="text-sm font-semibold text-ink">
+          <span className="text-puccii-pink">{formatUSD(product.priceUSD)}</span> · complete set, top +
+          bottom included
+        </p>
+
         {/* Size pills - big tap targets */}
         <div
           className="flex flex-wrap gap-2"

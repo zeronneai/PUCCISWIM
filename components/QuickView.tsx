@@ -4,8 +4,39 @@ import { AnimatePresence, motion, useDragControls } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/cart/CartContext";
 import { formatUSD } from "@/lib/format";
-import type { Product, Size } from "@/lib/products";
+import { MODEL_REFERENCE, type Product, type Size } from "@/lib/products";
+import { PREORDER_DELIVERY_NOTE } from "@/lib/site";
 import SmartImage from "./SmartImage";
+
+// Hand-drawn trust icons (same stroke style as the rest of the site).
+function LockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="5" y="11" width="14" height="9" rx="2.4" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8 11V8.5a4 4 0 0 1 8 0V11" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+function PayIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="6" width="18" height="12" rx="2.6" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M3 10h18M7 15h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+function ReplyIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 6h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3v-3H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function QuickView({
   product,
@@ -210,8 +241,8 @@ export default function QuickView({
                   <p className="font-display text-2xl font-extrabold text-ink">{formatUSD(product.priceUSD)}</p>
                 </div>
 
-                <p className="mt-2 rounded-full bg-butter/50 px-3 py-1 text-center text-sm font-semibold text-ink">
-                  Full set, top + bottom included
+                <p className="mt-2 rounded-full bg-butter/60 px-3 py-1.5 text-center text-sm font-bold text-ink">
+                  {formatUSD(product.priceUSD)} · complete set, top + bottom included
                 </p>
 
                 <p className="mt-3 text-ink-soft">{product.blurb}</p>
@@ -275,6 +306,16 @@ export default function QuickView({
                     );
                   })}
                 </div>
+
+                {/* Between-sizes note (point 2) */}
+                <p className="mt-2 text-xs text-ink-soft">Between sizes? Size up for more coverage.</p>
+
+                {/* Model reference (point 1) — hidden until a real height is set */}
+                {MODEL_REFERENCE.height ? (
+                  <p className="mt-1 text-xs text-ink-soft">
+                    {MODEL_REFERENCE.name} is {MODEL_REFERENCE.height} and wears a {MODEL_REFERENCE.wears}.
+                  </p>
+                ) : null}
               </div>
 
               <button
@@ -283,6 +324,22 @@ export default function QuickView({
               >
                 Add to bag · Pre-order {formatUSD(product.priceUSD)}
               </button>
+
+              {/* Delivery promise (point 3) */}
+              <p className="mt-2 text-center text-xs text-ink-soft">{PREORDER_DELIVERY_NOTE}</p>
+
+              {/* Trust row (point 5) — hand-drawn icons, no generic badges */}
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-ink-soft">
+                <span className="flex items-center gap-1 text-[11px] font-medium">
+                  <LockIcon /> Secure checkout
+                </span>
+                <span className="flex items-center gap-1 text-[11px] font-medium">
+                  <PayIcon /> Apple Pay &amp; Google Pay
+                </span>
+                <span className="flex items-center gap-1 text-[11px] font-medium">
+                  <ReplyIcon /> We reply in 24h
+                </span>
+              </div>
             </div>
           </motion.div>
         </motion.div>
