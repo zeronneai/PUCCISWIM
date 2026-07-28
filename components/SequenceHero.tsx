@@ -17,6 +17,25 @@ import {
   type Orientation,
 } from "@/lib/heroSequence";
 
+// Render a body-beat line: display font, with the accent word swapped into the
+// handwriting font (butter gold) — the brand's "handwritten word mid-sentence".
+function beatText(text: string, accent?: string) {
+  if (!accent || !text.includes(accent)) return text;
+  const [before, after] = text.split(accent);
+  return (
+    <>
+      {before}
+      <span
+        className="font-hand font-medium text-butter"
+        style={{ fontSize: "1.15em", display: "inline-block", transform: "rotate(-3deg)" }}
+      >
+        {accent}
+      </span>
+      {after}
+    </>
+  );
+}
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -303,21 +322,24 @@ export default function SequenceHero() {
 
       <Scrims />
 
-      {/* Beats - all in the SAME spot; only text swaps. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[20%] z-20 flex justify-center px-6 md:bottom-[18%]">
-        <div className="relative flex min-h-[7.5rem] w-full max-w-xl items-start justify-center text-center">
+      {/* Beats - all centered in the SAME box; only the text swaps. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[13%] z-20 flex justify-center px-5 md:bottom-[15%]">
+        <div className="relative h-[15rem] w-full max-w-3xl sm:h-[17rem]">
           {BEATS.map((b, i) => (
             <div
               key={b.id}
               ref={setBeatRef(i)}
-              className="absolute inset-x-0 top-0 flex flex-col items-center"
+              className="absolute inset-0 flex flex-col items-center justify-center text-center"
               style={{ opacity: 0 }}
             >
               {b.kind === "climax" ? (
                 <Climax show={climaxIn} inline />
               ) : (
-                <p className="text-legible font-body text-xl font-medium text-cream sm:text-2xl">
-                  {b.text}
+                <p
+                  className="text-legible font-display font-semibold text-cream"
+                  style={{ fontSize: "clamp(2rem, 6.2vw, 3.8rem)", letterSpacing: "-0.02em", lineHeight: 1.02 }}
+                >
+                  {beatText(b.text, b.accent)}
                 </p>
               )}
             </div>
@@ -337,19 +359,26 @@ export default function SequenceHero() {
   );
 }
 
-/** Climax layer: headline + SHOP NOW. Button enters 200ms after the text. */
+/** Climax layer: big stacked headline + SHOP NOW. Button enters 200ms after. */
 function Climax({ show, inline = false }: { show: boolean; inline?: boolean }) {
   return (
-    <div className={inline ? "flex flex-col items-center" : "absolute inset-x-0 bottom-[18%] z-20 flex flex-col items-center px-6 text-center"}>
+    <div
+      className={
+        inline
+          ? "flex flex-col items-center"
+          : "absolute inset-x-0 bottom-[16%] z-20 flex flex-col items-center px-6 text-center"
+      }
+    >
       <h1
-        className="text-legible font-display font-semibold uppercase text-cream"
-        style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)", letterSpacing: "0.15em" }}
+        className="text-legible font-display font-extrabold uppercase text-cream"
+        style={{ fontSize: "clamp(2.6rem, 9vw, 5.25rem)", letterSpacing: "0.04em", lineHeight: 0.9 }}
       >
-        ENDLESS SUMMER
+        <span className="block">Endless</span>
+        <span className="block text-butter">Summer</span>
       </h1>
       <a
         href="#shop"
-        className={`text-legible pointer-events-auto mt-6 inline-flex min-h-12 items-center justify-center border border-cream px-10 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-cream transition-all duration-500 hover:bg-cream hover:text-ink ${
+        className={`text-legible pointer-events-auto mt-8 inline-flex min-h-[3.25rem] items-center justify-center border border-cream px-12 py-4 text-sm font-bold uppercase tracking-[0.22em] text-cream transition-all duration-500 hover:bg-cream hover:text-ink ${
           show ? "opacity-100 [transition-delay:200ms]" : "translate-y-2 opacity-0"
         }`}
       >

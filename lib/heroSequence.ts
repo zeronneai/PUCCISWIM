@@ -55,10 +55,11 @@ export type Beat = {
   out: number; // >1 means "stays to the end"
   text: string;
   kind: "body" | "climax";
+  accent?: string; // one word rendered in the handwriting font (butter gold)
 };
 
 export const BEATS: Beat[] = [
-  { id: "b1", in: 0.0, out: 0.3, text: "What you've been waiting for.", kind: "body" },
-  { id: "b2", in: 0.34, out: 0.62, text: "It's finally here.", kind: "body" },
+  { id: "b1", in: 0.0, out: 0.3, text: "What you've been waiting for.", kind: "body", accent: "waiting" },
+  { id: "b2", in: 0.34, out: 0.62, text: "It's finally here.", kind: "body", accent: "finally" },
   { id: "b3", in: 0.68, out: 1.01, text: "ENDLESS SUMMER", kind: "climax" },
 ];
