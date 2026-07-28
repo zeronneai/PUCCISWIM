@@ -18,10 +18,10 @@ export default function MeetMya() {
           className="relative mx-auto w-full max-w-sm"
         >
           <div className="absolute -inset-4 -rotate-3 rounded-[32px] bg-butter" aria-hidden />
-          <div className="absolute -inset-4 rotate-2 rounded-[32px] bg-sky/70" aria-hidden />
+          <div className="absolute -inset-4 rotate-2 rounded-[32px] bg-puccii-blush" aria-hidden />
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-puccii-blush shadow-[0_26px_60px_-22px_rgba(240,107,176,0.45)]">
             <SmartImage
-              src="/brand/mya.jpg"
+              src="https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_900/v1785253114/Woman_s_founder_portrait_studio___202607280938_tca0er.jpg"
               alt="Mya Mercedes, founder of PUCCII Swim"
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"

@@ -110,7 +110,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         if (!reduce) {
           const from = fromEl.getBoundingClientRect();
           const id = ++flightId.current;
-          setFlights((f) => [...f, { id, src: src || product.image, from }]);
+          setFlights((f) => [...f, { id, src: src || product.imageModel, from }]);
         }
       }
     },

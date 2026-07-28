@@ -56,7 +56,7 @@ export async function POST(req: Request) {
         product_data: {
           name: `${product.name} — Size ${size}`,
           description: "PUCCII Swim · Endless Summer Collection · Pre-order",
-          images: [`${SITE_URL}${product.image}`],
+          images: [product.imageModel],
         },
       },
     });

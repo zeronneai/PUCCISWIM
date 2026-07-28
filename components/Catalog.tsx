@@ -79,7 +79,7 @@ export default function Catalog() {
         <motion.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => (
-              <ProductCard key={p.id} product={p} onQuickView={setActive} priority={i === 0} />
+              <ProductCard key={p.id} product={p} onQuickView={setActive} priority={i < 3} />
             ))}
           </AnimatePresence>
         </motion.div>

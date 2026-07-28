@@ -111,7 +111,7 @@ export default function CartDrawer() {
                       <li key={`${l.productId}-${l.size}`} className="flex gap-3 py-4">
                         <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-[16px] bg-sand/60">
                           <SmartImage
-                            src={p.image}
+                            src={p.imageModel}
                             alt={p.name}
                             fill
                             sizes="80px"

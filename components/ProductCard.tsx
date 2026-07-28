@@ -1,11 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { useCart } from "@/cart/CartContext";
 import { formatUSD } from "@/lib/format";
 import type { Product, Size } from "@/lib/products";
-import SmartImage from "./SmartImage";
+
+const SWAP =
+  "transition-[opacity,transform] duration-[400ms] [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]";
+
+function HangerIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 6.5a1.6 1.6 0 1 1 1.2 1.55c-.5.13-.7.5-.7.95v1M12 10v1.2L4.5 16.2c-.9.6-.5 2 .6 2h13.8c1.1 0 1.5-1.4.6-2L12 11.2Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function ProductCard({
   product,
@@ -20,6 +37,8 @@ export default function ProductCard({
   const [size, setSize] = useState<Size | null>(null);
   const [hint, setHint] = useState(false);
   const [added, setAdded] = useState(false);
+  const [swapped, setSwapped] = useState(false); // mobile chip toggle
+  const [modelFailed, setModelFailed] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
 
   function handleAdd() {
@@ -27,10 +46,13 @@ export default function ProductCard({
       setHint(true);
       return;
     }
-    addItem(product.id, size, 1, imgRef.current, product.image);
+    addItem(product.id, size, 1, imgRef.current, product.imageModel);
     setAdded(true);
     setTimeout(() => setAdded(false), 1400);
   }
+
+  // Desktop: swap on group hover (CSS). Mobile: swap on chip tap (state).
+  const modelSrc = modelFailed ? product.imageFlat : product.imageModel;
 
   return (
     <motion.article
@@ -41,30 +63,63 @@ export default function ProductCard({
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="group flex flex-col overflow-hidden rounded-[28px] bg-sand/60 shadow-[0_18px_40px_-24px_rgba(43,27,36,0.35)]"
     >
-      {/* Image — tap to quick-view */}
-      <button
-        onClick={() => onQuickView(product)}
-        className="relative block w-full overflow-hidden"
-        aria-label={`Quick view ${product.name}`}
-      >
-        <div ref={imgRef} className="relative aspect-[4/5] w-full">
-          <SmartImage
-            src={product.image}
-            alt={`${product.name} in ${product.colorName} — two-piece swim set`}
-            fill
-            priority={priority}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            fallbackLabel={product.name}
-          />
-        </div>
-        <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink backdrop-blur">
-          Pre-order
-        </span>
-        <span className="absolute right-3 top-3 rounded-full bg-ink/70 px-3 py-1 text-[11px] font-semibold text-cream backdrop-blur">
-          Top + bottom
-        </span>
-      </button>
+      {/* Media (relative wrapper holds the swap button + the mobile chip) */}
+      <div className="relative">
+        <button
+          onClick={() => onQuickView(product)}
+          className="relative block w-full overflow-hidden"
+          aria-label={`Quick view ${product.name}`}
+        >
+          {/* 4/5 box, both images stacked absolute -> zero layout shift on swap */}
+          <div
+            ref={imgRef}
+            className="relative aspect-[4/5] w-full bg-gradient-to-br from-puccii-blush to-paper-pink"
+          >
+            {/* Model image — shown first */}
+            <Image
+              src={modelSrc}
+              alt={`${product.name} in ${product.colorName}, worn on the beach`}
+              fill
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              onError={() => setModelFailed(true)}
+              className={`object-cover group-hover:scale-[1.03] group-hover:opacity-0 ${SWAP} ${
+                swapped ? "scale-[1.03] opacity-0" : "scale-100 opacity-100"
+              }`}
+            />
+            {/* Flat-lay — revealed on swap (rendered in-DOM so it's preloaded) */}
+            <Image
+              src={product.imageFlat}
+              alt={`${product.name} flat lay — two-piece set, top and bottom`}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className={`object-cover group-hover:scale-100 group-hover:opacity-100 ${SWAP} ${
+                swapped ? "scale-100 opacity-100" : "scale-[1.03] opacity-0"
+              }`}
+            />
+          </div>
+
+          <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink backdrop-blur">
+            Pre-order
+          </span>
+          <span className="absolute right-3 top-3 rounded-full bg-ink/70 px-3 py-1 text-[11px] font-semibold text-cream backdrop-blur">
+            Top + bottom
+          </span>
+        </button>
+
+        {/* Mobile-only swap chip (does NOT open the sheet) */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSwapped((v) => !v);
+          }}
+          aria-label={swapped ? "View on model" : "View product photo"}
+          className="absolute bottom-3 right-3 grid h-11 w-11 place-items-center rounded-full bg-cream/70 text-ink shadow-md backdrop-blur-md active:scale-95 md:hidden"
+        >
+          <HangerIcon />
+        </button>
+      </div>
 
       {/* Body */}
       <div className="flex flex-1 flex-col gap-3 p-4">

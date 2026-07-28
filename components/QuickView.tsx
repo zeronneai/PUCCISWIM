@@ -17,6 +17,7 @@ export default function QuickView({
   const { addItem, openCart } = useCart();
   const [size, setSize] = useState<Size | null>(null);
   const [hint, setHint] = useState(false);
+  const [view, setView] = useState<"model" | "flat">("model");
   const sheetRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
 
@@ -24,6 +25,7 @@ export default function QuickView({
   useEffect(() => {
     setSize(null);
     setHint(false);
+    setView("model");
   }, [product?.id]);
 
   // Scroll lock + esc.
@@ -45,7 +47,7 @@ export default function QuickView({
       setHint(true);
       return;
     }
-    addItem(product.id, size, 1, imgRef.current, product.image);
+    addItem(product.id, size, 1, imgRef.current, product.imageModel);
     onClose();
     openCart();
   }
@@ -97,18 +99,55 @@ export default function QuickView({
             </div>
 
             <div className="px-5 pb-8">
-              <div ref={imgRef} className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-sand/60">
+              <div
+                ref={imgRef}
+                className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-gradient-to-br from-puccii-blush to-paper-pink"
+              >
                 <SmartImage
-                  src={product.image}
-                  alt={`${product.name} in ${product.colorName} — two-piece swim set`}
+                  src={product.imageModel}
+                  alt={`${product.name} in ${product.colorName}, worn on the beach`}
                   fill
                   sizes="(max-width: 640px) 100vw, 32rem"
-                  className="object-cover"
+                  className={`object-cover transition-opacity duration-300 ${
+                    view === "model" ? "opacity-100" : "opacity-0"
+                  }`}
+                  fallbackLabel={product.name}
+                />
+                <SmartImage
+                  src={product.imageFlat}
+                  alt={`${product.name} flat lay — two-piece set`}
+                  fill
+                  sizes="(max-width: 640px) 100vw, 32rem"
+                  className={`object-cover transition-opacity duration-300 ${
+                    view === "flat" ? "opacity-100" : "opacity-0"
+                  }`}
                   fallbackLabel={product.name}
                 />
                 <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink">
                   Pre-order
                 </span>
+              </div>
+
+              {/* Explicit model / flat-lay toggle (2 slides) */}
+              <div className="mt-3 flex items-center justify-center gap-1 rounded-full bg-sand/60 p-1">
+                <button
+                  onClick={() => setView("model")}
+                  aria-pressed={view === "model"}
+                  className={`h-9 flex-1 rounded-full text-sm font-semibold transition-colors ${
+                    view === "model" ? "bg-cream text-ink shadow-sm" : "text-ink-soft"
+                  }`}
+                >
+                  On model
+                </button>
+                <button
+                  onClick={() => setView("flat")}
+                  aria-pressed={view === "flat"}
+                  className={`h-9 flex-1 rounded-full text-sm font-semibold transition-colors ${
+                    view === "flat" ? "bg-cream text-ink shadow-sm" : "text-ink-soft"
+                  }`}
+                >
+                  Flat lay
+                </button>
               </div>
 
               <div className="mt-4 flex items-start justify-between gap-3">

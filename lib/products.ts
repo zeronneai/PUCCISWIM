@@ -1,9 +1,12 @@
 // The single source of truth for the catalog. No DB.
 // SERVER re-derives every price from here at checkout — never trust the client.
 //
-// Images are hosted on Cloudinary (f_auto,q_auto in the transform path so the CDN
-// serves WebP/AVIF at an auto quality). The id -> image mapping below is VERIFIED —
-// do not reorder. Components keep a branded-placeholder fallback if a URL fails.
+// Each product has TWO images, both on Cloudinary (f_auto,q_auto in the transform
+// path so the CDN serves WebP/AVIF):
+//   imageModel — the on-model beach shot, shown FIRST
+//   imageFlat  — the flat-lay of the set, revealed on hover/tap swap
+// The id -> image mapping below is VERIFIED — do not reorder. Components degrade
+// gracefully (imageModel error -> imageFlat -> branded placeholder).
 
 export type Size = "XS" | "S" | "M" | "L";
 
@@ -17,7 +20,8 @@ export type Product = {
   silhouette: Silhouette;
   priceUSD: 39;
   priceCents: 3900;
-  image: string; // absolute Cloudinary URL
+  imageModel: string; // absolute Cloudinary URL — shown first
+  imageFlat: string; // absolute Cloudinary URL — swap target
   blurb: string; // <= 12 words, flirty
   fabric: string;
   care: string;
@@ -31,7 +35,8 @@ const FABRIC = "Buttery-soft four-way stretch. Fully lined, front and back.";
 const CARE = "Hand wash cold, lay flat to dry. No wringing, no dryer, no chlorine soak.";
 const FIT = "Runs true to size. Between sizes? Size up on top for more coverage.";
 
-const CLOUD = "https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto";
+const FLAT = "https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto";
+const MODEL = "https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_1000";
 
 export const PRODUCTS: Product[] = [
   {
@@ -42,7 +47,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Halter",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_1_dlrycv.jpg`,
+    imageModel: `${MODEL}/v1785252642/Woman_wearing_swimsuit_on_beach_202607280925_qqcj3v.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_1_dlrycv.jpg`,
     blurb: "Golden-hour glow in a barely-there halter tie.",
     fabric: FABRIC,
     care: CARE,
@@ -57,7 +63,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Underwire",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_2_eeqq5e.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_laughing_on_beach_2K_202607280924_dmg209.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_2_eeqq5e.jpg`,
     blurb: "Balconette lift with ruched sides that hug just right.",
     fabric: FABRIC,
     care: CARE,
@@ -72,7 +79,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Bandeau",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_cpw2eo.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_wearing_swimsuit_on_beach_202607280853_2_k7fcwa.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.28_PM_cpw2eo.jpg`,
     blurb: "Strapless, high-leg, and made for zero tan lines.",
     fabric: FABRIC,
     care: CARE,
@@ -87,7 +95,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Bandeau",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_1_ksl3jr.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_wearing_blue_swimsuit_2K_202607280852_nwy1xm.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_1_ksl3jr.jpg`,
     blurb: "Cloud-soft blue that makes a tan look illegal.",
     fabric: FABRIC,
     care: CARE,
@@ -102,7 +111,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Halter",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191668/WhatsApp_Image_2026-07-27_at_4.15.29_PM_2_hn3qhk.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_laughing_on_beach_2K_202607280853_dgksdk.jpg`,
+    imageFlat: `${FLAT}/v1785191668/WhatsApp_Image_2026-07-27_at_4.15.29_PM_2_hn3qhk.jpg`,
     blurb: "Halter triangle up top, ruched sides for days.",
     fabric: FABRIC,
     care: CARE,
@@ -117,7 +127,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Bandeau",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_3_bkerfq.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_laughing_on_beach_2K_202607280858_k21urr.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_3_bkerfq.jpg`,
     blurb: "Sunshine bottled into a strapless, high-leg set.",
     fabric: FABRIC,
     care: CARE,
@@ -132,7 +143,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Halter",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_4_h4ohbu.jpg`,
+    imageModel: `${MODEL}/v1785252642/Woman_laughing_in_water_2K_202607280924_ubhc1i.jpg`,
+    imageFlat: `${FLAT}/v1785191667/WhatsApp_Image_2026-07-27_at_4.15.29_PM_4_h4ohbu.jpg`,
     blurb: "Crisp white halter with a high-waist moment.",
     fabric: FABRIC,
     care: CARE,
@@ -147,7 +159,8 @@ export const PRODUCTS: Product[] = [
     silhouette: "Bandeau",
     priceUSD: 39,
     priceCents: 3900,
-    image: `${CLOUD}/v1785191668/WhatsApp_Image_2026-07-27_at_4.15.29_PM_d0g0tz.jpg`,
+    imageModel: `${MODEL}/v1785252641/Woman_wearing_swimsuit_on_beach_202607280924_frntaa.jpg`,
+    imageFlat: `${FLAT}/v1785191668/WhatsApp_Image_2026-07-27_at_4.15.29_PM_d0g0tz.jpg`,
     blurb: "The little white set every summer secretly needs.",
     fabric: FABRIC,
     care: CARE,
