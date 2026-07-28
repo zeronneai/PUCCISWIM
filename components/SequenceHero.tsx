@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
+  BEATS,
   DPR_CAP,
+  HERO_FRAME_COUNT,
   PIN_DESKTOP,
   PIN_MOBILE,
   PRELOAD_POOL,
   PRIORITY_FRAMES,
-  SEQUENCE,
-  sequenceFrameSrc,
+  frameSrc,
+  posterSrc,
+  videoFallbackSrc,
   type Orientation,
-} from "@/lib/media";
-import HeroTextBlock from "./HeroTextBlock";
+} from "@/lib/heroSequence";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -24,52 +26,104 @@ function getOrientation(): Orientation {
   return window.innerWidth > window.innerHeight ? "landscape" : "portrait";
 }
 
-/**
- * Scroll-scrub hero. A per-orientation WebP frame sequence is painted on a
- * pinned <canvas> as the user scrolls, via a GSAP proxy tween {p:0->1}.
- * Preserves the recipe's core: nearest-earlier-ready render, manual
- * object-cover, DPR cap, 3-wave preload (pool of 6), no-black-flash rebuild on
- * orientation change, StrictMode-safe cleanup, and 3 fallback levels.
- */
+const FADE = 0.03; // beat cross-fade zone, in progress units
+
+// opacity for a beat at progress p (0 outside its window, cross-fades at edges).
+function beatOpacity(p: number, b: (typeof BEATS)[number]) {
+  if (p < b.in || p >= b.out) return 0;
+  // A beat starting at 0 is visible at rest (no enter-fade from nothing).
+  const enter = b.in <= 0 ? 1 : Math.min(1, (p - b.in) / FADE);
+  const exit = Math.min(1, (b.out - p) / FADE);
+  return Math.max(0, Math.min(enter, exit, 1));
+}
+
 export default function SequenceHero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null); // scaled 1.04 -> 1.00
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const lcpImgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const beatRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cueRef = useRef<HTMLDivElement>(null);
 
-  // Survives orientation rebuilds so a resize/rebuild never flashes black.
+  // Persists across orientation rebuilds so a resize never flashes black.
   const lastDrawnImageRef = useRef<HTMLImageElement | null>(null);
-  // Current scrub target, readable by async loaders.
   const desiredRef = useRef(0);
 
   const [orientation, setOrientation] = useState<Orientation>("landscape");
   const [reduced, setReduced] = useState(false);
   const [videoFallback, setVideoFallback] = useState(false);
+  const [climaxIn, setClimaxIn] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Mount-time environment reads.
   useEffect(() => {
     setMounted(true);
     setOrientation(getOrientation());
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
-  // Track orientation; a change re-runs the main effect (it's in its deps).
   useEffect(() => {
     const onResize = () => setOrientation(getOrientation());
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // ---- Main effect: build canvas + scrub timeline (skipped if reduced/video) ----
+  // Fade the scroll cue on first scroll.
   useEffect(() => {
-    if (!mounted || reduced || videoFallback) return;
-    const section = sectionRef.current;
-    const canvas = canvasRef.current;
-    if (!section || !canvas) return;
+    const onScroll = () => {
+      if (cueRef.current && window.scrollY > 6) cueRef.current.style.opacity = "0";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    const cfg = SEQUENCE[orientation];
-    const N = cfg.frames;
+  // ---- Main effect: canvas/video + pin+scrub timeline + beats -------------
+  useEffect(() => {
+    if (!mounted || reduced) return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const N = HERO_FRAME_COUNT;
+    const runway = orientation === "portrait" ? PIN_MOBILE : PIN_DESKTOP;
+
+    // Shared: drive beats + media zoom off progress (both canvas & video modes).
+    function applyProgress(p: number) {
+      for (let i = 0; i < BEATS.length; i++) {
+        const el = beatRefs.current[i];
+        if (!el) continue;
+        const o = beatOpacity(p, BEATS[i]);
+        el.style.opacity = String(o);
+        el.style.transform = `translateY(${(1 - o) * 12}px)`;
+        el.style.filter = `blur(${(1 - o) * 4}px)`;
+      }
+      if (mediaRef.current) mediaRef.current.style.transform = `scale(${1.04 - 0.04 * p})`;
+      setClimaxIn(p >= BEATS[2].in);
+    }
+
+    // ---------- Video-fallback mode ----------
+    if (videoFallback) {
+      const video = videoRef.current;
+      if (!video) return;
+      const proxy = { p: 0 };
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: section, start: "top top", end: `+=${runway}`, pin: true, scrub: 1, anticipatePin: 1 },
+      });
+      tl.to(proxy, {
+        p: 1,
+        ease: "none",
+        onUpdate: () => {
+          if (video.duration) video.currentTime = proxy.p * video.duration;
+          applyProgress(proxy.p);
+        },
+      });
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    }
+
+    // ---------- Canvas frame-sequence mode ----------
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -85,7 +139,7 @@ export default function SequenceHero() {
       const iw = img.naturalWidth || img.width;
       const ih = img.naturalHeight || img.height;
       if (!iw || !ih) return;
-      const scale = Math.max(cw / iw, ch / ih); // object-cover
+      const scale = Math.max(cw / iw, ch / ih); // manual object-cover
       const dw = iw * scale;
       const dh = ih * scale;
       ctx.clearRect(0, 0, cw, ch);
@@ -107,12 +161,9 @@ export default function SequenceHero() {
     function sizeCanvas() {
       if (!canvas) return;
       const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      // Resize wipes the bitmap — repaint whatever we last had.
-      if (lastDrawnImageRef.current) draw(lastDrawnImageRef.current);
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      if (lastDrawnImageRef.current) draw(lastDrawnImageRef.current); // resize wipes bitmap
     }
 
     function loadFrame(i: number): Promise<void> {
@@ -120,20 +171,19 @@ export default function SequenceHero() {
         if (disposed || images[i]) return resolve();
         const img = new Image();
         img.decoding = "async";
+        img.crossOrigin = "anonymous";
         img.onload = () => {
           if (disposed) return resolve();
           ready[i] = true;
           images[i] = img;
-          // Unblock whatever the scroll currently wants.
           if (i <= desiredRef.current) render(desiredRef.current);
           resolve();
         };
         img.onerror = () => {
-          // Frame 0 missing => the whole sequence is unavailable -> MP4 fallback.
-          if (i === 0 && !disposed) setVideoFallback(true);
+          if (i === 0 && !disposed) setVideoFallback(true); // whole sequence unavailable
           resolve();
         };
-        img.src = sequenceFrameSrc(cfg.dir, i);
+        img.src = frameSrc(orientation, i);
         images[i] = img;
       });
     }
@@ -141,17 +191,12 @@ export default function SequenceHero() {
     sizeCanvas();
     window.addEventListener("resize", sizeCanvas);
 
-    // ---- 3-wave preload ----
+    // 3-wave preload
     (async () => {
-      // Wave 1: the current progress frame first (key when rotating mid-scroll).
       await loadFrame(desiredRef.current);
       if (disposed) return;
-      // Wave 2: first PRIORITY_FRAMES in parallel.
-      await Promise.all(
-        Array.from({ length: Math.min(PRIORITY_FRAMES, N) }, (_, i) => loadFrame(i)),
-      );
+      await Promise.all(Array.from({ length: Math.min(PRIORITY_FRAMES, N) }, (_, i) => loadFrame(i)));
       if (disposed) return;
-      // Wave 3: the rest through a pool of PRELOAD_POOL workers.
       const queue: number[] = [];
       for (let i = 0; i < N; i++) if (!images[i]) queue.push(i);
       const worker = async () => {
@@ -164,11 +209,7 @@ export default function SequenceHero() {
       await Promise.all(Array.from({ length: PRELOAD_POOL }, () => worker()));
     })();
 
-    // ---- Scrub timeline: tween a proxy, not the canvas ----
     const proxy = { p: 0 };
-    const runway = orientation === "portrait" ? PIN_MOBILE : PIN_DESKTOP;
-    const overlay = overlayRef.current;
-
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
@@ -187,11 +228,7 @@ export default function SequenceHero() {
         const desired = Math.round(proxy.p * (N - 1));
         desiredRef.current = desired;
         render(desired);
-        // Persistent block, fades out only in the last ~12% of the pin.
-        if (overlay) {
-          const fade = proxy.p <= 0.88 ? 1 : Math.max(0, 1 - (proxy.p - 0.88) / 0.12);
-          overlay.style.opacity = String(fade);
-        }
+        applyProgress(proxy.p);
       },
     });
 
@@ -203,55 +240,122 @@ export default function SequenceHero() {
     };
   }, [mounted, orientation, reduced, videoFallback]);
 
-  const cfg = SEQUENCE[orientation];
+  const setBeatRef = (i: number) => (el: HTMLDivElement | null) => {
+    beatRefs.current[i] = el;
+  };
 
-  // ---- Fallback 1: reduced motion — static poster + block, no pin/scrub ----
+  // ---- Fallback 1: reduced motion — static final frame + climax only ------
   if (mounted && reduced) {
     return (
       <section id="hero" className="relative -mt-16 h-[100svh] w-full overflow-hidden">
         <GradientBase />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={cfg.poster}
+          src={frameSrc(orientation, HERO_FRAME_COUNT - 1)}
           alt="PUCCII Swim — Endless Summer"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
         <Scrims />
-        <HeroTextBlock />
+        <Climax show />
       </section>
     );
   }
 
   return (
     <section id="hero" ref={sectionRef} className="relative -mt-16 h-[100svh] w-full overflow-hidden">
-      {/* Palette gradient behind everything — the ultimate no-black-flash base. */}
       <GradientBase />
 
-      {/* Fallback 3 / LCP: frame 1 painted immediately under the canvas. */}
-      {!videoFallback && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={lcpImgRef}
-          src={sequenceFrameSrc(cfg.dir, 0)}
-          alt="PUCCII Swim — Endless Summer"
-          fetchPriority="high"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-          onError={(e) => (e.currentTarget.style.display = "none")}
-        />
-      )}
+      {/* Media layer (scaled 1.04 -> 1.00 across the pin) */}
+      <div ref={mediaRef} className="absolute inset-0 -z-10 will-change-transform">
+        {!videoFallback && (
+          <>
+            {/* Fallback 3 / LCP: frame 0 painted immediately under the canvas. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={frameSrc(orientation, 0)}
+              alt="PUCCII Swim — Endless Summer"
+              fetchPriority="high"
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => (e.currentTarget.style.display = "none")}
+            />
+            <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
+          </>
+        )}
+        {/* Fallback 2: sequence failed -> scrub a light MP4 instead. */}
+        {videoFallback && (
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-cover"
+            poster={posterSrc(orientation)}
+            preload="none"
+            muted
+            playsInline
+            onError={(e) => (e.currentTarget.style.display = "none")}
+          >
+            <source src={videoFallbackSrc(orientation)} type="video/mp4" />
+          </video>
+        )}
+      </div>
 
-      {/* The scrubbed canvas. */}
-      {!videoFallback && (
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
-      )}
-
-      {/* Fallback 2: sequence failed to load -> scrub a light MP4 instead. */}
-      {videoFallback && <VideoFallback orientation={orientation} sectionRef={sectionRef} />}
+      {/* Film grain, 5%, over the media (below scrims/text). */}
+      <div className="hero-grain pointer-events-none absolute inset-0 z-[1]" aria-hidden />
 
       <Scrims />
-      <HeroTextBlock ref={overlayRef} />
+
+      {/* Beats — all in the SAME spot; only text swaps. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[20%] z-20 flex justify-center px-6 md:bottom-[18%]">
+        <div className="relative flex min-h-[7.5rem] w-full max-w-xl items-start justify-center text-center">
+          {BEATS.map((b, i) => (
+            <div
+              key={b.id}
+              ref={setBeatRef(i)}
+              className="absolute inset-x-0 top-0 flex flex-col items-center"
+              style={{ opacity: 0 }}
+            >
+              {b.kind === "climax" ? (
+                <Climax show={climaxIn} inline />
+              ) : (
+                <p className="text-legible font-body text-xl font-medium text-cream sm:text-2xl">
+                  {b.text}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Scroll cue: 1px x 40px line with a gradient that loops down; fades on scroll. */}
+      <div
+        ref={cueRef}
+        className="pointer-events-none absolute bottom-6 left-1/2 z-20 h-10 w-px -translate-x-1/2 overflow-hidden transition-opacity duration-500"
+        aria-hidden
+      >
+        <div className="hero-cue absolute inset-x-0 h-1/2 bg-gradient-to-b from-transparent via-cream to-transparent" />
+      </div>
     </section>
+  );
+}
+
+/** Climax layer: headline + SHOP NOW. Button enters 200ms after the text. */
+function Climax({ show, inline = false }: { show: boolean; inline?: boolean }) {
+  return (
+    <div className={inline ? "flex flex-col items-center" : "absolute inset-x-0 bottom-[18%] z-20 flex flex-col items-center px-6 text-center"}>
+      <h1
+        className="text-legible font-display font-semibold uppercase text-cream"
+        style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)", letterSpacing: "0.15em" }}
+      >
+        ENDLESS SUMMER
+      </h1>
+      <a
+        href="#shop"
+        className={`text-legible pointer-events-auto mt-6 inline-flex min-h-12 items-center justify-center border border-cream px-10 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-cream transition-all duration-500 hover:bg-cream hover:text-ink ${
+          show ? "opacity-100 [transition-delay:200ms]" : "translate-y-2 opacity-0"
+        }`}
+      >
+        Shop Now
+      </a>
+    </div>
   );
 }
 
@@ -259,73 +363,25 @@ export default function SequenceHero() {
 function GradientBase() {
   return (
     <div className="absolute inset-0 -z-20" aria-hidden>
-      <div className="absolute inset-0 bg-gradient-to-b from-paper-pink via-puccii-blush to-sand" />
+      <div className="absolute inset-0 bg-gradient-to-b from-sky/70 via-paper-pink to-sand" />
     </div>
   );
 }
 
-/** Two subtle scrims only (adaptation #2): top for the nav, bottom for the text. */
+/** Two scrims only (adaptation #3): top for the nav, bottom for the text. */
 function Scrims() {
   return (
     <>
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[120px]"
-        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.25), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.22), transparent)" }}
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[40%]"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.35), transparent)" }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[45%]"
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.38), transparent)" }}
         aria-hidden
       />
     </>
-  );
-}
-
-/** Fallback 2: scrub a light MP4 by setting currentTime = p * duration. */
-function VideoFallback({
-  orientation,
-  sectionRef,
-}: {
-  orientation: Orientation;
-  sectionRef: React.RefObject<HTMLElement | null>;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const cfg = SEQUENCE[orientation];
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const video = videoRef.current;
-    if (!section || !video) return;
-    const proxy = { p: 0 };
-    const runway = orientation === "portrait" ? PIN_MOBILE : PIN_DESKTOP;
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: section, start: "top top", end: `+=${runway}`, pin: true, scrub: 1 },
-    });
-    tl.to(proxy, {
-      p: 1,
-      ease: "none",
-      onUpdate: () => {
-        if (video.duration) video.currentTime = proxy.p * video.duration;
-      },
-    });
-    return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
-    };
-  }, [orientation, sectionRef]);
-
-  return (
-    <video
-      ref={videoRef}
-      className="absolute inset-0 -z-10 h-full w-full object-cover"
-      poster={cfg.poster}
-      preload="none"
-      muted
-      playsInline
-      onError={(e) => (e.currentTarget.style.display = "none")}
-    >
-      <source src={cfg.fallback} type="video/mp4" />
-    </video>
   );
 }

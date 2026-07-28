@@ -41,19 +41,25 @@ export default function Nav() {
   const [bump, setBump] = useState(false);
 
   useEffect(() => {
-    const hero = document.getElementById("hero");
-    if (!hero) {
+    // A sentinel sits right after the hero (and its GSAP pin spacer). The nav is
+    // transparent while the sentinel is still below the nav line (hero is the
+    // backdrop) and cream once it reaches the top. A scroll check gives a
+    // PERSISTENT state — IntersectionObserver only pulses on crossing, so it
+    // would wrongly flip back once the sentinel scrolled above the viewport.
+    // (We can't observe #hero itself: pinning sets it position:fixed.)
+    const sentinel = document.getElementById("hero-sentinel");
+    if (!sentinel) {
       setOverHero(false);
       return;
     }
-    const io = new IntersectionObserver(
-      ([entry]) => setOverHero(entry.isIntersecting),
-      // Shrink the observation area from the top by the nav height so the flip
-      // happens right as the hero clears the nav.
-      { rootMargin: "-72px 0px 0px 0px", threshold: 0 },
-    );
-    io.observe(hero);
-    return () => io.disconnect();
+    const update = () => setOverHero(sentinel.getBoundingClientRect().top > 64);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   // Bump the badge whenever the count changes.
@@ -75,7 +81,7 @@ export default function Nav() {
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* Wordmark */}
-          <a href="#hero" className="group flex items-baseline gap-1.5" aria-label="PUCCII Swim home">
+          <a href="#hero" className="animate-logo-in group flex items-baseline gap-1.5" aria-label="PUCCII Swim home">
             <Logo
               heightClass="h-7"
               tone={overHero ? "light" : "natural"}

@@ -1,4 +1,3 @@
-import Marquee from "@/components/Marquee";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import ValueStrip from "@/components/ValueStrip";
@@ -16,10 +15,12 @@ import CartAnnouncer from "@/components/CartAnnouncer";
 export default function Home() {
   return (
     <>
-      <Marquee />
       <Nav />
       <main>
         <Hero />
+        {/* Sits just after the hero (and its pin spacer). The nav watches this
+            to flip from transparent-over-hero to cream once the hero clears. */}
+        <div id="hero-sentinel" aria-hidden className="h-px w-full" />
         <ValueStrip />
         <Catalog />
         <Breaker />
