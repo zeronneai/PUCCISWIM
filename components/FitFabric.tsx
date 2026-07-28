@@ -5,7 +5,7 @@ function SizeChart() {
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[420px] border-collapse text-left text-sm">
-        <caption className="sr-only">PUCCII Swim size chart, XS to XL</caption>
+        <caption className="sr-only">PUCCII Swim size chart, XS to L</caption>
         <thead>
           <tr className="text-ink">
             <th scope="col" className="border-b border-ink/10 py-2 pr-4 font-bold">Size</th>
@@ -35,7 +35,7 @@ function SizeChart() {
 
 const ITEMS: AccordionItem[] = [
   {
-    q: "Size chart (XS–XL)",
+    q: "Size chart (XS–L)",
     a: <SizeChart />,
   },
   {

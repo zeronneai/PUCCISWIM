@@ -38,7 +38,7 @@ export default function Catalog() {
             <SketchUnderline className="absolute -bottom-2 left-0 h-4 w-[70%]" />
           </h2>
           <p className="mt-3 max-w-md text-ink-soft">
-            Eight sets. Every one two pieces — top and bottom included. All $45.
+            Eight sets. Every one two pieces — top and bottom included. All $39.
           </p>
         </div>
 

@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { SITE } from "@/lib/site";
+import Logo from "./Logo";
 
 type Link = { href: string; label: string };
 
@@ -48,7 +49,11 @@ export default function MobileMenu({
           style={{ paddingTop: "env(safe-area-inset-top)" }}
         >
           <div className="flex h-16 items-center justify-between px-4">
-            <span className="font-display text-2xl font-extrabold">PUCCII</span>
+            <Logo
+              heightClass="h-7"
+              tone="light"
+              fallback={<span className="font-display text-2xl font-extrabold">PUCCII</span>}
+            />
             <button
               ref={closeRef}
               onClick={onClose}

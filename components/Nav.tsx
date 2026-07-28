@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/cart/CartContext";
+import Logo from "./Logo";
 import MobileMenu from "./MobileMenu";
 
 const LINKS = [
@@ -64,12 +65,19 @@ export default function Nav() {
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* Wordmark */}
           <a href="#top" className="group flex items-baseline gap-1.5" aria-label="PUCCII Swim home">
-            <span className="font-display text-2xl font-extrabold tracking-tight text-ink">
-              PUCCII
-            </span>
-            <span className="font-hand text-2xl text-puccii-pink transition-transform group-hover:-rotate-6">
-              swim
-            </span>
+            <Logo
+              heightClass="h-7"
+              fallback={
+                <span className="flex items-baseline gap-1.5">
+                  <span className="font-display text-2xl font-extrabold tracking-tight text-ink">
+                    PUCCII
+                  </span>
+                  <span className="font-hand text-2xl text-puccii-pink transition-transform group-hover:-rotate-6">
+                    swim
+                  </span>
+                </span>
+              }
+            />
           </a>
 
           {/* Desktop links */}

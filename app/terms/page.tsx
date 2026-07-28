@@ -17,7 +17,7 @@ export default function Terms() {
 
       <h2>Pre-orders &amp; pricing</h2>
       <p>
-        All products are sold as pre-orders at $45.00 USD per two-piece set. Prices are shown in US
+        All products are sold as pre-orders at $39.00 USD per two-piece set. Prices are shown in US
         dollars and are charged at checkout. We reserve the right to correct pricing errors and to
         cancel and fully refund any order affected by an obvious error.
       </p>

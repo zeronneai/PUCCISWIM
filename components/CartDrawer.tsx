@@ -92,7 +92,7 @@ export default function CartDrawer() {
                 <span className="text-5xl" aria-hidden>👙</span>
                 <p className="font-display text-2xl font-bold text-ink">Your bag&apos;s feeling shy</p>
                 <p className="text-ink-soft">
-                  Add a set and let&apos;s get you beach-ready. Every piece is $45, top and bottom included.
+                  Add a set and let&apos;s get you beach-ready. Every piece is $39, top and bottom included.
                 </p>
                 <button
                   onClick={closeCart}

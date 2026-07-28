@@ -81,7 +81,7 @@ export default function Hero() {
           transition={{ duration: 0.55, delay: 0.15 }}
           className="mt-4 max-w-md text-base font-medium text-cream/95 sm:text-lg"
         >
-          The Endless Summer drop is live. Two-piece sets, $45 each. Pre-order now —
+          The Endless Summer drop is live. Two-piece sets, $39 each. Pre-order now —
           we&apos;ll DM you within 24 hours to arrange delivery.
         </motion.p>
 

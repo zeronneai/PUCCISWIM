@@ -1,7 +1,7 @@
 # PUCCII Swim — Endless Summer pre-order storefront
 
 A single-page, mobile-first pre-order storefront. Traffic comes from an Instagram
-story link, so it's designed at **390px first**: pick a size, pay $45, and the owner
+story link, so it's designed at **390px first**: pick a size, pay $39, and the owner
 gets notified. No shipping, no addresses, no tax — this is a pre-order drop.
 
 > Full spec in [`BRIEF.md`](./BRIEF.md).
@@ -34,10 +34,9 @@ The app **never trusts client prices** — every line is re-derived from `lib/pr
 on the server in `app/api/checkout/route.ts`.
 
 ## Before you launch — checklist
-1. **Add the product photos.** Drop 8 `.webp` files into `public/products/` named to match
-   `lib/products.ts` (see `public/products/README.md`). **Verify each photo matches its
-   product** — the name↔image mapping was inferred from the brief's upload order. Until a
-   file exists, the card shows a branded placeholder.
+1. **Product photos** are served from **Cloudinary** (URLs in `lib/products.ts`, with
+   `f_auto,q_auto` for automatic WebP/AVIF). The id↔image mapping is verified. If a URL
+   ever fails to load, the card falls back to a branded placeholder.
 2. **(Optional) media:** `public/hero.mp4` + `public/hero-poster.jpg` for the hero, and
    `public/brand/mya.jpg` for the founder portrait. All degrade gracefully if absent.
 3. **Turn on Stripe's built-in notification (zero code — do this):**
@@ -45,7 +44,7 @@ on the server in `app/api/checkout/route.ts`.
    email on successful payments, and install the **Stripe mobile app** for push. This is
    Layer 1; the Resend emails below are Layer 2. Run both.
 4. **Fill in the size chart.** `components/FitFabric.tsx` has `TODO` placeholders for the
-   XS–XL measurements — add real numbers, don't guess.
+   XS–L measurements — add real numbers, don't guess.
 
 ## Stripe webhook setup
 Layer 2 (owner + customer emails) lives in `app/api/webhook/route.ts`, handling

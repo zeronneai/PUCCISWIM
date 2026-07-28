@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -7,10 +8,16 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-display text-3xl font-extrabold">PUCCII</span>
-              <span className="font-hand text-3xl text-puccii-pink">swim</span>
-            </div>
+            <Logo
+              heightClass="h-10"
+              tone="light"
+              fallback={
+                <span className="flex items-baseline gap-1.5">
+                  <span className="font-display text-3xl font-extrabold">PUCCII</span>
+                  <span className="font-hand text-3xl text-puccii-pink">swim</span>
+                </span>
+              }
+            />
             <p className="mt-2 max-w-xs text-cream/70">
               {SITE.tagline} {SITE.by}.
             </p>

@@ -7,7 +7,7 @@ export function formatUSD(amount: number): string {
   }).format(amount);
 }
 
-// cents -> "$45.00"
+// cents -> "$39.00"
 export function formatCents(cents: number): string {
   return formatUSD(cents / 100);
 }

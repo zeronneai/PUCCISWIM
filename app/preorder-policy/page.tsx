@@ -12,7 +12,7 @@ export default function PreorderPolicy() {
     <LegalLayout title="Pre-order Policy">
       <p>
         Every item in the Endless Summer collection is sold as a <strong>pre-order</strong>. When you
-        place an order you are reserving your two-piece set and paying in full ($45.00 USD per set) to
+        place an order you are reserving your two-piece set and paying in full ($39.00 USD per set) to
         secure it from the drop.
       </p>
 
@@ -28,7 +28,7 @@ export default function PreorderPolicy() {
 
       <h2>What&apos;s included</h2>
       <p>
-        Each order is a complete two-piece set — top and bottom included — for $45.00. No shipping fees
+        Each order is a complete two-piece set — top and bottom included — for $39.00. No shipping fees
         or taxes are added at checkout; any delivery arrangements are confirmed with you directly.
       </p>
 

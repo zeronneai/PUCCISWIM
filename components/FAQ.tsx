@@ -6,7 +6,7 @@ const ITEMS: AccordionItem[] = [
     q: "What does pre-order mean?",
     a: (
       <p>
-        You&apos;re reserving your set from the Endless Summer drop now and paying $45 to lock it in.
+        You&apos;re reserving your set from the Endless Summer drop now and paying $39 to lock it in.
         After you check out, we personally DM you within 24 hours to arrange delivery or pickup.
       </p>
     ),
@@ -24,7 +24,7 @@ const ITEMS: AccordionItem[] = [
     q: "Is it a full set?",
     a: (
       <p>
-        Always. Every PUCCII style is a two-piece — top <em>and</em> bottom included for $45. No add-ons,
+        Always. Every PUCCII style is a two-piece — top <em>and</em> bottom included for $39. No add-ons,
         no surprises.
       </p>
     ),
@@ -33,7 +33,7 @@ const ITEMS: AccordionItem[] = [
     q: "How do I pick my size?",
     a: (
       <p>
-        PUCCII runs true to size (XS–XL). Between sizes? Size up on top for more coverage. Check the Fit
+        PUCCII runs true to size (XS–L). Between sizes? Size up on top for more coverage. Check the Fit
         &amp; Fabric section, or DM us and we&apos;ll help you choose.
       </p>
     ),

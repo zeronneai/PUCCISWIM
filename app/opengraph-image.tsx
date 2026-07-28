@@ -46,7 +46,7 @@ export default function OG() {
           Bold. Beautiful. Unapologetic.
         </div>
         <div style={{ fontSize: 40, marginTop: 30, color: "#FFF8F1", fontWeight: 600 }}>
-          Two-piece sets · $45 each · @pucciiswim
+          Two-piece sets · $39 each · @pucciiswim
         </div>
       </div>
     ),

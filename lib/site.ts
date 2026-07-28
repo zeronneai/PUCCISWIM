@@ -11,8 +11,8 @@ export const SITE = {
   founderHandle: "mya_mercedes22",
   founderUrl: "https://instagram.com/mya_mercedes22",
   contactEmail: "hello@pucciiswim.com",
-  priceUSD: 45,
-  priceCents: 4500,
+  priceUSD: 39,
+  priceCents: 3900,
 } as const;
 
 // Resolved at both build & runtime. Never trailing-slash it.
