@@ -49,10 +49,18 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
   font-feature-settings: "ss01";
-  /* #1 mobile bug: kill horizontal scroll. */
-  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* NOTE: horizontal-scroll clipping lives on <main>, NOT here. In Safari an
+     ancestor with overflow:clip/hidden breaks a sticky child's stacking, which
+     let the catalog title paint over the sticky nav. Keeping body overflow
+     visible frees the nav's sticky/z-index to work. */
+}
+
+/* Pull the hero up under the transparent nav (nav height 4rem) AND under the
+   iOS status bar, so the media is truly full-bleed edge to edge. */
+.hero-pull {
+  margin-top: calc(-4rem - env(safe-area-inset-top));
 }
 
 /* Warm film grain over the whole page - barely there. */

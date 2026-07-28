@@ -10,7 +10,7 @@ export const SITE = {
   igUrl: "https://instagram.com/pucciiswim",
   founderHandle: "mya_mercedes22",
   founderUrl: "https://instagram.com/mya_mercedes22",
-  contactEmail: "hello@pucciiswim.com",
+  contactEmail: "pucci@myamercedesco.com",
   priceUSD: 39,
   priceCents: 3900,
 } as const;

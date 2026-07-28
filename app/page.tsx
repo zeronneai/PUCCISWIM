@@ -16,7 +16,9 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      {/* Horizontal-scroll clip lives here (not on body) so the sticky nav,
+          which is a sibling of <main>, keeps a clean stacking context. */}
+      <main className="overflow-x-clip">
         <Hero />
         {/* Sits just after the hero (and its pin spacer). The nav watches this
             to flip from transparent-over-hero to cream once the hero clears. */}

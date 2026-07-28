@@ -247,7 +247,7 @@ export default function SequenceHero() {
   // ---- Fallback 1: reduced motion - static final frame + climax only ------
   if (mounted && reduced) {
     return (
-      <section id="hero" className="relative -mt-16 h-[100svh] w-full overflow-hidden">
+      <section id="hero" className="hero-pull relative h-[100svh] w-full overflow-hidden">
         <GradientBase />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -263,7 +263,7 @@ export default function SequenceHero() {
   }
 
   return (
-    <section id="hero" ref={sectionRef} className="relative -mt-16 h-[100svh] w-full overflow-hidden">
+    <section id="hero" ref={sectionRef} className="hero-pull relative h-[100svh] w-full overflow-hidden">
       <GradientBase />
 
       {/* Media layer (scaled 1.04 -> 1.00 across the pin) */}

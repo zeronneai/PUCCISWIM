@@ -73,7 +73,7 @@ export default function Nav() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`sticky top-0 z-50 pt-[env(safe-area-inset-top)] transition-all duration-300 ${
           overHero
             ? "bg-transparent text-cream"
             : "border-b border-ink/5 bg-cream/85 text-ink backdrop-blur-md"

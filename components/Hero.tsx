@@ -14,7 +14,7 @@ export default function Hero() {
       id="hero"
       // -mt-16 pulls the media up UNDER the transparent nav (nav height = h-16),
       // so the nav truly sits over the media. 100svh (never 100vh) for iOS chrome.
-      className="relative -mt-16 h-[100svh] w-full overflow-hidden"
+      className="hero-pull relative h-[100svh] w-full overflow-hidden"
     >
       <HeroMedia />
 
