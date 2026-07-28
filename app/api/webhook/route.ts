@@ -4,7 +4,7 @@ import { getStripe } from "@/lib/stripe";
 import { sendCustomerEmail, sendOwnerEmail, type OrderLine } from "@/lib/email";
 
 export const runtime = "nodejs";
-// We need the raw body for signature verification — never let Next parse it.
+// We need the raw body for signature verification - never let Next parse it.
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       sessionId: session.id,
     };
 
-    // Send both emails, but NEVER throw — Stripe retries forever on non-200.
+    // Send both emails, but NEVER throw - Stripe retries forever on non-200.
     await Promise.allSettled([sendOwnerEmail(order), sendCustomerEmail(order)]);
   }
 

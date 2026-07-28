@@ -44,7 +44,7 @@ export default function Nav() {
     // A sentinel sits right after the hero (and its GSAP pin spacer). The nav is
     // transparent while the sentinel is still below the nav line (hero is the
     // backdrop) and cream once it reaches the top. A scroll check gives a
-    // PERSISTENT state — IntersectionObserver only pulses on crossing, so it
+    // PERSISTENT state - IntersectionObserver only pulses on crossing, so it
     // would wrongly flip back once the sentinel scrolled above the viewport.
     // (We can't observe #hero itself: pinning sets it position:fixed.)
     const sentinel = document.getElementById("hero-sentinel");

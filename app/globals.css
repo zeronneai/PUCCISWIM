@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   PUCCII Swim — design tokens (BRIEF §5)
+   PUCCII Swim - design tokens (BRIEF §5)
    Sun-bleached pink resort maximalism. Soft pillowy radii, deep soft shadows,
    zero hard corners.
 --------------------------------------------------------------------------- */
@@ -55,7 +55,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Warm film grain over the whole page — barely there. */
+/* Warm film grain over the whole page - barely there. */
 body::before {
   content: "";
   position: fixed;

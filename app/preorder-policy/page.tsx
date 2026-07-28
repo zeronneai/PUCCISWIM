@@ -3,7 +3,7 @@ import LegalLayout from "@/components/LegalLayout";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Pre-order Policy — PUCCII Swim",
+  title: "Pre-order Policy | PUCCII Swim",
   description: "How PUCCII Swim pre-orders work: fulfillment timing and refund terms.",
 };
 
@@ -19,7 +19,7 @@ export default function PreorderPolicy() {
       <h2>Fulfillment timing</h2>
       <p>
         After your payment is confirmed, a member of the PUCCII team will contact you within{" "}
-        <strong>24 hours</strong> — by Instagram DM, phone, or email — to arrange delivery or local
+        <strong>24 hours</strong>, by Instagram DM, phone, or email, to arrange delivery or local
         pickup and to confirm the timing for your set. Fulfillment is coordinated directly and
         personally; we&apos;ll keep you updated every step of the way. If you have not heard from us
         within 24 hours, please reach out at{" "}
@@ -28,7 +28,7 @@ export default function PreorderPolicy() {
 
       <h2>What&apos;s included</h2>
       <p>
-        Each order is a complete two-piece set — top and bottom included — for $39.00. No shipping fees
+        Each order is a complete two-piece set, top and bottom included, for $39.00. No shipping fees
         or taxes are added at checkout; any delivery arrangements are confirmed with you directly.
       </p>
 
@@ -38,12 +38,12 @@ export default function PreorderPolicy() {
         cancel, contact us within <strong>24 hours</strong> of your order and before we&apos;ve
         confirmed fulfillment, and we will issue a full refund to your original payment method. Once
         fulfillment has been arranged, cancellations and refunds are handled on a case-by-case basis.
-        Refunds are processed through Stripe and may take 5–10 business days to appear.
+        Refunds are processed through Stripe and may take 5 to 10 business days to appear.
       </p>
 
       <h2>Exchanges</h2>
       <p>
-        Sizing exchanges are handled case by case — reach out and we&apos;ll do our best to get you into
+        Sizing exchanges are handled case by case, so reach out and we&apos;ll do our best to get you into
         the right fit. PUCCII runs true to size; check our Fit &amp; Fabric guide before ordering.
       </p>
 

@@ -115,7 +115,7 @@ export default function QuickView({
                 />
                 <SmartImage
                   src={product.imageFlat}
-                  alt={`${product.name} flat lay — two-piece set`}
+                  alt={`${product.name} flat lay, two-piece set`}
                   fill
                   sizes="(max-width: 640px) 100vw, 32rem"
                   className={`object-cover transition-opacity duration-300 ${
@@ -166,7 +166,7 @@ export default function QuickView({
               </div>
 
               <p className="mt-2 rounded-full bg-butter/50 px-3 py-1 text-center text-sm font-semibold text-ink">
-                Full set — top + bottom included
+                Full set, top + bottom included
               </p>
 
               <p className="mt-3 text-ink-soft">{product.blurb}</p>

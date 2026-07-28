@@ -28,12 +28,12 @@ const hanken = Hanken_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "PUCCII Swim — Endless Summer Collection",
+  title: "PUCCII Swim: Endless Summer Collection",
   description:
-    "Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop — two-piece swim sets, $39 each. We'll DM you within 24 hours to arrange delivery.",
+    "Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop of two-piece swim sets, $39 each. We'll DM you within 24 hours to arrange delivery.",
   keywords: ["PUCCII Swim", "swimwear", "bikini", "pre-order", "Endless Summer", "Mya Mercedes"],
   openGraph: {
-    title: "PUCCII Swim — Endless Summer Collection",
+    title: "PUCCII Swim: Endless Summer Collection",
     description:
       "Pre-order the Endless Summer drop. Two-piece sets, $39 each. Bold. Beautiful. Unapologetic.",
     url: SITE_URL,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PUCCII Swim — Endless Summer Collection",
+    title: "PUCCII Swim: Endless Summer Collection",
     description: "Pre-order the Endless Summer drop. $39 every set.",
   },
   icons: {

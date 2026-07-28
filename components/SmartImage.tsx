@@ -12,7 +12,7 @@ type SmartImageProps = Omit<ImageProps, "onError"> & {
 
 /**
  * next/image that degrades to a branded placeholder when the file is absent.
- * The product .webp files ship separately (see BRIEF §6) — until they land,
+ * The product .webp files ship separately (see BRIEF §6) - until they land,
  * the grid still looks intentional instead of showing broken images.
  */
 export default function SmartImage({

@@ -61,7 +61,7 @@ export default function HeroMedia() {
   return (
     <Image
       src={HERO_IMAGE_URL}
-      alt="PUCCII Swim — Endless Summer"
+      alt="PUCCII Swim, Endless Summer"
       fill
       priority
       sizes="100vw"

@@ -38,11 +38,11 @@ export default function Catalog() {
             <SketchUnderline className="absolute -bottom-2 left-0 h-4 w-[70%]" />
           </h2>
           <p className="mt-3 max-w-md text-ink-soft">
-            Eight sets. Every one two pieces — top and bottom included. All $39.
+            Eight sets. Every one two pieces, top and bottom included. All $39.
           </p>
         </div>
 
-        {/* Filter chip row — horizontally scrollable with momentum */}
+        {/* Filter chip row - horizontally scrollable with momentum */}
         <div className="no-scrollbar -mx-4 mb-8 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0"
           style={{ scrollSnapType: "x proximity", WebkitOverflowScrolling: "touch" }}
         >
@@ -75,7 +75,7 @@ export default function Catalog() {
           ))}
         </div>
 
-        {/* Grid — 1 col mobile (BRIEF §4), 2 at sm, 3 at lg */}
+        {/* Grid - 1 col mobile (BRIEF §4), 2 at sm, 3 at lg */}
         <motion.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((p, i) => (
@@ -85,7 +85,7 @@ export default function Catalog() {
         </motion.div>
 
         {filtered.length === 0 && (
-          <p className="py-10 text-center text-ink-soft">Nothing in that filter — try another.</p>
+          <p className="py-10 text-center text-ink-soft">Nothing in that filter. Try another.</p>
         )}
       </div>
 

@@ -21,12 +21,12 @@ export default function MeetMya() {
           <div className="absolute -inset-4 rotate-2 rounded-[32px] bg-puccii-blush" aria-hidden />
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-puccii-blush shadow-[0_26px_60px_-22px_rgba(240,107,176,0.45)]">
             <SmartImage
-              src="https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_900/v1785253114/Woman_s_founder_portrait_studio___202607280938_tca0er.jpg"
+              src="https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_900/v1785254764/Woman_with_warm_smile_2K_202607281005_gzqoh5.jpg"
               alt="Mya Mercedes, founder of PUCCII Swim"
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover"
-              fallbackLabel="Mya Mercedes — founder"
+              fallbackLabel="Mya Mercedes, founder"
               fallbackTint="from-puccii-pink to-butter"
             />
           </div>
@@ -44,13 +44,13 @@ export default function MeetMya() {
           </h2>
           <div className="mt-5 space-y-4 text-ink-soft">
             <p>
-              Mya is a model and influencer — runway, editorial and beauty, with a résumé that runs
-              through NYFW, LAFW and Miami Swim Week. PUCCII Swim is the label she built around the
-              way she actually wants to feel at the beach: bold, beautiful, unapologetic.
+              Mya is a model and influencer across runway, editorial and beauty, with a résumé that
+              runs through NYFW, LAFW and Miami Swim Week. PUCCII Swim is the label she built around
+              the way she actually wants to feel at the beach: bold, beautiful, unapologetic.
             </p>
             <p>
-              Every set in the Endless Summer drop is a two-piece — top and bottom, buttery-soft and
-              fully lined — designed to look expensive and feel like nothing. This is more style, more
+              Every set in the Endless Summer drop is a two-piece, top and bottom, buttery-soft and
+              fully lined, designed to look expensive and feel like nothing. This is more style, more
               inspo, more PUCCII.
             </p>
           </div>

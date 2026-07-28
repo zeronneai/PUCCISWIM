@@ -3,7 +3,7 @@ import LegalLayout from "@/components/LegalLayout";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — PUCCII Swim",
+  title: "Terms of Service | PUCCII Swim",
   description: "The terms for shopping the PUCCII Swim pre-order drop.",
 };
 

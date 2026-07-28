@@ -146,11 +146,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsCheckingOut(true);
     try {
       if (PAYMENTS_MODE === "preorder_dm") {
-        // Fallback path — no Stripe. Build a pre-filled DM (BRIEF §3.3).
+        // Fallback path - no Stripe. Build a pre-filled DM (BRIEF §3.3).
         const summary = lines
           .map((l) => {
             const p = PRODUCTS_BY_ID[l.productId];
-            return `• ${p?.name ?? l.productId} — Size ${l.size} × ${l.qty}`;
+            return `• ${p?.name ?? l.productId}, Size ${l.size} × ${l.qty}`;
           })
           .join("\n");
         const total = (subtotalCents / 100).toFixed(2);

@@ -18,7 +18,7 @@ function SizeChart() {
           {ALL_SIZES.map((s) => (
             <tr key={s}>
               <th scope="row" className="border-b border-ink/8 py-2 pr-4 font-semibold text-ink">{s}</th>
-              {/* TODO(owner): fill in real measurements — do not fabricate. */}
+              {/* TODO(owner): fill in real measurements - do not fabricate. */}
               <td className="border-b border-ink/8 py-2 pr-4">TODO</td>
               <td className="border-b border-ink/8 py-2 pr-4">TODO</td>
               <td className="border-b border-ink/8 py-2">TODO</td>
@@ -27,7 +27,7 @@ function SizeChart() {
         </tbody>
       </table>
       <p className="mt-3 text-xs text-ink-soft">
-        Measurements coming soon — DM us your size questions and we&apos;ll help you land the perfect fit.
+        Measurements coming soon. DM us your size questions and we&apos;ll help you land the perfect fit.
       </p>
     </div>
   );
@@ -35,7 +35,7 @@ function SizeChart() {
 
 const ITEMS: AccordionItem[] = [
   {
-    q: "Size chart (XS–L)",
+    q: "Size chart (XS to L)",
     a: <SizeChart />,
   },
   {
@@ -43,7 +43,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         Buttery-soft four-way stretch that moves with you and dries fast. Every set is fully lined,
-        front and back — no see-through surprises.
+        front and back, no see-through surprises.
       </p>
     ),
   },
@@ -60,7 +60,7 @@ const ITEMS: AccordionItem[] = [
     q: "Does it run true to size?",
     a: (
       <p>
-        Yes — PUCCII runs true to size. If you&apos;re between sizes, size up on top for a little more
+        Yes, PUCCII runs true to size. If you&apos;re between sizes, size up on top for a little more
         coverage. Still unsure? DM us before you order.
       </p>
     ),

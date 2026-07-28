@@ -147,7 +147,7 @@ export default function SequenceHero() {
       lastDrawnImageRef.current = img;
     }
 
-    // Paint the nearest decoded frame at/behind `desired` — never a gap.
+    // Paint the nearest decoded frame at/behind `desired` - never a gap.
     function render(desired: number) {
       let idx = Math.max(0, Math.min(N - 1, desired));
       while (idx > 0 && !ready[idx]) idx--;
@@ -244,7 +244,7 @@ export default function SequenceHero() {
     beatRefs.current[i] = el;
   };
 
-  // ---- Fallback 1: reduced motion — static final frame + climax only ------
+  // ---- Fallback 1: reduced motion - static final frame + climax only ------
   if (mounted && reduced) {
     return (
       <section id="hero" className="relative -mt-16 h-[100svh] w-full overflow-hidden">
@@ -252,7 +252,7 @@ export default function SequenceHero() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={frameSrc(orientation, HERO_FRAME_COUNT - 1)}
-          alt="PUCCII Swim — Endless Summer"
+          alt="PUCCII Swim, Endless Summer"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
@@ -274,7 +274,7 @@ export default function SequenceHero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={frameSrc(orientation, 0)}
-              alt="PUCCII Swim — Endless Summer"
+              alt="PUCCII Swim, Endless Summer"
               fetchPriority="high"
               className="absolute inset-0 h-full w-full object-cover"
               onError={(e) => (e.currentTarget.style.display = "none")}
@@ -303,7 +303,7 @@ export default function SequenceHero() {
 
       <Scrims />
 
-      {/* Beats — all in the SAME spot; only text swaps. */}
+      {/* Beats - all in the SAME spot; only text swaps. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-[20%] z-20 flex justify-center px-6 md:bottom-[18%]">
         <div className="relative flex min-h-[7.5rem] w-full max-w-xl items-start justify-center text-center">
           {BEATS.map((b, i) => (

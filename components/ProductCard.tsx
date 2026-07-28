@@ -75,7 +75,7 @@ export default function ProductCard({
             ref={imgRef}
             className="relative aspect-[4/5] w-full bg-gradient-to-br from-puccii-blush to-paper-pink"
           >
-            {/* Model image — shown first */}
+            {/* Model image - shown first */}
             <Image
               src={modelSrc}
               alt={`${product.name} in ${product.colorName}, worn on the beach`}
@@ -87,10 +87,10 @@ export default function ProductCard({
                 swapped ? "scale-[1.03] opacity-0" : "scale-100 opacity-100"
               }`}
             />
-            {/* Flat-lay — revealed on swap (rendered in-DOM so it's preloaded) */}
+            {/* Flat-lay - revealed on swap (rendered in-DOM so it's preloaded) */}
             <Image
               src={product.imageFlat}
-              alt={`${product.name} flat lay — two-piece set, top and bottom`}
+              alt={`${product.name} flat lay, two-piece set with top and bottom`}
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               className={`object-cover group-hover:scale-100 group-hover:opacity-100 ${SWAP} ${
@@ -140,7 +140,7 @@ export default function ProductCard({
 
         <p className="text-sm text-ink-soft">{product.blurb}</p>
 
-        {/* Size pills — big tap targets */}
+        {/* Size pills - big tap targets */}
         <div
           className="flex flex-wrap gap-2"
           role="radiogroup"

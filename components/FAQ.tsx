@@ -16,7 +16,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         We reach out within 24 hours of your order to confirm timing and how you&apos;d like to receive
-        your set. Exact fulfillment windows are shared in that DM — see our pre-order policy for details.
+        your set. Exact fulfillment windows are shared in that DM. See our pre-order policy for details.
       </p>
     ),
   },
@@ -24,7 +24,7 @@ const ITEMS: AccordionItem[] = [
     q: "Is it a full set?",
     a: (
       <p>
-        Always. Every PUCCII style is a two-piece — top <em>and</em> bottom included for $39. No add-ons,
+        Always. Every PUCCII style is a two-piece, with top <em>and</em> bottom included for $39. No add-ons,
         no surprises.
       </p>
     ),
@@ -33,7 +33,7 @@ const ITEMS: AccordionItem[] = [
     q: "How do I pick my size?",
     a: (
       <p>
-        PUCCII runs true to size (XS–L). Between sizes? Size up on top for more coverage. Check the Fit
+        PUCCII runs true to size (XS to L). Between sizes? Size up on top for more coverage. Check the Fit
         &amp; Fabric section, or DM us and we&apos;ll help you choose.
       </p>
     ),
@@ -42,7 +42,7 @@ const ITEMS: AccordionItem[] = [
     q: "Can I exchange?",
     a: (
       <p>
-        Because this is a pre-order drop, exchanges are handled case by case — reach out and we&apos;ll do
+        Because this is a pre-order drop, exchanges are handled case by case, so reach out and we&apos;ll do
         our best to take care of you. Full terms are on our pre-order policy page.
       </p>
     ),

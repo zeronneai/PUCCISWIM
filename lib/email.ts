@@ -49,7 +49,7 @@ function linesText(lines: OrderLine[]): string {
   return lines
     .map((l) => {
       const p = getProduct(l.id);
-      return `• ${p?.name ?? l.id} (${p?.colorName ?? ""}) — Size ${l.size} × ${l.qty}`;
+      return `• ${p?.name ?? l.id} (${p?.colorName ?? ""}), Size ${l.size} × ${l.qty}`;
     })
     .join("\n");
 }
@@ -59,7 +59,7 @@ export async function sendOwnerEmail(order: OrderPayload): Promise<void> {
   const resend = getResend();
   const to = process.env.OWNER_EMAIL;
   if (!resend || !to) {
-    console.warn("[email] owner email skipped — RESEND_API_KEY or OWNER_EMAIL missing");
+    console.warn("[email] owner email skipped: RESEND_API_KEY or OWNER_EMAIL missing");
     return;
   }
   const dash = `https://dashboard.stripe.com/payments`;
@@ -69,32 +69,32 @@ export async function sendOwnerEmail(order: OrderPayload): Promise<void> {
     await resend.emails.send({
       from: FROM,
       to,
-      subject: `🩷 New PUCCII pre-order — ${total}`,
-      text: `New PUCCII pre-order — ${total}
+      subject: `🩷 New PUCCII pre-order: ${total}`,
+      text: `New PUCCII pre-order: ${total}
 
 ${linesText(order.lines)}
 
 Total: ${total}
 
 Customer
-  Name: ${order.customerName || "—"}
-  Email: ${order.customerEmail || "—"}
-  Phone: ${order.customerPhone || "—"}
-  Instagram: ${order.instagram || "—"}
+  Name: ${order.customerName || "n/a"}
+  Email: ${order.customerEmail || "n/a"}
+  Phone: ${order.customerPhone || "n/a"}
+  Instagram: ${order.instagram || "n/a"}
 
 Stripe session: ${order.sessionId}
 Dashboard: ${dash}
 `,
       html: `<div style="font-family:system-ui,sans-serif;max-width:560px;margin:auto;color:#2b1b24;">
-        <h1 style="font-size:22px;">🩷 New PUCCII pre-order — ${total}</h1>
+        <h1 style="font-size:22px;">🩷 New PUCCII pre-order: ${total}</h1>
         ${linesTable(order.lines)}
         <p style="font-size:18px;font-weight:800;margin:14px 0;">Total: ${total}</p>
         <div style="background:#fff8f1;border-radius:14px;padding:14px 16px;font-size:14px;">
           <strong>Customer</strong><br/>
-          Name: ${order.customerName || "—"}<br/>
-          Email: <a href="mailto:${order.customerEmail}">${order.customerEmail || "—"}</a><br/>
-          Phone: ${order.customerPhone || "—"}<br/>
-          Instagram: <strong>${order.instagram || "—"}</strong>
+          Name: ${order.customerName || "n/a"}<br/>
+          Email: <a href="mailto:${order.customerEmail}">${order.customerEmail || "n/a"}</a><br/>
+          Phone: ${order.customerPhone || "n/a"}<br/>
+          Instagram: <strong>${order.instagram || "n/a"}</strong>
         </div>
         <p style="font-size:13px;color:#6b4a5c;margin-top:14px;">
           Stripe session: ${order.sessionId}<br/>
@@ -112,7 +112,7 @@ Dashboard: ${dash}
 export async function sendCustomerEmail(order: OrderPayload): Promise<void> {
   const resend = getResend();
   if (!resend || !order.customerEmail) {
-    console.warn("[email] customer email skipped — RESEND_API_KEY or email missing");
+    console.warn("[email] customer email skipped: RESEND_API_KEY or email missing");
     return;
   }
   const total = formatCents(order.totalCents);
@@ -120,10 +120,10 @@ export async function sendCustomerEmail(order: OrderPayload): Promise<void> {
     await resend.emails.send({
       from: FROM,
       to: order.customerEmail,
-      subject: "🩷 Your PUCCII pre-order is in — we'll DM you within 24 hours",
+      subject: "🩷 Your PUCCII pre-order is in, we'll DM you within 24 hours",
       text: `Hi ${order.customerName || "gorgeous"}!
 
-Thank you for pre-ordering PUCCII Swim — Endless Summer. 🌴
+Thank you for pre-ordering PUCCII Swim, Endless Summer. 🌴
 
 ${linesText(order.lines)}
 

@@ -35,7 +35,7 @@ function IconSoft() {
 
 const ITEMS = [
   { icon: <IconSet />, title: "Two-piece sets", sub: "Top + bottom, $39" },
-  { icon: <IconSize />, title: "XS – L", sub: "Four true-to-size fits" },
+  { icon: <IconSize />, title: "XS to L", sub: "Four true-to-size fits" },
   { icon: <IconDrop />, title: "Pre-order drop", sub: "Endless Summer" },
   { icon: <IconSoft />, title: "Buttery soft", sub: "Fully lined" },
 ];

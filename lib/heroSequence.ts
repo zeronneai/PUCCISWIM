@@ -1,5 +1,5 @@
 // Scroll-scrub hero frames generated ON-DEMAND by Cloudinary (so_ = start
-// offset in %). We never download the videos or store frames in public/ — each
+// offset in %). We never download the videos or store frames in public/ - each
 // frame is just a URL. Percentages (not seconds) let the 5s and 7s masters both
 // map cleanly onto 100 frames with zero per-video tuning.
 
@@ -47,7 +47,7 @@ export const PRIORITY_FRAMES = 25;
 export const PRELOAD_POOL = 6;
 export const DPR_CAP = 2.5;
 
-// Three beats, all in the SAME spot (centered, lower third) — only the text
+// Three beats, all in the SAME spot (centered, lower third) - only the text
 // swaps. Ranges are normalized progress (0..1) and shared by both orientations.
 export type Beat = {
   id: "b1" | "b2" | "b3";

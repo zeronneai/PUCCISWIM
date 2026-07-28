@@ -1,11 +1,11 @@
 // The single source of truth for the catalog. No DB.
-// SERVER re-derives every price from here at checkout — never trust the client.
+// SERVER re-derives every price from here at checkout - never trust the client.
 //
 // Each product has TWO images, both on Cloudinary (f_auto,q_auto in the transform
 // path so the CDN serves WebP/AVIF):
-//   imageModel — the on-model beach shot, shown FIRST
-//   imageFlat  — the flat-lay of the set, revealed on hover/tap swap
-// The id -> image mapping below is VERIFIED — do not reorder. Components degrade
+//   imageModel - the on-model beach shot, shown FIRST
+//   imageFlat  - the flat-lay of the set, revealed on hover/tap swap
+// The id -> image mapping below is VERIFIED - do not reorder. Components degrade
 // gracefully (imageModel error -> imageFlat -> branded placeholder).
 
 export type Size = "XS" | "S" | "M" | "L";
@@ -20,8 +20,8 @@ export type Product = {
   silhouette: Silhouette;
   priceUSD: 39;
   priceCents: 3900;
-  imageModel: string; // absolute Cloudinary URL — shown first
-  imageFlat: string; // absolute Cloudinary URL — swap target
+  imageModel: string; // absolute Cloudinary URL - shown first
+  imageFlat: string; // absolute Cloudinary URL - swap target
   blurb: string; // <= 12 words, flirty
   fabric: string;
   care: string;
@@ -68,7 +68,7 @@ export const PRODUCTS: Product[] = [
     blurb: "Balconette lift with ruched sides that hug just right.",
     fabric: FABRIC,
     care: CARE,
-    fitNote: "Runs true to size. The underwire gives real support — size to your band.",
+    fitNote: "Runs true to size. The underwire gives real support, so size to your band.",
     sizes: ALL_SIZES,
   },
   {

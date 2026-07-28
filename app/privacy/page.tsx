@@ -3,7 +3,7 @@ import LegalLayout from "@/components/LegalLayout";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — PUCCII Swim",
+  title: "Privacy Policy | PUCCII Swim",
   description: "How PUCCII Swim collects and uses your information.",
 };
 
@@ -18,7 +18,7 @@ export default function Privacy() {
       <h2>What we collect</h2>
       <p>
         To process your pre-order and coordinate delivery, we collect your name, email address, phone
-        number, and Instagram handle. Payment is handled by Stripe — we receive confirmation of your
+        number, and Instagram handle. Payment is handled by Stripe, so we receive confirmation of your
         purchase but never see your full card number.
       </p>
 

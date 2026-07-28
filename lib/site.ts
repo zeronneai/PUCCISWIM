@@ -1,4 +1,4 @@
-// Central place for brand + site constants. No secrets here — only public values.
+// Central place for brand + site constants. No secrets here - only public values.
 
 export const SITE = {
   name: "PUCCII Swim",
@@ -19,7 +19,7 @@ export const SITE = {
 export const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 
-// Payments switch — see BRIEF §3.3. "stripe" (default) or "preorder_dm".
+// Payments switch - see BRIEF §3.3. "stripe" (default) or "preorder_dm".
 export const PAYMENTS_MODE =
   (process.env.NEXT_PUBLIC_PAYMENTS_MODE as "stripe" | "preorder_dm") || "stripe";
 
