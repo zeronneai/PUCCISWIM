@@ -35,14 +35,25 @@ function BagIcon() {
 export default function Nav() {
   const { count, openCart, cartIconRef } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  // While the hero is on screen the nav sits OVER the media (transparent, white).
+  // Once scrolled past the hero it turns cream with ink text.
+  const [overHero, setOverHero] = useState(true);
   const [bump, setBump] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const hero = document.getElementById("hero");
+    if (!hero) {
+      setOverHero(false);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setOverHero(entry.isIntersecting),
+      // Shrink the observation area from the top by the nav height so the flip
+      // happens right as the hero clears the nav.
+      { rootMargin: "-72px 0px 0px 0px", threshold: 0 },
+    );
+    io.observe(hero);
+    return () => io.disconnect();
   }, []);
 
   // Bump the badge whenever the count changes.
@@ -57,22 +68,31 @@ export default function Nav() {
     <>
       <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "border-b border-ink/5 bg-cream/85 backdrop-blur-md"
-            : "bg-transparent"
+          overHero
+            ? "bg-transparent text-cream"
+            : "border-b border-ink/5 bg-cream/85 text-ink backdrop-blur-md"
         }`}
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* Wordmark */}
-          <a href="#top" className="group flex items-baseline gap-1.5" aria-label="PUCCII Swim home">
+          <a href="#hero" className="group flex items-baseline gap-1.5" aria-label="PUCCII Swim home">
             <Logo
               heightClass="h-7"
+              tone={overHero ? "light" : "natural"}
               fallback={
                 <span className="flex items-baseline gap-1.5">
-                  <span className="font-display text-2xl font-extrabold tracking-tight text-ink">
+                  <span
+                    className={`font-display text-2xl font-extrabold tracking-tight ${
+                      overHero ? "text-cream" : "text-ink"
+                    }`}
+                  >
                     PUCCII
                   </span>
-                  <span className="font-hand text-2xl text-puccii-pink transition-transform group-hover:-rotate-6">
+                  <span
+                    className={`font-hand text-2xl transition-transform group-hover:-rotate-6 ${
+                      overHero ? "text-cream" : "text-puccii-pink"
+                    }`}
+                  >
                     swim
                   </span>
                 </span>
@@ -86,7 +106,7 @@ export default function Nav() {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="text-sm font-semibold text-ink transition-colors hover:text-puccii-pink"
+                  className="text-sm font-semibold text-current transition-colors hover:text-puccii-pink"
                 >
                   {l.label}
                 </a>
@@ -99,7 +119,9 @@ export default function Nav() {
             <button
               ref={cartIconRef as React.RefObject<HTMLButtonElement>}
               onClick={openCart}
-              className="relative grid h-12 w-12 place-items-center rounded-full text-ink transition-colors hover:bg-puccii-blush/60"
+              className={`relative grid h-12 w-12 place-items-center rounded-full text-current transition-colors ${
+                overHero ? "hover:bg-cream/15" : "hover:bg-puccii-blush/60"
+              }`}
               aria-label={`Open bag, ${count} item${count === 1 ? "" : "s"}`}
             >
               <BagIcon />
@@ -122,7 +144,9 @@ export default function Nav() {
             {/* Hamburger (mobile only) */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="grid h-12 w-12 place-items-center rounded-full text-ink transition-colors hover:bg-puccii-blush/60 md:hidden"
+              className={`grid h-12 w-12 place-items-center rounded-full text-current transition-colors md:hidden ${
+                overHero ? "hover:bg-cream/15" : "hover:bg-puccii-blush/60"
+              }`}
               aria-label="Open menu"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
