@@ -54,8 +54,13 @@ const ITEMS: AccordionItem[] = [
     q: "Can I exchange?",
     a: (
       <p>
-        Because this is a pre-order drop, exchanges are handled case by case, so reach out and we&apos;ll do
-        our best to take care of you. Full terms are on our pre-order policy page.
+        Yes. We offer one free size exchange per order when your size is in stock, within a 14 day
+        window. Eligible returns come back as store credit, not a refund to your original payment
+        method. See our{" "}
+        <a href="/return-policy" className="font-semibold text-puccii-pink underline underline-offset-2">
+          Return Policy
+        </a>{" "}
+        for the full details.
       </p>
     ),
   },

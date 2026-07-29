@@ -5,7 +5,7 @@ import { PICKUP } from "@/lib/pickup";
 
 export const metadata: Metadata = {
   title: "Pre-order Policy | PUCCII Swim",
-  description: "How PUCCII Swim pre-orders work: in-person pickup, timing and refund terms.",
+  description: "How PUCCII Swim pre-orders work: in-person pickup, timing, store credit and return terms.",
 };
 
 export default function PreorderPolicy() {
@@ -43,21 +43,22 @@ export default function PreorderPolicy() {
         taxes are added at checkout.
       </p>
 
-      <h2>Refunds &amp; cancellations</h2>
+      <h2>Cancellations &amp; store credit</h2>
       <p>
         Because this is a limited pre-order drop, we ask that you order thoughtfully. If you need to
         cancel, contact us within <strong>24 hours</strong>{" "}
-        of your order and before it&apos;s ready for
-        pickup, and we will issue a full refund to your original payment method. After that,
-        cancellations and refunds are handled on a case-by-case basis. Refunds are processed through
-        Stripe and may take 5 to 10 business days to appear. Orders left unclaimed after{" "}
-        {PICKUP.holdDays} days may be restocked; reach out and we&apos;ll help.
+        of your order and before it&apos;s ready for pickup, and we&apos;ll set you up with{" "}
+        <strong>store credit</strong>. We do not issue refunds to the original payment method. After
+        that, cancellations are handled case by case. Orders left unclaimed after {PICKUP.holdDays}{" "}
+        days may be restocked; reach out and we&apos;ll help.
       </p>
 
-      <h2>Exchanges</h2>
+      <h2>Returns &amp; exchanges</h2>
       <p>
-        Sizing exchanges are handled case by case, so reach out and we&apos;ll do our best to get you into
-        the right fit. PUCCII runs true to size; check our Fit &amp; Fabric guide before ordering.
+        Sizing exchanges and returns are covered by our{" "}
+        <a href="/return-policy">Return Policy</a>: a 14 day window, one free size exchange per order
+        when inventory allows, and store credit on eligible returns. PUCCII runs true to size; check
+        our Fit &amp; Fabric guide before ordering.
       </p>
 
       <h2>Contact</h2>

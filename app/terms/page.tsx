@@ -26,7 +26,10 @@ export default function Terms() {
       <p>
         Payments are processed securely by Stripe. We do not store your full card details. By checking
         out you authorize the charge for the items in your bag. See our{" "}
-        <a href="/preorder-policy">Pre-order Policy</a> for fulfillment and refund terms.
+        <a href="/preorder-policy">Pre-order Policy</a>{" "}
+        for fulfillment and our{" "}
+        <a href="/return-policy">Return Policy</a>{" "}
+        for returns and exchanges.
       </p>
 
       <h2>Product representation</h2>
