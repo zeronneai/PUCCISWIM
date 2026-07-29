@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Caveat, Hanken_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/cart/CartContext";
 import { SITE, SITE_URL } from "@/lib/site";
+import { DELIVERY } from "@/lib/shipping";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -29,8 +30,7 @@ const hanken = Hanken_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "PUCCII Swim: Endless Summer Collection",
-  description:
-    "Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop. Four swim styles, endless colors, $39 each. Pick up in person at KISSLAB in El Paso.",
+  description: `Bold. Beautiful. Unapologetic. Pre-order the Endless Summer drop. Four swim styles, endless colors, $39 each. ${DELIVERY.shipping.freeLabel}, or free pickup in El Paso.`,
   keywords: ["PUCCII Swim", "swimwear", "bikini", "pre-order", "Endless Summer", "Mya Mercedes"],
   openGraph: {
     title: "PUCCII Swim: Endless Summer Collection",

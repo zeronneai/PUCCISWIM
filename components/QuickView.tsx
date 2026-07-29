@@ -7,6 +7,7 @@ import { formatUSD } from "@/lib/format";
 import { CARE, FABRIC, FIT, MODEL_REFERENCE, type Size } from "@/lib/products";
 import { SITE } from "@/lib/site";
 import { cldImage } from "@/lib/cloudinary";
+import { DELIVERY } from "@/lib/shipping";
 import { useFlatLayRatio, onFlatLayLoad } from "./imageRatio";
 import type { ActiveSheet } from "./Catalog";
 import SmartImage from "./SmartImage";
@@ -351,6 +352,11 @@ export default function QuickView({
                 Add to bag · Pre-order {formatUSD(style.priceUSD)}
               </button>
 
+              {/* Delivery line, reads the free-shipping promise from the constant */}
+              <p className="mt-3 text-center text-xs text-ink-soft">
+                {DELIVERY.shipping.freeLabel} · or pick up free in El Paso
+              </p>
+
               {/* Trust row, hand-drawn icons, no generic badges */}
               <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-ink-soft">
                 <span className="flex items-center gap-1 text-[11px] font-medium">
@@ -360,7 +366,7 @@ export default function QuickView({
                   <PayIcon /> Apple Pay &amp; Google Pay
                 </span>
                 <span className="flex items-center gap-1 text-[11px] font-medium">
-                  <ReplyIcon /> Pick up at KISSLAB
+                  <ReplyIcon /> Ship or pick up
                 </span>
               </div>
             </div>

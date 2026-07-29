@@ -6,6 +6,7 @@ import { useCart } from "@/cart/CartContext";
 import { formatCents } from "@/lib/format";
 import { getStyle, getVariant } from "@/lib/products";
 import { SITE } from "@/lib/site";
+import { DELIVERY } from "@/lib/shipping";
 import SmartImage from "./SmartImage";
 
 export default function CartDrawer() {
@@ -174,10 +175,35 @@ export default function CartDrawer() {
                       {formatCents(subtotalCents)}
                     </span>
                   </div>
-                  <p className="mb-3 text-xs text-ink-soft">
-                    Pre-order · pick up at KISSLAB in El Paso. We&apos;ll email your order number and pickup
-                    details. No shipping or tax added here.
-                  </p>
+
+                  {/* Free-shipping progress: counts items, not money, and only
+                      ever talks about shipping (pickup is always free). A calm
+                      fact, not a countdown. */}
+                  <div className="mb-3 mt-1">
+                    <p className="text-xs font-semibold text-ink">
+                      {count >= DELIVERY.shipping.freeAtItems
+                        ? "Free shipping unlocked"
+                        : "Add one more item and shipping is free"}
+                    </p>
+                    <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-puccii-blush/40">
+                      <div
+                        className="h-full rounded-full bg-puccii-pink transition-[width] duration-500 ease-out"
+                        style={{
+                          width: `${Math.min(count / DELIVERY.shipping.freeAtItems, 1) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Two delivery options, short list (the real charge is applied
+                      at checkout, not calculated here). */}
+                  <div className="mb-3 space-y-0.5 text-xs text-ink-soft">
+                    <p>
+                      Shipping ${DELIVERY.shipping.standard.price} · Priority $
+                      {DELIVERY.shipping.priority.price} · {DELIVERY.shipping.freeLabel}
+                    </p>
+                    <p>Or pick up free at {DELIVERY.pickup.storeName}, El Paso</p>
+                  </div>
                   <button
                     onClick={checkout}
                     disabled={isCheckingOut}

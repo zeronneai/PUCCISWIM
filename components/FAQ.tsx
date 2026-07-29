@@ -1,5 +1,5 @@
 import { SITE } from "@/lib/site";
-import { PICKUP } from "@/lib/pickup";
+import { DELIVERY } from "@/lib/shipping";
 import Accordion, { type AccordionItem } from "./Accordion";
 
 const ITEMS: AccordionItem[] = [
@@ -8,8 +8,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         You&apos;re reserving your set from the Endless Summer drop now and paying $39 to lock it in.
-        Right after checkout we email you your order number and pickup details, and hold your set at{" "}
-        {PICKUP.storeName} for you.
+        Right after checkout we email you your order number and delivery details.
       </p>
     ),
   },
@@ -17,18 +16,28 @@ const ITEMS: AccordionItem[] = [
     q: "When will I get it?",
     a: (
       <p>
-        We email your order number and pickup details right after checkout. Pick it up in person at{" "}
-        {PICKUP.storeName} in El Paso, where we hold your order for {PICKUP.holdDays} days. See our pre-order
-        policy for hours and details.
+        We email your order number and delivery details right after checkout. Choose shipping or free
+        local pickup in El Paso when you check out. See our pre-order policy for rates, hours and details.
       </p>
     ),
   },
   {
-    q: "Where do I pick up my order?",
+    q: "How much is shipping?",
     a: (
       <p>
-        At {PICKUP.storeName}, {PICKUP.address}. Hours: {PICKUP.hours.join("; ")}. We hold your order for{" "}
-        {PICKUP.holdDays} days. Just show the order number from your confirmation email at pickup.
+        {DELIVERY.shipping.standard.label} is ${DELIVERY.shipping.standard.price} and{" "}
+        {DELIVERY.shipping.priority.label.toLowerCase()} is ${DELIVERY.shipping.priority.price}.{" "}
+        {DELIVERY.shipping.freeLabel}. The exact rate is applied at checkout.
+      </p>
+    ),
+  },
+  {
+    q: "Can I pick up my order instead?",
+    a: (
+      <p>
+        Yes, free local pickup is available at {DELIVERY.pickup.storeName}, {DELIVERY.pickup.address}{" "}
+        ({DELIVERY.pickup.note}). Hours: {DELIVERY.pickup.hours.join("; ")}. We hold your order for{" "}
+        {DELIVERY.pickup.holdDays} days. Just show the order number from your confirmation email at pickup.
       </p>
     ),
   },

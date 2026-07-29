@@ -3,7 +3,7 @@ import { getStripe } from "@/lib/stripe";
 import { getStyle, getVariant } from "@/lib/products";
 import { formatUSD } from "@/lib/format";
 import { SITE } from "@/lib/site";
-import { PICKUP } from "@/lib/pickup";
+import { DELIVERY } from "@/lib/shipping";
 import SuccessActions from "@/components/SuccessActions";
 
 export const dynamic = "force-dynamic";
@@ -26,21 +26,21 @@ function PickupBlock() {
     <div className="mx-auto mt-6 max-w-sm rounded-[22px] border border-ink/10 bg-sand/40 p-5 text-left">
       <div className="flex items-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={PICKUP.storeLogo} alt={PICKUP.storeName} className="h-9 w-auto object-contain" />
+        <img src={DELIVERY.pickup.storeLogo} alt={DELIVERY.pickup.storeName} className="h-9 w-auto object-contain" />
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-puccii-pink">Pick up at</p>
-          <p className="font-display text-lg font-extrabold leading-tight text-ink">{PICKUP.storeName}</p>
+          <p className="font-display text-lg font-extrabold leading-tight text-ink">{DELIVERY.pickup.storeName}</p>
         </div>
       </div>
-      <p className="mt-3 text-sm text-ink">{PICKUP.address}</p>
+      <p className="mt-3 text-sm text-ink">{DELIVERY.pickup.address}</p>
       <ul className="mt-2 space-y-0.5 text-sm text-ink-soft">
-        {PICKUP.hours.map((h) => (
+        {DELIVERY.pickup.hours.map((h) => (
           <li key={h}>{h}</li>
         ))}
       </ul>
-      <p className="mt-2 text-xs text-ink-soft">We hold your order for {PICKUP.holdDays} days.</p>
+      <p className="mt-2 text-xs text-ink-soft">We hold your order for {DELIVERY.pickup.holdDays} days.</p>
       <a
-        href={PICKUP.mapsUrl}
+        href={DELIVERY.pickup.mapsUrl}
         target="_blank"
         rel="noreferrer"
         className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-bold text-cream transition-transform active:scale-[0.98]"
@@ -82,7 +82,7 @@ export default async function SuccessPage({
           Thank you! 🩷
         </h1>
         <p className="mx-auto mt-3 max-w-sm text-ink-soft">
-          Your pre-order is in. Check your email for your order number and pickup details. Any
+          Your pre-order is in. Check your email for your order number and delivery details. Any
           questions, DM us on Instagram or email{" "}
           <a href={`mailto:${SITE.contactEmail}`} className="font-semibold text-puccii-pink">
             {SITE.contactEmail}
@@ -132,7 +132,7 @@ export default async function SuccessPage({
 
       {/* Order number, big and highlighted */}
       <div className="mx-auto mt-6 w-full max-w-sm rounded-[22px] bg-butter/60 px-5 py-4">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-soft">Show this at pickup</p>
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-soft">Your order number</p>
         <p className="mt-1 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           {orderNumber}
         </p>

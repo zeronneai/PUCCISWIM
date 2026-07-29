@@ -1,9 +1,12 @@
+import { DELIVERY } from "@/lib/shipping";
+
 const ITEMS = [
   "PRE-ORDER LIVE",
   "ENDLESS SUMMER COLLECTION",
   "$39 EVERY SET",
   "TWO-PIECE · TOP + BOTTOM",
-  "PICK UP AT KISSLAB · EL PASO",
+  DELIVERY.shipping.freeLabel,
+  "OR FREE PICKUP IN EL PASO",
 ];
 
 export default function Marquee() {
@@ -22,7 +25,8 @@ export default function Marquee() {
   return (
     <div className="overflow-hidden bg-puccii-pink py-2.5 text-cream">
       <span className="sr-only">
-        Pre-order live. Endless Summer collection. $39 every set. Pick up at KISSLAB in El Paso.
+        Pre-order live. Endless Summer collection. $39 every set. {DELIVERY.shipping.freeLabel}, or
+        free pickup in El Paso.
       </span>
       <div className="flex w-max animate-marquee">
         {track}

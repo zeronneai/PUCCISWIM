@@ -2,7 +2,7 @@
 
 A single-page, mobile-first pre-order storefront. Traffic comes from an Instagram
 story link, so it's designed at **390px first**: pick a size, pay $39, and the owner
-gets notified. No shipping, no addresses, no tax. This is a pre-order drop.
+gets notified. Two delivery options: shipping or free local pickup. This is a pre-order drop.
 
 > Full spec in [`BRIEF.md`](./BRIEF.md).
 
@@ -11,8 +11,8 @@ Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · `motion/react` · St
 (hosted) · Google Apps Script (order log + owner/customer emails) · `@vercel/analytics`.
 Product data is a typed `lib/products.ts`, no database. The catalog is **four styles**
 (The Bandeau, Halter, Underwire, Triangle), each with color **variants** (17 pieces total,
-all $39). A cart line is `{ styleId, variantId, size }`. Fulfillment is **in-person pickup**
-at KISSLAB, El Paso (see `lib/pickup.ts`), no shipping.
+all $39). A cart line is `{ styleId, variantId, size }`. Delivery is **shipping or free local
+pickup** at KISSLAB, El Paso (rates and pickup details in `lib/shipping.ts`).
 
 ## Quick start
 ```bash
@@ -50,7 +50,7 @@ on the server in `app/api/checkout/route.ts`.
 4. **Fill in the size chart.** `components/FitFabric.tsx` has a `SIZE_CHART` constant at the
    top: set real inches and the table renders (cm auto-derived). Left null, the site shows
    "runs true to size" instead of placeholders.
-5. **Confirm the pickup details** in `lib/pickup.ts` (KISSLAB address, hours, hold days).
+5. **Confirm the delivery details** in `lib/shipping.ts` (shipping rates, KISSLAB address, hours, hold days).
 
 ## Stripe webhook setup
 `app/api/webhook/route.ts` (Node runtime) verifies the signature, retrieves the session with
