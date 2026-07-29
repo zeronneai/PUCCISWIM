@@ -42,10 +42,6 @@ export const VIDEO_GROUPS: VideoGroup[] = [
         url: "https://res.cloudinary.com/dsprn0ew4/video/upload/v1785335103/event2_cl61lo.mp4",
         alt: "Mya Mercedes walking a swimwear runway show",
       },
-      {
-        url: "https://res.cloudinary.com/dsprn0ew4/video/upload/v1785335034/ac9a22c1d2d8444b9d86e036b562e0ae_yg4if7.mov",
-        alt: "Mya Mercedes on the runway in PUCCII Swim",
-      },
     ],
   },
   {

@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { VIDEO_GROUPS } from "@/lib/gallery";
 import { cldVideo, cldPoster } from "@/lib/cloudinary";
 
-// Mya's clips, in two headed groups (runway first, off duty second). Only the
-// clip more than half in view plays; the rest pause (IntersectionObserver).
-// One shared mute toggle sits in the bottom-right corner. Each clip's
-// orientation is detected from its poster, so verticals render 9/16 and
-// horizontals 16/9, object-contain on a cream panel (no forced ratio, no crop).
-// Nothing autoplays above the fold: preload is "none" and posters load lazily.
+// Mya's clips. Both headed groups flow as one continuous gallery strip: the
+// runway group is a single featured clip, so its label reads as a segment
+// divider instead of sitting alone in a sparse row. Only the clip more than
+// half in view plays; the rest pause. One shared mute toggle sits in the
+// bottom-right corner. Orientation is read from each clip's metadata, so
+// verticals render 9/16 and horizontals 16/9, object-contain on a cream panel
+// (no forced ratio, no crop).
+//
+// Safari playback: muted is set on the element itself (React does not always
+// reflect the JSX attr) plus defaultMuted, preload is "metadata" (Safari needs
+// metadata before it honors a programmatic play), the play() promise is caught,
+// and a tap-to-play button covers iPhone Low Power Mode. The source is forced
+// to H.264/MP4 in lib/cloudinary.ts.
 
 type Orient = "portrait" | "landscape";
 
@@ -26,20 +33,36 @@ export default function SessionVideos() {
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
   const [muted, setMuted] = useState(true);
   const [orient, setOrient] = useState<Record<number, Orient>>({});
-  const [started, setStarted] = useState<Record<number, boolean>>({});
+  const [needsTap, setNeedsTap] = useState<Record<number, boolean>>({});
+
+  // Attempt play; if the browser rejects autoplay (iPhone Low Power Mode),
+  // surface a tap-to-play button instead of leaving the clip frozen on its poster.
+  function tryPlay(v: HTMLVideoElement) {
+    const gi = Number(v.dataset.gi);
+    const p = v.play();
+    if (p !== undefined) {
+      p.then(() => setNeedsTap((n) => (n[gi] ? { ...n, [gi]: false } : n))).catch(() =>
+        setNeedsTap((n) => ({ ...n, [gi]: true })),
+      );
+    }
+  }
 
   // Play the clip that is more than 50% visible, pause the others.
   useEffect(() => {
     if (TOTAL === 0) return;
+    // Real muted on the element (Safari blocks autoplay without it).
+    refs.current.forEach((v) => {
+      if (v) {
+        v.muted = true;
+        v.defaultMuted = true;
+      }
+    });
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           const v = entry.target as HTMLVideoElement;
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            v.play().catch(() => {});
-          } else {
-            v.pause();
-          }
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) tryPlay(v);
+          else v.pause();
         }
       },
       { threshold: [0, 0.5, 1] },
@@ -51,7 +74,10 @@ export default function SessionVideos() {
   // Reflect the shared mute toggle onto every clip.
   useEffect(() => {
     refs.current.forEach((v) => {
-      if (v) v.muted = muted;
+      if (v) {
+        v.muted = muted;
+        v.defaultMuted = muted;
+      }
     });
   }, [muted]);
 
@@ -59,12 +85,16 @@ export default function SessionVideos() {
 
   return (
     <section id="session-videos" className="relative scroll-mt-20 bg-cream py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl space-y-10">
-        {GROUPS.map((group) => (
-          <div key={group.heading}>
-            <p className="px-4 font-hand text-2xl text-puccii-pink sm:px-6">{group.heading}</p>
-
-            <div className="no-scrollbar mt-4 flex snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 pb-2 sm:px-6">
+      <div className="mx-auto max-w-6xl">
+        <div className="no-scrollbar flex snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 pb-2 sm:gap-6 sm:px-6">
+          {GROUPS.map((group) => (
+            <Fragment key={group.heading}>
+              {/* Segment label: keeps both group names while the clips read as one strip. */}
+              <div className="flex shrink-0 snap-start items-center">
+                <p className="w-24 -rotate-2 text-center font-hand text-2xl leading-tight text-puccii-pink sm:w-28">
+                  {group.heading}
+                </p>
+              </div>
               {group.items.map(({ gi, url, alt }) => {
                 const landscape = orient[gi] === "landscape";
                 const big = gi === 0;
@@ -80,38 +110,44 @@ export default function SessionVideos() {
                       ref={(el) => {
                         refs.current[gi] = el;
                       }}
+                      data-gi={gi}
                       src={cldVideo(url)}
+                      poster={cldPoster(url)}
                       muted
                       loop
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       aria-label={alt}
-                      onPlaying={() => setStarted((s) => (s[gi] ? s : { ...s, [gi]: true }))}
-                      className="absolute inset-0 h-full w-full object-contain"
-                    />
-                    {/* Poster: lazy, fades out once the clip starts. Also the
-                        cheapest place to detect orientation. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={cldPoster(url)}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      onLoad={(e) => {
-                        const img = e.currentTarget;
-                        const o: Orient = img.naturalWidth >= img.naturalHeight ? "landscape" : "portrait";
+                      onLoadedMetadata={(e) => {
+                        const v = e.currentTarget;
+                        if (!v.videoWidth || !v.videoHeight) return;
+                        const o: Orient = v.videoWidth >= v.videoHeight ? "landscape" : "portrait";
                         setOrient((prev) => (prev[gi] ? prev : { ...prev, [gi]: o }));
                       }}
-                      className={`pointer-events-none absolute inset-0 h-full w-full object-contain transition-opacity duration-500 ${
-                        started[gi] ? "opacity-0" : "opacity-100"
-                      }`}
+                      className="absolute inset-0 h-full w-full object-contain"
                     />
+                    {needsTap[gi] && (
+                      <button
+                        onClick={() => {
+                          const v = refs.current[gi];
+                          if (v) tryPlay(v);
+                        }}
+                        aria-label="Play video"
+                        className="absolute inset-0 z-10 grid place-items-center bg-ink/20"
+                      >
+                        <span className="grid h-14 w-14 place-items-center rounded-full bg-cream/90 text-ink shadow-lg">
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </span>
+                      </button>
+                    )}
                   </div>
                 );
               })}
-            </div>
-          </div>
-        ))}
+            </Fragment>
+          ))}
+        </div>
       </div>
 
       {/* One shared mute toggle, bottom-right corner. */}

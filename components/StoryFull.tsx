@@ -83,21 +83,31 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
 
 // A small vertical clip that floats in the margin next to the story, like a
 // taped-in memory. It plays only while in view (no autoplay above the fold),
-// loops, stays muted, and shows no controls. Poster loads lazily.
+// loops, stays muted, and shows no controls.
+//
+// Safari playback: muted set on the element itself plus defaultMuted, preload
+// "metadata", the play() promise caught with a tap-to-play fallback, a native
+// poster, and an H.264/MP4 source (see lib/cloudinary.ts).
 function MemoryClip() {
   const ref = useRef<HTMLVideoElement>(null);
-  const [started, setStarted] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
+
+  function tryPlay() {
+    const v = ref.current;
+    if (!v) return;
+    const p = v.play();
+    if (p !== undefined) p.then(() => setNeedsTap(false)).catch(() => setNeedsTap(true));
+  }
 
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          v.play().catch(() => {});
-        } else {
-          v.pause();
-        }
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) tryPlay();
+        else v.pause();
       },
       { threshold: [0, 0.5, 1] },
     );
@@ -111,24 +121,27 @@ function MemoryClip() {
         <video
           ref={ref}
           src={cldVideo(STORY_MEMORY_VIDEO.url)}
+          poster={cldPoster(STORY_MEMORY_VIDEO.url)}
           muted
           loop
           playsInline
-          preload="none"
+          preload="metadata"
           aria-label={STORY_MEMORY_VIDEO.alt}
-          onPlaying={() => setStarted(true)}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={cldPoster(STORY_MEMORY_VIDEO.url)}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-            started ? "opacity-0" : "opacity-100"
-          }`}
-        />
+        {needsTap && (
+          <button
+            onClick={tryPlay}
+            aria-label="Play video"
+            className="absolute inset-0 z-10 grid place-items-center bg-ink/20"
+          >
+            <span className="grid h-12 w-12 place-items-center rounded-full bg-cream/90 text-ink shadow-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </button>
+        )}
       </div>
       <figcaption className="mt-1 text-center font-hand text-lg text-puccii-pink">
         a little memory
