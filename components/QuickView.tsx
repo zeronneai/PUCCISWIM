@@ -6,6 +6,7 @@ import { useCart } from "@/cart/CartContext";
 import { formatUSD } from "@/lib/format";
 import { CARE, FABRIC, FIT, MODEL_REFERENCE, type Size } from "@/lib/products";
 import { SITE } from "@/lib/site";
+import { cldImage } from "@/lib/cloudinary";
 import type { ActiveSheet } from "./Catalog";
 import SmartImage from "./SmartImage";
 import Swatch from "./Swatch";
@@ -52,6 +53,7 @@ export default function QuickView({
   const [size, setSize] = useState<Size | null>(null);
   const [hint, setHint] = useState(false);
   const [atEnd, setAtEnd] = useState(true);
+  const [zoom, setZoom] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
@@ -66,6 +68,7 @@ export default function QuickView({
     setVariantId(active.variantId);
     setSize(null);
     setHint(false);
+    setZoom(false);
     requestAnimationFrame(() => {
       const el = bodyRef.current;
       if (el) setAtEnd(el.scrollHeight - el.clientHeight <= 8);
@@ -300,7 +303,34 @@ export default function QuickView({
                 {/* Between-sizes note */}
                 <p className="mt-2 text-xs text-ink-soft">Between sizes? Size up for more coverage.</p>
 
-                {/* Model reference, hidden until a real height is set */}
+                {/* Model reference photo: circular thumbnail + size line, taps
+                    open a simple lightbox. Shows as soon as a photo is set. */}
+                {MODEL_REFERENCE.photo ? (
+                  <div className="mt-3 flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setZoom(true)}
+                      aria-label={`See Mya wearing a size ${MODEL_REFERENCE.wears}, larger`}
+                      className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full ring-2 ring-puccii-pink/30 transition-transform hover:scale-105 active:scale-95"
+                    >
+                      <SmartImage
+                        src={cldImage(MODEL_REFERENCE.photo, 300)}
+                        alt={`Mya wearing a size ${MODEL_REFERENCE.wears} PUCCII set`}
+                        fill
+                        sizes="72px"
+                        className="object-cover"
+                      />
+                    </button>
+                    <p className="text-xs leading-snug">
+                      <span className="font-semibold text-ink">
+                        {MODEL_REFERENCE.name} wears a size {MODEL_REFERENCE.wears}
+                      </span>
+                      <span className="mt-0.5 block text-ink-soft">Tap the photo to enlarge</span>
+                    </p>
+                  </div>
+                ) : null}
+
+                {/* Model height, hidden until a real height is set */}
                 {MODEL_REFERENCE.height ? (
                   <p className="mt-1 text-xs text-ink-soft">
                     {MODEL_REFERENCE.name} is {MODEL_REFERENCE.height} and wears a {MODEL_REFERENCE.wears}.
@@ -329,6 +359,39 @@ export default function QuickView({
               </div>
             </div>
           </motion.div>
+
+          {/* Simple lightbox for the model reference photo */}
+          <AnimatePresence>
+            {zoom && MODEL_REFERENCE.photo && (
+              <motion.div
+                className="absolute inset-0 z-[90] flex items-center justify-center bg-ink/85 p-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setZoom(false)}
+              >
+                <button
+                  onClick={() => setZoom(false)}
+                  aria-label="Close photo"
+                  className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-cream text-ink shadow-md"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <motion.img
+                  src={cldImage(MODEL_REFERENCE.photo)}
+                  alt={`Mya wearing a size ${MODEL_REFERENCE.wears} PUCCII set`}
+                  initial={{ scale: 0.92 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0.92 }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="max-h-full max-w-full rounded-[20px] object-contain shadow-2xl"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>

@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { MYA_PORTRAIT } from "@/lib/site";
+import { cldImage } from "@/lib/cloudinary";
 import SmartImage from "./SmartImage";
 
 // Short teaser that sits right after the hero. Links down to the full story.
@@ -61,8 +62,8 @@ export default function StoryHook() {
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[26px] bg-gradient-to-br from-puccii-blush via-paper-pink to-butter shadow-[0_26px_60px_-22px_rgba(240,107,176,0.45)]">
             {MYA_PORTRAIT ? (
               <SmartImage
-                src={MYA_PORTRAIT}
-                alt="Mya Mercedes, founder of PUCCII Swim"
+                src={cldImage(MYA_PORTRAIT)}
+                alt="Mya Mercedes and a friend on the beach in PUCCII Swim"
                 fill
                 sizes="(max-width: 1024px) 80vw, 24rem"
                 className="object-cover"

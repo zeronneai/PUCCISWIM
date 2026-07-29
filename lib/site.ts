@@ -15,9 +15,11 @@ export const SITE = {
   priceCents: 3900,
 } as const;
 
-// Founder portrait for the story-hook block. Pending until Mya uploads a real
-// (non-AI) photo: leave "" and the block shows a soft color panel, no broken image.
-export const MYA_PORTRAIT = "";
+// Founder portrait for the story-hook block. Raw Cloudinary source (a .heic, so
+// the component must deliver it through f_auto). Leave "" and the block falls
+// back to a soft color panel, no broken image.
+export const MYA_PORTRAIT =
+  "https://res.cloudinary.com/dsprn0ew4/image/upload/v1785335025/IMG_2293_iobg0j.heic";
 
 // Resolved at both build & runtime. Never trailing-slash it.
 export const SITE_URL =

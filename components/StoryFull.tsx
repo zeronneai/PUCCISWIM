@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { STORY_MEMORY_VIDEO } from "@/lib/gallery";
+import { cldVideo, cldPoster } from "@/lib/cloudinary";
 import { SketchUnderline } from "./SketchUnderline";
 import {
   BuildingsDoodle,
@@ -79,6 +81,62 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
   },
 ];
 
+// A small vertical clip that floats in the margin next to the story, like a
+// taped-in memory. It plays only while in view (no autoplay above the fold),
+// loops, stays muted, and shows no controls. Poster loads lazily.
+function MemoryClip() {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      },
+      { threshold: [0, 0.5, 1] },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <figure className="ml-auto mr-1 mt-6 w-[150px] -rotate-3 md:absolute md:right-0 md:top-1/2 md:ml-0 md:mr-0 md:mt-0 md:w-[240px] md:-translate-y-1/2 md:translate-x-[calc(100%+2rem)]">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-[18px] bg-cream shadow-[0_18px_40px_-16px_rgba(43,27,36,0.5)] ring-1 ring-ink/10">
+        <video
+          ref={ref}
+          src={cldVideo(STORY_MEMORY_VIDEO.url)}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-label={STORY_MEMORY_VIDEO.alt}
+          onPlaying={() => setStarted(true)}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={cldPoster(STORY_MEMORY_VIDEO.url)}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            started ? "opacity-0" : "opacity-100"
+          }`}
+        />
+      </div>
+      <figcaption className="mt-1 text-center font-hand text-lg text-puccii-pink">
+        a little memory
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function StoryFull() {
   return (
     <section id="the-story" className="scroll-mt-20 bg-cream py-16 sm:py-24">
@@ -88,15 +146,15 @@ export default function StoryFull() {
           From the desert to the runway
         </h2>
 
-        <div className="space-y-8">
+        <div className="relative space-y-8">
           {PARAGRAPHS.map((p, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="grid grid-cols-[2rem_1fr] gap-4 sm:grid-cols-[2.5rem_1fr] sm:gap-6"
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mt-1 h-7 w-7 text-puccii-pink sm:h-9 sm:w-9" aria-hidden>
                 {p.icon}
@@ -104,6 +162,10 @@ export default function StoryFull() {
               <p className="max-w-prose text-lg leading-relaxed text-ink sm:text-xl">{p.body}</p>
             </motion.div>
           ))}
+
+          {/* The taped-in memory clip: floats in the right margin on desktop,
+              sits as a small right-aligned card in flow on mobile. */}
+          <MemoryClip />
         </div>
       </div>
 

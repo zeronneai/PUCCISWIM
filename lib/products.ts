@@ -209,10 +209,13 @@ export function isValidSize(style: Style, size: string): size is Size {
 export const TOTAL_PIECES = STYLES.reduce((n, s) => n + s.variants.length, 0);
 
 // Model reference shown in the product sheet, under the size selector.
-// Fill `height` with Mya's real height and the line renders; left blank it stays
-// hidden (absence over a visible placeholder). `wears` is the size she models.
+// `photo` is a raw Cloudinary source of Mya in a PUCCII set: when set, the sheet
+// shows a small circular thumbnail with "Mya wears a size {wears}" and a tap or
+// hover opens it in a lightbox. `height` is still pending: fill it with her real
+// height and the extra height line renders; left blank that line stays hidden.
 export const MODEL_REFERENCE = {
   name: "Mya",
-  height: "", // e.g. `5'8"` (owner fills this, then the line appears)
+  photo: "https://res.cloudinary.com/dsprn0ew4/image/upload/v1785335024/IMG_1348_txjohs.jpg",
+  height: "", // e.g. `5'8"` (owner fills this, then the height line appears)
   wears: "XS" as Size,
 };
