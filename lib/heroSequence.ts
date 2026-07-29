@@ -34,8 +34,10 @@ export function posterSrc(o: Orientation) {
   return `${CLOUD}/so_0p,w_${m.width},c_scale,q_60/${m.id}.jpg`;
 }
 
+// The last-resort fallback (the frame sequence already failed): force H.264 in
+// MP4 so Safari cannot fail a second time on WebM or HEVC.
 export function videoFallbackSrc(o: Orientation) {
-  return `${CLOUD}/q_auto,f_auto/${MASTERS[o].id}.mp4`;
+  return `${CLOUD}/f_mp4,vc_h264,q_auto/${MASTERS[o].id}.mp4`;
 }
 
 // ---- Tuning (editable) -----------------------------------------------------
