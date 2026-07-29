@@ -397,7 +397,9 @@ function GradientBase() {
   );
 }
 
-/** Two scrims only (adaptation #3): top for the nav, bottom for the text. */
+/** Two scrims only (adaptation #3): top for the nav, bottom for the text.
+ * The footage now has bright sand in the lower third (where the beats and the
+ * button sit), so the bottom scrim is deeper (0.48) and taller (50%). */
 function Scrims() {
   return (
     <>
@@ -407,8 +409,8 @@ function Scrims() {
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[45%]"
-        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.38), transparent)" }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[50%]"
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.48), transparent)" }}
         aria-hidden
       />
     </>

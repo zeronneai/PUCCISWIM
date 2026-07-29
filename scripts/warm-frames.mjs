@@ -18,12 +18,12 @@ const HERO_FRAME_COUNT = 100;
 const CLOUD = "https://res.cloudinary.com/dsprn0ew4/video/upload";
 const MASTERS = {
   landscape: {
-    id: "v1785215904/hf_20260728_050657_0425179b-3ec6-49f4-a533-2ac4df32e9da_d7tq37",
+    id: "v1785339368/hf_20260729_150441_3c675dd5-9d54-44b9-813e-bff0bf18f9cb_vv5bmg",
     width: 1600,
     quality: 70,
   },
   portrait: {
-    id: "v1785216071/hf_20260728_051619_647beed1-7413-46a1-8a2c-be0f0fef7944_qzbm75",
+    id: "v1785339370/hf_20260729_150422_57a0fa85-e360-4125-b8cd-f2bc7140f031_erdwxl",
     width: 900,
     quality: 65,
   },

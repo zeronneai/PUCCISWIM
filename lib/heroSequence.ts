@@ -1,7 +1,8 @@
 // Scroll-scrub hero frames generated ON-DEMAND by Cloudinary (so_ = start
 // offset in %). We never download the videos or store frames in public/ - each
-// frame is just a URL. Percentages (not seconds) let the 5s and 7s masters both
-// map cleanly onto 100 frames with zero per-video tuning.
+// frame is just a URL. Percentages (not seconds) map any master cleanly onto
+// 100 frames with zero per-video tuning: both masters here run 5 seconds, so
+// the so_ percentages land on the same moments in each.
 
 export const HERO_FRAME_COUNT = 100;
 
@@ -9,12 +10,12 @@ const CLOUD = "https://res.cloudinary.com/dsprn0ew4/video/upload";
 
 const MASTERS = {
   landscape: {
-    id: "v1785215904/hf_20260728_050657_0425179b-3ec6-49f4-a533-2ac4df32e9da_d7tq37",
+    id: "v1785339368/hf_20260729_150441_3c675dd5-9d54-44b9-813e-bff0bf18f9cb_vv5bmg",
     width: 1600,
     quality: 70,
   },
   portrait: {
-    id: "v1785216071/hf_20260728_051619_647beed1-7413-46a1-8a2c-be0f0fef7944_qzbm75",
+    id: "v1785339370/hf_20260729_150422_57a0fa85-e360-4125-b8cd-f2bc7140f031_erdwxl",
     width: 900,
     quality: 65,
   },
@@ -49,6 +50,9 @@ export const DPR_CAP = 2.5;
 
 // Three beats, all in the SAME spot (centered, lower third) - only the text
 // swaps. Ranges are normalized progress (0..1) and shared by both orientations.
+// The gap between b2 (ends 0.56) and b3 (starts 0.82) is deliberate: the two
+// women walk to the sea hand in hand with no text, then throw their arms up.
+// b3 lands exactly on that final beat.
 export type Beat = {
   id: "b1" | "b2" | "b3";
   in: number;
@@ -59,7 +63,7 @@ export type Beat = {
 };
 
 export const BEATS: Beat[] = [
-  { id: "b1", in: 0.0, out: 0.3, text: "What you've been waiting for.", kind: "body", accent: "waiting" },
-  { id: "b2", in: 0.34, out: 0.62, text: "It's finally here.", kind: "body", accent: "finally" },
-  { id: "b3", in: 0.68, out: 1.01, text: "ENDLESS SUMMER", kind: "climax" },
+  { id: "b1", in: 0.0, out: 0.26, text: "What you've been waiting for.", kind: "body", accent: "waiting" },
+  { id: "b2", in: 0.3, out: 0.56, text: "It's finally here.", kind: "body", accent: "finally" },
+  { id: "b3", in: 0.82, out: 1.01, text: "ENDLESS SUMMER", kind: "climax" },
 ];
