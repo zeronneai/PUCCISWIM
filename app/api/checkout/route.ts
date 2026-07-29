@@ -62,7 +62,7 @@ export async function POST(req: Request) {
         currency: "usd",
         unit_amount: SITE.priceCents, // authoritative: $39.00
         product_data: {
-          name: `${style.name} — ${variant.colorName} — Size ${size}`,
+          name: `${style.name}, ${variant.colorName}, Size ${size}`,
           description: "PUCCII Swim · Endless Summer Collection · Pre-order",
           images: [variant.imageFlat],
         },

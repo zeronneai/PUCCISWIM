@@ -30,7 +30,7 @@ export default function ShopNow() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Hide while the catalog is on screen — the CTA is redundant there.
+  // Hide while the catalog is on screen: the CTA is redundant there.
   useEffect(() => {
     const shop = document.getElementById("shop");
     if (!shop) return;

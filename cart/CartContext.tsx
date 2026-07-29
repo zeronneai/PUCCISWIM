@@ -25,7 +25,7 @@ type CartContextValue = {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
-  // Whether a product sheet (QuickView) is open — lets global chrome (the
+  // Whether a product sheet (QuickView) is open, which lets global chrome (the
   // persistent Shop Now button) get out of the way.
   sheetOpen: boolean;
   setSheetOpen: (v: boolean) => void;
@@ -170,7 +170,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           .map((l) => {
             const s = getStyle(l.styleId);
             const v = getVariant(l.styleId, l.variantId);
-            const label = s ? `${s.name} — ${v?.colorName ?? ""}` : l.styleId;
+            const label = s ? `${s.name}, ${v?.colorName ?? ""}` : l.styleId;
             return `• ${label}, Size ${l.size} × ${l.qty}`;
           })
           .join("\n");

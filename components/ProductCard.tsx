@@ -22,7 +22,7 @@ export default function ProductCard({
   priority?: boolean;
   eagerFlats?: boolean;
 }) {
-  // `selected` is the sticky choice (mobile tap / desktop click) — it carries the
+  // `selected` is the sticky choice (mobile tap / desktop click), it carries the
   // ring and is what opens in the sheet. `hover` is the transient desktop preview.
   const [selected, setSelected] = useState<Variant | null>(null);
   const [hover, setHover] = useState<Variant | null>(null);
@@ -32,7 +32,7 @@ export default function ProductCard({
     setCanHover(window.matchMedia("(hover: hover)").matches);
   }, []);
 
-  // Which flat is showing. No model photo anymore — the default is the first color.
+  // Which flat is showing. No model photo anymore: the default is the first color.
   const shown = (canHover ? hover : null) ?? selected ?? style.variants[0];
   const openVariant = selected ?? style.variants[0];
 
@@ -48,7 +48,7 @@ export default function ProductCard({
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="group flex flex-col overflow-hidden rounded-[28px] bg-sand/60 shadow-[0_18px_40px_-24px_rgba(43,27,36,0.35)]"
     >
-      {/* Media — click opens the sheet with the active variant */}
+      {/* Media: click opens the sheet with the active variant */}
       <button
         type="button"
         onClick={() => onQuickView(style, openVariant.id)}
@@ -100,7 +100,7 @@ export default function ProductCard({
 
         <p className="text-sm text-ink-soft">{style.blurb}</p>
 
-        {/* Swatch row — one per color. Hover (desktop) previews, tap (mobile) sticks. */}
+        {/* Swatch row, one per color. Hover (desktop) previews, tap (mobile) sticks. */}
         <div
           className="flex flex-wrap items-center gap-2"
           role="group"

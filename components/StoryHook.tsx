@@ -25,7 +25,7 @@ export default function StoryHook() {
 
           <div className="mt-5 max-w-md space-y-4 text-lg leading-relaxed text-ink-soft">
             <p>
-              El Paso, Texas. No ocean in sight — and I&apos;ve been drawn to the water my whole life.
+              El Paso, Texas. No ocean in sight, and I&apos;ve been drawn to the water my whole life.
             </p>
             <p>
               Swimwear was never just clothing to me. It&apos;s confidence. It&apos;s where I feel most
@@ -36,7 +36,7 @@ export default function StoryHook() {
             </p>
           </div>
 
-          <p className="mt-5 font-hand text-3xl text-ink">— Mya</p>
+          <p className="mt-5 font-hand text-3xl text-ink">love, Mya</p>
 
           <a
             href="#the-story"
@@ -47,7 +47,7 @@ export default function StoryHook() {
           </a>
         </motion.div>
 
-        {/* Portrait — asymmetric, overlapping a blush block. Soft panel until the
+        {/* Portrait, asymmetric, overlapping a blush block. Soft panel until the
             real (non-AI) photo is uploaded; no broken image, no visible TODO. */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}

@@ -72,7 +72,7 @@ export default function Nav() {
             ? "bg-transparent text-cream"
             : "border-b border-ink/10 bg-cream text-ink"
         }`}
-        // Opaque state is a SOLID cream fill — no backdrop-filter, so nothing
+        // Opaque state is a SOLID cream fill, no backdrop-filter, so nothing
         // can show through even if WebKit fails to composite a blur.
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">

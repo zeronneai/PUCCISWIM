@@ -1,4 +1,4 @@
-# PUCCII Swim — Competitive & Experience Audit
+# PUCCII Swim: Competitive & Experience Audit
 
 **Purpose:** benchmark PUCCII Swim against six DTC swimwear brands and turn it into a
 prioritized, launch-aware action list. **No code was changed** to produce this document.
@@ -34,7 +34,7 @@ are listed at the end.
 7. **Premium mobile detail:** full-bleed media, buttery cart drawer, **sticky add-to-cart** on the PDP, image-forward everywhere.
 
 ### frankiesbikinis.com
-1. **Hero:** campaign/lookbook video or imagery, collection/drop-driven, minimal text, 1–2 CTAs ("Shop the collection").
+1. **Hero:** campaign/lookbook video or imagery, collection/drop-driven, minimal text, 1-2 CTAs ("Shop the collection").
 2. **Catalog:** 2-col mobile, on-model, color swatches, quick-shop, "new/restock" tags; **star ratings on cards**.
 3. **Product page:** rich gallery + **UGC/shoppable galleries**, **reviews with fit feedback** (Okendo/Yotpo: "runs true," "size up"), model info, size guide, mix-and-match separates, "complete the look."
 4. **Cart/checkout:** drawer with **Afterpay/Klarna/Shop Pay**, cross-sell upsells.
@@ -45,7 +45,7 @@ are listed at the end.
 ### hunzag.com (Hunza G)
 1. **Hero:** single editorial image/video, minimal text, one CTA.
 2. **Catalog:** clean grid (2-col mobile), editorial on-model, few colorways, premium price.
-3. **Product page:** the differentiator is the product — **one-size Original Crinkle™ fabric** knit as a seamless tube so it stretches to roughly **UK 6–16**, which nearly *eliminates the size decision*. Their `/pages/fit-guide` reframes sizing as **bust & bottom coverage** ranges rather than a size chart; model reference + fabric story.
+3. **Product page:** the differentiator is the product: **one-size Original Crinkle™ fabric** knit as a seamless tube so it stretches to roughly **UK 6-16**, which nearly *eliminates the size decision*. Their `/pages/fit-guide` reframes sizing as **bust & bottom coverage** ranges rather than a size chart; model reference + fabric story.
 4. **Cart/checkout:** drawer, Apple Pay / Shop Pay / Klarna.
 5. **Trust:** press, heritage, editorial authority.
 6. **Shipping/returns:** clear, premium tone.
@@ -54,7 +54,7 @@ are listed at the end.
 ### andieswim.com (Andie)
 1. **Hero:** lifestyle imagery with **benefit-led** copy (fit/comfort), clear CTA, often a **fit-quiz** entry point.
 2. **Catalog:** 2-col mobile, on-model with fit cues, color swatches, "The [name]" naming; some styles offer length options (regular/long/tall).
-3. **Product page — the sizing gold standard:** a **Fit Quiz**, a **Fit Guide**, and **live 1:1 virtual Fit Consultations with Fit Experts**; detailed bust/waist/hip **measurements**; explicit **between-sizes guidance** (size down = compression/support, size up = comfort); model height + size worn; reviews carrying fit data.
+3. **Product page, the sizing gold standard:** a **Fit Quiz**, a **Fit Guide**, and **live 1:1 virtual Fit Consultations with Fit Experts**; detailed bust/waist/hip **measurements**; explicit **between-sizes guidance** (size down = compression/support, size up = comfort); model height + size worn; reviews carrying fit data.
 4. **Cart/checkout:** drawer, express pay, **free shipping + free returns/exchanges** promoted as a fit-risk reducer.
 5. **Trust:** reviews, fit guarantee, easy exchanges, press.
 6. **Shipping/returns:** free shipping & returns front-and-center (their core anxiety-killer).
@@ -79,13 +79,13 @@ are listed at the end.
 7. **Premium mobile detail:** editorial, unhurried, premium restraint.
 
 **The one pattern across all six:** every brand invests disproportionately in **fit
-confidence** — measurements, model reference, between-size guidance, fit quizzes/experts,
+confidence**: measurements, model reference, between-size guidance, fit quizzes/experts,
 or a fabric that removes the decision (Hunza G). Swimwear's #1 purchase blocker is "will it
 fit," and it's where we are weakest.
 
 ---
 
-## A. Top 10 things they do that we don't — ranked by estimated conversion impact
+## A. Top 10 things they do that we don't, ranked by estimated conversion impact
 
 > Ranked for *our* situation: pre-order, new brand, 8 SKUs, one price, no reviews/inventory.
 
@@ -123,10 +123,10 @@ fit," and it's where we are weakest.
 
 ---
 
-## B. Five things we already do better / differently — keep these
+## B. Five things we already do better / differently, keep these
 
 1. **True 1-column, image-first mobile catalog.** Most competitors use 2 tiny columns on
-   mobile; our large single column is more premium and more tap-friendly — the brief's bet, and
+   mobile; our large single column is more premium and more tap-friendly, the brief's bet, and
    a genuine differentiator. (`components/Catalog.tsx`)
 2. **Model ↔ flat-lay swap on the card.** A frosted chip that flips to the flat-lay without
    opening the sheet is slicker than most competitors' hover-only second image, and it works on
@@ -134,13 +134,13 @@ fit," and it's where we are weakest.
 3. **Distinct, on-brand art direction.** The handwritten-accent typography, butter-gold accents,
    and the scroll-scrub hero read as a *brand*, not a Shopify theme. Triangl-clean but ours.
 4. **Honest, personal pre-order promise ("we'll DM you within 24h").** For a drop, a human
-   1:1 promise is warmer and more credible than a faceless "ships in 5–7 days." Lean into it.
-5. **Radically simple, one-price, one-decision funnel.** 8 sets, one price, top+bottom included —
+   1:1 promise is warmer and more credible than a faceless "ships in 5-7 days." Lean into it.
+5. **Radically simple, one-price, one-decision funnel.** 8 sets, one price, top+bottom included,
    no bundle math, no upsell maze. That clarity is a conversion asset; protect it.
 
 ---
 
-## C. Five worst gaps in our current experience — with where to fix each
+## C. Five worst gaps in our current experience, with where to fix each
 
 1. **Sizing is unfinished and mis-placed.** The size chart shows literal `TODO` for every
    measurement and lives far from the buy button.
@@ -149,7 +149,7 @@ fit," and it's where we are weakest.
 2. **No delivery/timing expectation at the decision point** for a pre-order.
    → `components/QuickView.tsx` + `components/CartDrawer.tsx` (a one-line "Pre-order · we DM you
    within 24h to arrange delivery" near the CTA), reinforced in `components/FAQ.tsx`.
-3. **Thin product imagery.** One model + one flat is below the category norm of 3–5 angles.
+3. **Thin product imagery.** One model + one flat is below the category norm of 3-5 angles.
    → `lib/products.ts` (support an image array) + `components/QuickView.tsx` (gallery/carousel).
 4. **Value message ("$39 full two-piece set") is under-stated at the moment of choice.**
    → `components/ProductCard.tsx` + `components/QuickView.tsx` (make "full set, top + bottom, $39"
@@ -163,24 +163,24 @@ fit," and it's where we are weakest.
 
 ## D. Recommendation: before launch vs. week 2
 
-**Respecting the constraints** — no inventory features, no reviews, no loyalty, no big-catalog
+**Respecting the constraints**: no inventory features, no reviews, no loyalty, no big-catalog
 merchandising. Everything below works for a new, 8-SKU, one-price, pre-order brand.
 
 ### Ship BEFORE launch (high impact, low effort, no dependencies)
 1. **Fill the size chart with real bust/waist/hip numbers** and remove every `TODO`. Nothing
    converts worse than a visible placeholder in the fit section. *(FitFabric.tsx / lib data)*
-2. **Add model reference** — "Mya is 5'X and wears size M" (or per-suit) — inside the sheet.
+2. **Add model reference**: "Mya is 5'X and wears size M" (or per-suit), inside the sheet.
    *(QuickView.tsx + lib/products.ts)*
 3. **Add "between sizes? size up for more coverage"** one-liner near the size pills. *(QuickView.tsx)*
 4. **State the pre-order delivery promise at the CTA**, not just in FAQ: a single reassuring line
    on the card button area, the sheet footer, and the cart. *(ProductCard / QuickView / CartDrawer)*
-5. **Elevate the value line** "Full set — top + bottom — $39" at the decision point. *(ProductCard / QuickView)*
+5. **Elevate the value line** "Full set, top + bottom, $39" at the decision point. *(ProductCard / QuickView)*
 6. **A small trust row near the buy**: "Secure checkout · Apple Pay · We DM you within 24h."
-   *(QuickView / CartDrawer)* — copy only, no new integrations.
+   *(QuickView / CartDrawer)*, copy only, no new integrations.
 
 ### Can wait to WEEK 2
 1. **Multi-angle gallery / zoom** on the PDP (needs more photography per suit). *(lib/products.ts image array + QuickView gallery)*
-2. **A lightweight fit recommender** ("pick your usual size → we suggest") — not Andie's live
+2. **A lightweight fit recommender** ("pick your usual size → we suggest"), not Andie's live
    experts, just a 2-question helper. Nice, not essential for 8 one-price SKUs.
 3. **A shoppable Instagram/UGC strip** near the footer, once real customer/founder content exists.
 4. **Founder-as-proof block placed higher** (a short "why I made PUCCII" near the catalog), once
@@ -189,19 +189,19 @@ merchandising. Everything below works for a new, 8-SKU, one-price, pre-order bra
    confirming what the live Stripe account surfaces.
 
 **The through-line:** don't chase reviews, bundles, or a bigger catalog. Win on the one axis
-every competitor over-invests in and where we're weakest — **fit confidence** — plus a crisp
+every competitor over-invests in and where we're weakest (**fit confidence**), plus a crisp
 pre-order delivery promise. Those two, placed at the moment of decision, are the highest-ROI
 pre-launch moves for exactly our constraints.
 
 ---
 
 ## Sources (verified via web search)
-- Triangl — [Size Guide](https://triangl.com/pages/size-guide), [Sizing](https://triangl.com/pages/sizing), [Sizing help popup](https://triangl.com/pages/need-help-with-sizing), [Home](https://triangl.com/)
-- Andie — [Swim Fit Quiz](https://wear.andieswim.com/swim-fit-quiz-1), [US Size Chart](https://andieswim.com/pages/us-size-chart), [Fit Guide (AU)](https://andieswim.com.au/pages/fit-guide)
-- Hunza G — [Fit Guide](https://www.hunzag.com/pages/fit-guide); one-size fabric explainer via [CNN Underscored](https://www.cnn.com/cnn-underscored/reviews/hunza-g-swimsuit), [The Quality Edit](https://www.thequalityedit.com/articles/hunza-g-swimwear-review)
-- Vitamin A — [Tops Fit Guide](https://www.vitaminaswim.com/pages/fitting-room-tops), [Bottoms Fit Guide](https://www.vitaminaswim.com/pages/fitting-room-classic-bottoms), [Fabrics](https://www.vitaminaswim.com/pages/fabrics), [EcoLux](https://www.vitaminaswim.com/collections/ecolux)
-- Cupshe — [Size & Fit Guide](https://www.cupshe.com/cms?name=size-fit), [Customer Reviews](https://www.cupshe.com/pages/customer-review)
-- Frankies Bikinis — general category knowledge (site not reachable from this environment; patterns are stable and well-documented)
+- Triangl: [Size Guide](https://triangl.com/pages/size-guide), [Sizing](https://triangl.com/pages/sizing), [Sizing help popup](https://triangl.com/pages/need-help-with-sizing), [Home](https://triangl.com/)
+- Andie: [Swim Fit Quiz](https://wear.andieswim.com/swim-fit-quiz-1), [US Size Chart](https://andieswim.com/pages/us-size-chart), [Fit Guide (AU)](https://andieswim.com.au/pages/fit-guide)
+- Hunza G: [Fit Guide](https://www.hunzag.com/pages/fit-guide); one-size fabric explainer via [CNN Underscored](https://www.cnn.com/cnn-underscored/reviews/hunza-g-swimsuit), [The Quality Edit](https://www.thequalityedit.com/articles/hunza-g-swimwear-review)
+- Vitamin A: [Tops Fit Guide](https://www.vitaminaswim.com/pages/fitting-room-tops), [Bottoms Fit Guide](https://www.vitaminaswim.com/pages/fitting-room-classic-bottoms), [Fabrics](https://www.vitaminaswim.com/pages/fabrics), [EcoLux](https://www.vitaminaswim.com/collections/ecolux)
+- Cupshe: [Size & Fit Guide](https://www.cupshe.com/cms?name=size-fit), [Customer Reviews](https://www.cupshe.com/pages/customer-review)
+- Frankies Bikinis: general category knowledge (site not reachable from this environment; patterns are stable and well-documented)
 
 *Live page DOM could not be crawled from this environment (network policy returned 403 for
 all six domains). Findings combine the searched sources above with established knowledge of

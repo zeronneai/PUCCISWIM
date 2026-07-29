@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { VIDEO_SESSION } from "@/lib/gallery";
 
-// "on the beach" — vertical 9:16 clips in a scroll row. Only the clip in view
+// "on the beach": vertical 9:16 clips in a scroll row. Only the clip in view
 // plays; the rest pause (IntersectionObserver). One mute toggle for all.
 // Renders nothing until VIDEO_SESSION has entries.
 export default function SessionVideos() {

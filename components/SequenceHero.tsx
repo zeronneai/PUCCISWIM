@@ -18,7 +18,7 @@ import {
 } from "@/lib/heroSequence";
 
 // Render a body-beat line: display font, with the accent word swapped into the
-// handwriting font (butter gold) — the brand's "handwritten word mid-sentence".
+// handwriting font (butter gold): the brand's "handwritten word mid-sentence".
 function beatText(text: string, accent?: string) {
   if (!accent || !text.includes(accent)) return text;
   const [before, after] = text.split(accent);

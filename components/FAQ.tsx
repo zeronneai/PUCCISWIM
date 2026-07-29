@@ -18,7 +18,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         We email your order number and pickup details right after checkout. Pick it up in person at{" "}
-        {PICKUP.storeName} in El Paso — we hold your order for {PICKUP.holdDays} days. See our pre-order
+        {PICKUP.storeName} in El Paso, where we hold your order for {PICKUP.holdDays} days. See our pre-order
         policy for hours and details.
       </p>
     ),
@@ -28,7 +28,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         At {PICKUP.storeName}, {PICKUP.address}. Hours: {PICKUP.hours.join("; ")}. We hold your order for{" "}
-        {PICKUP.holdDays} days — just show the order number from your confirmation email at pickup.
+        {PICKUP.holdDays} days. Just show the order number from your confirmation email at pickup.
       </p>
     ),
   },

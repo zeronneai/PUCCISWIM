@@ -70,7 +70,7 @@ export default async function SuccessPage({
   const { session_id } = await searchParams;
   const session = await loadSession(session_id);
 
-  // Graceful fallback — never an error screen.
+  // Graceful fallback: never an error screen.
   if (!session) {
     return (
       <Shell>
@@ -130,7 +130,7 @@ export default async function SuccessPage({
         You&apos;re in{firstName ? `, ${firstName}` : ""}! 🩷
       </h1>
 
-      {/* Order number — big and highlighted */}
+      {/* Order number, big and highlighted */}
       <div className="mx-auto mt-6 w-full max-w-sm rounded-[22px] bg-butter/60 px-5 py-4">
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-soft">Show this at pickup</p>
         <p className="mt-1 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">

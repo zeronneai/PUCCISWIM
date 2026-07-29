@@ -32,7 +32,7 @@ export default function Catalog() {
           </p>
         </div>
 
-        {/* Grid — 1 col mobile (BRIEF §4), 2 at sm, 4 at lg */}
+        {/* Grid: 1 col mobile (BRIEF §4), 2 at sm, 4 at lg */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STYLES.map((style, i) => (
             <ProductCard

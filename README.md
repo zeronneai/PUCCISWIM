@@ -1,18 +1,18 @@
-# PUCCII Swim — Endless Summer pre-order storefront
+# PUCCII Swim: Endless Summer pre-order storefront
 
 A single-page, mobile-first pre-order storefront. Traffic comes from an Instagram
 story link, so it's designed at **390px first**: pick a size, pay $39, and the owner
-gets notified. No shipping, no addresses, no tax — this is a pre-order drop.
+gets notified. No shipping, no addresses, no tax. This is a pre-order drop.
 
 > Full spec in [`BRIEF.md`](./BRIEF.md).
 
 ## Stack
 Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · `motion/react` · Stripe Checkout
 (hosted) · Google Apps Script (order log + owner/customer emails) · `@vercel/analytics`.
-Product data is a typed `lib/products.ts` — no database. The catalog is **four styles**
+Product data is a typed `lib/products.ts`, no database. The catalog is **four styles**
 (The Bandeau, Halter, Underwire, Triangle), each with color **variants** (17 pieces total,
 all $39). A cart line is `{ styleId, variantId, size }`. Fulfillment is **in-person pickup**
-at KISSLAB, El Paso (see `lib/pickup.ts`) — no shipping.
+at KISSLAB, El Paso (see `lib/pickup.ts`), no shipping.
 
 ## Quick start
 ```bash
@@ -28,14 +28,14 @@ npm run dev                  # http://localhost:3000
 | `STRIPE_SECRET_KEY` | Stripe secret key (`sk_test_…` / `sk_live_…`). |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret for the `/api/webhook` endpoint (`whsec_…`). |
 | `APPS_SCRIPT_URL` | Google Apps Script `/exec` URL the webhook POSTs each paid order to. |
-| `APPS_SCRIPT_SECRET` | Shared secret the Apps Script checks. Set only in Vercel — never commit. |
+| `APPS_SCRIPT_SECRET` | Shared secret the Apps Script checks. Set only in Vercel, never commit. |
 | `NEXT_PUBLIC_PAYMENTS_MODE` | `stripe` (default) or `preorder_dm` (DM fallback). |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Only for `preorder_dm` mode. Number without `+`. |
 
-The app **never trusts client prices** — every line is re-derived from `lib/products.ts`
+The app **never trusts client prices**, every line is re-derived from `lib/products.ts`
 on the server in `app/api/checkout/route.ts`.
 
-## Before you launch — checklist
+## Before you launch: checklist
 1. **Product photos** are served from **Cloudinary** (URLs in `lib/products.ts`, with
    `f_auto,q_auto,w_1000` for automatic WebP/AVIF at a capped width). Each style has one
    on-model photo (`imageModel`) and one flat-lay per color (`variant.imageFlat`). If a URL
@@ -48,7 +48,7 @@ on the server in `app/api/checkout/route.ts`.
    `sessionId`) and emails you + the customer. (Optional belt-and-suspenders: also enable
    Stripe Dashboard → Settings → email on successful payments + the Stripe mobile app.)
 4. **Fill in the size chart.** `components/FitFabric.tsx` has a `SIZE_CHART` constant at the
-   top — set real inches and the table renders (cm auto-derived). Left null, the site shows
+   top: set real inches and the table renders (cm auto-derived). Left null, the site shows
    "runs true to size" instead of placeholders.
 5. **Confirm the pickup details** in `lib/pickup.ts` (KISSLAB address, hours, hold days).
 
@@ -79,7 +79,7 @@ signing secret into the `STRIPE_WEBHOOK_SECRET` env var.
 
 ## Fallback: no Stripe yet?
 Set `NEXT_PUBLIC_PAYMENTS_MODE=preorder_dm` and `NEXT_PUBLIC_WHATSAPP_NUMBER`. The checkout
-button then opens a pre-filled WhatsApp DM with the cart contents instead of Stripe — one
+button then opens a pre-filled WhatsApp DM with the cart contents instead of Stripe: one
 env var, no code change.
 
 ## Deploy

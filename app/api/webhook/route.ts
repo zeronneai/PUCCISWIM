@@ -5,7 +5,7 @@ import { buildOrderPayload } from "@/lib/order";
 import { notifyOrder } from "@/lib/notify";
 
 export const runtime = "nodejs";
-// We need the raw body for signature verification — never let Next parse it.
+// We need the raw body for signature verification: never let Next parse it.
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Webhook not configured" }, { status: 400 });
   }
 
-  // Signature verification is a security gate — a bad signature is a real 400
+  // Signature verification is a security gate: a bad signature is a real 400
   // (Stripe needs to know). Everything AFTER this returns 200 so processing
   // failures never trigger endless retries.
   let event: Stripe.Event;

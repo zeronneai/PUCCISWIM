@@ -19,7 +19,7 @@ export default function PreorderPolicy() {
 
       <h2>Pickup</h2>
       <p>
-        Orders are <strong>picked up in person</strong> — there is no shipping. Right after checkout we
+        Orders are <strong>picked up in person</strong>. There is no shipping. Right after checkout we
         email you your <strong>order number</strong> and these pickup details. Bring the order number
         (on your phone is fine) to:
       </p>

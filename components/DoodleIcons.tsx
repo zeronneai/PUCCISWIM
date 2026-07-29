@@ -1,4 +1,4 @@
-// Hand-drawn marker doodles — same pink-stroke style as SketchUnderline/SketchHeart.
+// Hand-drawn marker doodles, same pink-stroke style as SketchUnderline/SketchHeart.
 // Used in the margin of the full story. All 24x24, rounded strokes, currentColor.
 
 type P = { className?: string };

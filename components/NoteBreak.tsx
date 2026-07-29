@@ -2,7 +2,7 @@ import { NOTES } from "@/lib/notes";
 import PinnedNote from "./PinnedNote";
 
 // Positions a single sticky note between two sections. Desktop: 180px, hugging
-// the left or right margin. Mobile: 150px, centered — and only for the notes
+// the left or right margin. Mobile: 150px, centered, and only for the notes
 // flagged `onMobile` (so phones show just 3, never a wall of them). The negative
 // nudge stays inside the container padding, so there's never horizontal scroll.
 export default function NoteBreak({
@@ -24,7 +24,7 @@ export default function NoteBreak({
       <div className={`hidden md:flex ${align}`}>
         <PinnedNote note={note} size={180} className={nudge} />
       </div>
-      {/* Mobile — only the flagged few */}
+      {/* Mobile: only the flagged few */}
       {onMobile && (
         <div className="flex justify-center md:hidden">
           <PinnedNote note={note} size={150} />

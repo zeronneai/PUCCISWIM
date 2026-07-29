@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { noteSegments, type Note } from "@/lib/notes";
 import { SketchUnderline } from "./SketchUnderline";
 
-// A sticky note built entirely in code — no images. Pink paper, periwinkle rule
+// A sticky note built entirely in code, no images. Pink paper, periwinkle rule
 // lines, handwritten text, a drawn underline on the keyword, a pin, and the
 // PUCCII wordmark in the corner.
 export default function PinnedNote({

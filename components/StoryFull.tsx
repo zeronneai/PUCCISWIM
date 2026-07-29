@@ -23,7 +23,7 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
       <>
         Anyone who knows me knows how much I love the beach and swimwear. You&apos;d probably think I
         grew up near the ocean, but the truth is,{" "}
-        <Pink>I grew up in the desert — El Paso, Texas</Pink>, to be exact.
+        <Pink>I grew up in the desert: El Paso, Texas</Pink>, to be exact.
       </>
     ),
   },
@@ -41,7 +41,7 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
     icon: <WaveDoodle className="h-full w-full" />,
     body: (
       <>
-        For me, swimwear has always been more than just clothing — it&apos;s confidence. It&apos;s where
+        For me, swimwear has always been more than just clothing. It&apos;s confidence. It&apos;s where
         I feel most like myself.
       </>
     ),
@@ -62,7 +62,7 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
     body: (
       <>
         When I began modeling just two years ago, she gave a young girl with only two months of
-        experience the opportunity of a lifetime — to walk in a <Pink>New York Fashion Week</Pink> show.
+        experience the opportunity of a lifetime: to walk in a <Pink>New York Fashion Week</Pink> show.
         I modeled swimwear that day, and I haven&apos;t looked back since.
       </>
     ),
@@ -73,7 +73,7 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
       <>
         The name <Pink>PUCCII</Pink> has been part of me since the very beginning. It was the nickname
         my dad gave me, and it&apos;s stayed with me ever since. What started as a family nickname became
-        something much bigger — a brand built on confidence, self-expression, and embracing who you are.
+        something much bigger: a brand built on confidence, self-expression, and embracing who you are.
       </>
     ),
   },
@@ -107,7 +107,7 @@ export default function StoryFull() {
         </div>
       </div>
 
-      {/* Full-bleed Confidence block — pink brush */}
+      {/* Full-bleed Confidence block, pink brush */}
       <div className="relative mt-16 overflow-hidden py-20 text-center sm:mt-24 sm:py-28">
         <div
           className="absolute inset-0"

@@ -16,7 +16,7 @@ export const SITE = {
 } as const;
 
 // Founder portrait for the story-hook block. Pending until Mya uploads a real
-// (non-AI) photo — leave "" and the block shows a soft color panel, no broken image.
+// (non-AI) photo: leave "" and the block shows a soft color panel, no broken image.
 export const MYA_PORTRAIT = "";
 
 // Resolved at both build & runtime. Never trailing-slash it.

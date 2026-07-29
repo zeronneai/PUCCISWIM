@@ -153,7 +153,7 @@ export default function QuickView({
             }}
             className="relative z-10 flex h-[85dvh] w-full flex-col rounded-t-[28px] bg-cream sm:max-w-lg sm:rounded-[28px]"
           >
-            {/* Close — floats above EVERYTHING (image can never cover it) */}
+            {/* Close, floats above EVERYTHING (image can never cover it) */}
             <button
               onClick={onClose}
               className="absolute right-3 top-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-cream text-ink shadow-md ring-1 ring-ink/10 transition-transform active:scale-95"
@@ -164,7 +164,7 @@ export default function QuickView({
               </svg>
             </button>
 
-            {/* 1. Fixed header — drag handle (does not scroll) */}
+            {/* 1. Fixed header, drag handle (does not scroll) */}
             <div
               className="relative shrink-0 cursor-grab touch-none pt-3"
               onPointerDown={(e) => dragControls.start(e)}
@@ -217,7 +217,7 @@ export default function QuickView({
                   </p>
                 </div>
 
-                {/* Swatch row — with the color name visible above */}
+                {/* Swatch row, with the color name visible above */}
                 <div className="mt-3 flex flex-wrap items-center gap-2.5" role="radiogroup" aria-label="Choose a color">
                   {style.variants.map((v) => (
                     <Swatch
@@ -254,7 +254,7 @@ export default function QuickView({
                 </dl>
               </div>
 
-              {/* "More below" fade — hides at the end of the scroll */}
+              {/* "More below" fade, hides at the end of the scroll */}
               <div
                 className={`pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-cream to-transparent transition-opacity duration-200 ${
                   atEnd ? "opacity-0" : "opacity-100"
@@ -263,7 +263,7 @@ export default function QuickView({
               />
             </div>
 
-            {/* 3. Fixed footer — size + primary action, ALWAYS visible */}
+            {/* 3. Fixed footer, size + primary action, ALWAYS visible */}
             <div
               className="shrink-0 border-t border-ink/10 bg-cream px-5 pt-3"
               style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
@@ -300,7 +300,7 @@ export default function QuickView({
                 {/* Between-sizes note */}
                 <p className="mt-2 text-xs text-ink-soft">Between sizes? Size up for more coverage.</p>
 
-                {/* Model reference — hidden until a real height is set */}
+                {/* Model reference, hidden until a real height is set */}
                 {MODEL_REFERENCE.height ? (
                   <p className="mt-1 text-xs text-ink-soft">
                     {MODEL_REFERENCE.name} is {MODEL_REFERENCE.height} and wears a {MODEL_REFERENCE.wears}.
@@ -315,7 +315,7 @@ export default function QuickView({
                 Add to bag · Pre-order {formatUSD(style.priceUSD)}
               </button>
 
-              {/* Trust row — hand-drawn icons, no generic badges */}
+              {/* Trust row, hand-drawn icons, no generic badges */}
               <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-ink-soft">
                 <span className="flex items-center gap-1 text-[11px] font-medium">
                   <LockIcon /> Secure checkout

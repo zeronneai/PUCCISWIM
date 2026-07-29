@@ -4,7 +4,7 @@ import { getStyle } from "@/lib/products";
 import { PHOTO_SESSION } from "@/lib/gallery";
 import SmartImage from "./SmartImage";
 
-// "the shoot" — stills. Horizontal snap-scroll on mobile, asymmetric grid on
+// "the shoot": stills. Horizontal snap-scroll on mobile, asymmetric grid on
 // desktop. Renders nothing until PHOTO_SESSION has entries.
 export default function SessionPhotos() {
   if (PHOTO_SESSION.length === 0) return null;

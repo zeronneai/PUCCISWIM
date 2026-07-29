@@ -9,7 +9,7 @@ export default function SuccessActions({ sessionId }: { sessionId?: string }) {
   const { clear } = useCart();
   const [state, setState] = useState<State>("idle");
 
-  // Order placed — empty the bag (state + localStorage).
+  // Order placed: empty the bag (state + localStorage).
   useEffect(() => {
     clear();
   }, [clear]);
@@ -37,7 +37,7 @@ export default function SuccessActions({ sessionId }: { sessionId?: string }) {
       : state === "sent"
         ? "Confirmation resent ✓"
         : state === "error"
-          ? "Couldn't resend — DM us"
+          ? "Couldn't resend, DM us"
           : "Resend confirmation";
 
   return (

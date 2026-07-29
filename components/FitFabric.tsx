@@ -2,11 +2,11 @@ import { ALL_SIZES, type Size } from "@/lib/products";
 import { SITE } from "@/lib/site";
 import Accordion, { type AccordionItem } from "./Accordion";
 
-// ── Owner: fill this and the size chart renders. Leave it null and the site
+// Owner: fill this and the size chart renders. Leave it null and the site
 // shows "runs true to size" + a contact link instead of a table of placeholders.
 // Values are BODY measurements in INCHES; centimetres are derived automatically.
 const SIZE_CHART: Record<Size, { bust: number; waist: number; hip: number }> | null = null;
-// Example — uncomment and set the real numbers:
+// Example (uncomment and set the real numbers):
 // const SIZE_CHART = {
 //   XS: { bust: 32, waist: 24, hip: 34 },
 //   S:  { bust: 34, waist: 26, hip: 36 },
@@ -30,7 +30,7 @@ function SizeChart() {
   if (!SIZE_CHART) {
     return (
       <p>
-        PUCCII runs true to size. A full measurement chart is on its way — in the meantime,{" "}
+        PUCCII runs true to size. A full measurement chart is on its way. In the meantime,{" "}
         <a
           href={SITE.igUrl}
           target="_blank"

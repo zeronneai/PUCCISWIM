@@ -2,7 +2,7 @@
 // SERVER re-derives every price from here at checkout - never trust the client.
 //
 // The catalog is FOUR styles, each with color VARIANTS (17 pieces total, all $39).
-// There are NO model photos — each variant carries its own flat-lay:
+// There are NO model photos. Each variant carries its own flat-lay:
 //   variant.imageFlat - the flat-lay for that color; the card shows the active
 //   variant's flat and swaps on swatch hover (desktop) / tap (mobile).
 // Every Cloudinary URL runs through `cld()` so the transform path carries
@@ -30,7 +30,7 @@ export type Style = {
 
 export const ALL_SIZES: Size[] = ["XS", "S", "M", "L"];
 
-// Shared fit/fabric/care copy — identical across the line, shown in the sheet.
+// Shared fit/fabric/care copy, identical across the line, shown in the sheet.
 export const FABRIC = "Buttery-soft four-way stretch. Fully lined, front and back.";
 export const CARE = "Hand wash cold, lay flat to dry. No wringing, no dryer, no chlorine soak.";
 export const FIT = "Runs true to size. Between sizes? Size up on top for more coverage.";
@@ -137,7 +137,7 @@ export const STYLES: Style[] = [
   {
     id: "triangle",
     name: "The Triangle",
-    blurb: "String triangle, tied at the neck and hips — flirt, your way.",
+    blurb: "String triangle, tied at the neck and hips. Flirt, your way.",
     priceUSD: 39,
     sizes: ALL_SIZES,
     variants: [
@@ -205,7 +205,7 @@ export function isValidSize(style: Style, size: string): size is Size {
   return (style.sizes as string[]).includes(size);
 }
 
-// Total pieces on offer (styles × colors) — used in marketing copy.
+// Total pieces on offer (styles × colors), used in marketing copy.
 export const TOTAL_PIECES = STYLES.reduce((n, s) => n + s.variants.length, 0);
 
 // Model reference shown in the product sheet, under the size selector.
@@ -213,6 +213,6 @@ export const TOTAL_PIECES = STYLES.reduce((n, s) => n + s.variants.length, 0);
 // hidden (absence over a visible placeholder). `wears` is the size she models.
 export const MODEL_REFERENCE = {
   name: "Mya",
-  height: "", // e.g. `5'8"` — owner fills this, then the line appears
+  height: "", // e.g. `5'8"` (owner fills this, then the line appears)
   wears: "XS" as Size,
 };

@@ -104,6 +104,6 @@ async function warmOrientation(o) {
     );
   }
   const allOk = summaries.every((s) => s.ok === s.total);
-  console.log(allOk ? "\nAll frames warmed ✓" : "\n⚠ Some frames did not return 200 — re-run to retry.");
+  console.log(allOk ? "\nAll frames warmed ✓" : "\n⚠ Some frames did not return 200. Re-run to retry.");
   process.exit(allOk ? 0 : 1);
 })();

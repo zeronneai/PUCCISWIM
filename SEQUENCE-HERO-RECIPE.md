@@ -1,4 +1,4 @@
-# SEQUENCE-HERO-RECIPE — Hero de scroll-scrub con secuencia de frames en canvas
+# SEQUENCE-HERO-RECIPE: Hero de scroll-scrub con secuencia de frames en canvas
 
 Receta reproducible del hero de Four O's Timepieces: un video master se convierte
 en una secuencia de frames WebP que se "scrubbea" con el scroll sobre un
@@ -31,8 +31,8 @@ Dos sets, **115 frames cada uno**, nombrados `frame-001.webp … frame-115.webp`
 
 | Set | Carpeta | Resolución | Formato | Peso total | Rango por frame |
 |---|---|---|---|---|---|
-| Landscape | `public/sequence/lg/` | **1920×1072** | WebP (VP8, lossy) | **6.2 MB** | 23.9 KB – 78.8 KB |
-| Portrait | `public/sequence/pt/` | **1072×1920** | WebP (VP8, lossy) | **6.2 MB** | 13.0 KB – 87.4 KB |
+| Landscape | `public/sequence/lg/` | **1920×1072** | WebP (VP8, lossy) | **6.2 MB** | 23.9 KB - 78.8 KB |
+| Portrait | `public/sequence/pt/` | **1072×1920** | WebP (VP8, lossy) | **6.2 MB** | 13.0 KB - 87.4 KB |
 
 - Resolución **nativa del master, nunca upscaled** (nota del commit). 1072 no es
   un error: es el alto/ancho nativo (divisible por 16, video-friendly).
@@ -79,7 +79,7 @@ ffmpeg -i assets/hero-master-portrait.MOV \
 ```
 
 Reglas de la receta:
-- **Elige N frames (~100–120)** y deriva el fps con `N/duración`; NO al revés.
+- **Elige N frames (~100-120)** y deriva el fps con `N/duración`; NO al revés.
   115 frames dan scrub suave con ~6 MB por set.
 - **No escales hacia arriba.** Si el master es 4K, añade `scale=1920:-2`.
 - Ajusta `-quality` por set hasta que el TOTAL quede ≤ ~6 MB.
@@ -91,7 +91,7 @@ Reglas de la receta:
 en `src/lib/media.ts`. Estilos auxiliares en `src/index.css`.
 
 **Dependencias npm:** `gsap` (ScrollTrigger), `react`, y para los CTAs
-`lucide-react` (íconos UI). Nada más — no usa framer-motion ni Lenis.
+`lucide-react` (íconos UI). Nada más, no usa framer-motion ni Lenis.
 
 ### 4.1 Config (`src/lib/media.ts`)
 ```ts
@@ -132,7 +132,7 @@ export function sequenceFrameSrc(dir: string, index: number): string {
 1. **El frame del progreso actual** primero (clave al rotar el teléfono a
    mitad de scroll).
 2. Los **primeros 25 frames** (`PRIORITY_FRAMES`) en paralelo.
-3. El resto con un **pool de 6 workers** (`queue.shift()` en 6 loops async) —
+3. El resto con un **pool de 6 workers** (`queue.shift()` en 6 loops async):
    satura la red sin ahogarla.
 - Cada `Image` usa `decoding = 'async'`; cuando un frame carga, repinta si
   `i <= desired` (desbloquea lo que el scroll pide).
@@ -150,7 +150,7 @@ export function sequenceFrameSrc(dir: string, index: number): string {
 ## 5. Beats de texto → progreso normalizado del pin
 
 Cinco beats como capas absolutas full-viewport, animados **en el mismo timeline**
-del scrub (autoAlpha + y + blur 6px; salida inversa antes del siguiente beat —
+del scrub (autoAlpha + y + blur 6px; salida inversa antes del siguiente beat,
 nunca hay dos visibles). Los rangos son **por orientación** porque los masters
 duran distinto y los momentos del footage caen en % distintos (mapeados
 frame-por-frame):
@@ -171,16 +171,16 @@ frame-por-frame):
   espacio negativo lateral (`left-[6vw] top-[30%] max-w-[34vw]`, etc.);
   en portrait van centrados a ~78% de altura bajo el reloj.
 - Legibilidad sobre footage brillante (clases en `index.css`):
-  - `.beat-scrim` — vignette radial local difuminada detrás del texto (pseudo
+  - `.beat-scrim`: vignette radial local difuminada detrás del texto (pseudo
     ::before, no una caja).
-  - `.text-legible` — text-shadow doble (halo suave + sombra de contacto).
-  - `.gold-glow` — brightness 1.07 + drop-shadows para separar el degradado
+  - `.text-legible`: text-shadow doble (halo suave + sombra de contacto).
+  - `.gold-glow`: brightness 1.07 + drop-shadows para separar el degradado
     dorado del movimiento dorado del reloj (drop-shadow y no text-shadow
     porque el texto con background-clip es transparente).
 
 ## 6. Runway y montaje del sticky
 
-- **No usa `position: sticky`** — usa el **pin de ScrollTrigger** (`pin: true`),
+- **No usa `position: sticky`**: usa el **pin de ScrollTrigger** (`pin: true`),
   que fija la sección y crea el espaciador automáticamente.
 - Runway: `end: '+=6000'` px en desktop, `+=4500` en portrait/móvil
   (constantes `PIN_DESKTOP` / `PIN_MOBILE`). Regla práctica: ~400 px de scroll
@@ -204,7 +204,7 @@ frame-por-frame):
 3. **Conexión lenta / LCP**: un `<img>` del **frame 1 con `fetchPriority="high"`**
    pinta debajo del canvas desde el primer paint (es el LCP); el canvas toma el
    relevo cuando decodifica. Y si el scroll va más rápido que la red, el
-   renderer pinta "el frame más cercano listo" (§4.3) — se ve un scrub más
+   renderer pinta "el frame más cercano listo" (§4.3): se ve un scrub más
    grueso, nunca negro.
 
 ## 8. Problemas encontrados y soluciones (de commits + comentarios)
@@ -225,7 +225,7 @@ frame-por-frame):
 
 ## 9. Checklist para replicar en otro proyecto
 
-1. Consigue UN master por orientación con la narrativa ya editada (10–16 s).
+1. Consigue UN master por orientación con la narrativa ya editada (10-16 s).
 2. Extrae ~115 frames WebP por set con los comandos de §3 (total ≤ 6 MB/set).
 3. Genera poster JPG + fallback MP4 (~3.5 Mbps) por orientación.
 4. Copia `SequenceHero.tsx`, `media.ts` (ajusta rutas/`SEQUENCE_FRAME_COUNT`),
