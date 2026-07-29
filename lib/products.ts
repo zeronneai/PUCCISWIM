@@ -1,7 +1,7 @@
 // The single source of truth for the catalog. No DB.
 // SERVER re-derives every price from here at checkout - never trust the client.
 //
-// The catalog is FOUR styles, each with color VARIANTS (17 pieces total, all $39).
+// The catalog is FOUR styles, each with color VARIANTS (16 pieces total, all $39).
 // There are NO model photos. Each variant carries its own flat-lay:
 //   variant.imageFlat - the flat-lay for that color; the card shows the active
 //   variant's flat and swaps on swatch hover (desktop) / tap (mobile).
@@ -65,12 +65,6 @@ export const STYLES: Style[] = [
         colorName: "Sky",
         swatch: "#A8D2ED",
         imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.20_PM_n3wdj1.jpg"),
-      },
-      {
-        id: "sunbutter",
-        colorName: "Sunbutter",
-        swatch: "#F6DFA0",
-        imageFlat: cld("v1785279418/WhatsApp_Image_2026-07-27_at_4.15.29_PM_3_dsd01y.jpg"),
       },
     ],
   },

@@ -24,9 +24,15 @@ export const SHOPIFY_VARIANTS: Record<string, Record<string, Record<string, numb
     ivory: { XS: 59713069285662, S: 59710997791006, M: 59713069318430, L: 59713069351198 },
     bubblegum: { XS: 59713106280734, S: 59713106346270, M: 59713106411806, L: 59713106477342 },
     sky: { XS: 59713106313502, S: 59713106379038, M: 59713106444574, L: 59713106510110 },
-    // sunbutter pendiente, aún no existe en Shopify
   },
-  // triangle pendiente, el producto aún no se crea en Shopify
+  triangle: {
+    bubblegum: { XS: 59713133117726, S: 59713133150494, M: 59713133183262, L: 59713133216030 },
+    sky: { XS: 59713133248798, S: 59713133281566, M: 59713133314334, L: 59713133347102 },
+    "powder-dot": { XS: 59713133379870, S: 59713133412638, M: 59713133445406, L: 59713133478174 },
+    "cabana-stripe": { XS: 59713133510942, S: 59713133543710, M: 59713133576478, L: 59713133609246 },
+    "cherry-dot": { XS: 59713133642014, S: 59713133674782, M: 59713133707550, L: 59713133740318 },
+    sunspot: { XS: 59713133773086, S: 59713133805854, M: 59713133838622, L: 59713133871390 },
+  },
 };
 
 // True only when this exact color + size has a Shopify variant id. The map is
