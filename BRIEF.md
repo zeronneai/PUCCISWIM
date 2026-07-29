@@ -177,13 +177,13 @@ Headlines are huge, tight-tracked, with an occasional handwritten word swapped m
 | id | name | color | silhouette | file |
 |---|---|---|---|---|
 | `butter-halter` | Sunbutter Halter Set | Butter yellow | Halter triangle + high-cut | `..._4_15_28_PM__1_.jpeg` |
-| `white-underwire` | Ivory Underwire Set | White | Underwire balconette + ruched-side | `..._4_15_28_PM__2_.jpeg` |
+| `white-underwire` | Coconut Milk Underwire Set | White | Underwire balconette + ruched-side | `..._4_15_28_PM__2_.jpeg` |
 | `pink-bandeau` | Bubblegum Bandeau Set | Pink | Bandeau + high-leg | `..._4_15_28_PM.jpeg` |
 | `sky-bandeau` | Sky Bandeau Set | Baby blue | Bandeau + high-leg | `..._4_15_29_PM__1_.jpeg` |
 | `sky-halter` | Sky Halter Set | Baby blue | Halter triangle + ruched-side | `..._4_15_29_PM__2_.jpeg` |
 | `butter-bandeau` | Sunbutter Bandeau Set | Butter yellow | Bandeau + high-leg | `..._4_15_29_PM__3_.jpeg` |
-| `white-halter` | Ivory Halter Set | White | Halter triangle + high-waist | `..._4_15_29_PM__4_.jpeg` |
-| `white-bandeau` | Ivory Bandeau Set | White | Bandeau + high-leg | `..._4_15_29_PM.jpeg` |
+| `white-halter` | Coconut Milk Halter Set | White | Halter triangle + high-waist | `..._4_15_29_PM__4_.jpeg` |
+| `white-bandeau` | Coconut Milk Bandeau Set | White | Bandeau + high-leg | `..._4_15_29_PM.jpeg` |
 
 ```ts
 type Size = "XS"|"S"|"M"|"L"|"XL";

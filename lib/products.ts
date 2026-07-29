@@ -50,7 +50,7 @@ export const STYLES: Style[] = [
     variants: [
       {
         id: "ivory",
-        colorName: "Ivory",
+        colorName: "Coconut Milk",
         swatch: "#F7F5F2",
         imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.21_PM_c8h4w7.jpg"),
       },
@@ -83,7 +83,7 @@ export const STYLES: Style[] = [
     variants: [
       {
         id: "ivory",
-        colorName: "Ivory",
+        colorName: "Coconut Milk",
         swatch: "#F7F5F2",
         imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_2_nmmita.jpg"),
       },
@@ -110,7 +110,7 @@ export const STYLES: Style[] = [
     variants: [
       {
         id: "ivory",
-        colorName: "Ivory",
+        colorName: "Coconut Milk",
         swatch: "#F7F5F2",
         imageFlat: cld("v1785279409/WhatsApp_Image_2026-07-28_at_4.35.22_PM_wdu0fk.jpg"),
       },
