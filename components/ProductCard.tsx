@@ -27,14 +27,13 @@ export default function ProductCard({
   const [selected, setSelected] = useState<Variant | null>(null);
   const [hover, setHover] = useState<Variant | null>(null);
   const [canHover, setCanHover] = useState(false);
-  const [modelFailed, setModelFailed] = useState(false);
 
   useEffect(() => {
     setCanHover(window.matchMedia("(hover: hover)").matches);
   }, []);
 
-  // Which flat (if any) is showing over the model.
-  const preview = (canHover ? hover : null) ?? selected;
+  // Which flat is showing. No model photo anymore — the default is the first color.
+  const shown = (canHover ? hover : null) ?? selected ?? style.variants[0];
   const openVariant = selected ?? style.variants[0];
 
   function toggle(v: Variant) {
@@ -56,30 +55,21 @@ export default function ProductCard({
         className="relative block w-full overflow-hidden"
         aria-label={`View ${style.name}`}
       >
-        {/* 4/5 box, images stacked absolute -> zero layout shift on swap */}
+        {/* 4/5 box, flats stacked absolute -> zero layout shift on swap */}
         <div className="relative aspect-[4/5] w-full bg-gradient-to-br from-puccii-blush to-paper-pink">
-          {/* Model image — the default */}
-          <Image
-            src={modelFailed ? style.variants[0].imageFlat : style.imageModel}
-            alt={`${style.name}, worn on the beach`}
-            fill
-            priority={priority}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            onError={() => setModelFailed(true)}
-            className={`object-cover ${SWAP} ${preview ? "opacity-0" : "opacity-100"}`}
-          />
-          {/* One flat per variant, stacked; only the previewed one is visible.
+          {/* One flat per variant, stacked; only the active one is visible.
               In-DOM so the browser decodes ahead -> the swap is instant. */}
-          {style.variants.map((v) => (
+          {style.variants.map((v, i) => (
             <Image
               key={v.id}
               src={v.imageFlat}
               alt={`${SITE.name} ${style.name} in ${v.colorName}`}
               fill
-              loading={eagerFlats ? "eager" : "lazy"}
+              priority={priority && i === 0}
+              loading={eagerFlats ? "eager" : undefined}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className={`object-cover ${SWAP} ${
-                preview?.id === v.id ? "opacity-100" : "opacity-0"
+                shown.id === v.id ? "opacity-100" : "opacity-0"
               }`}
             />
           ))}
@@ -120,7 +110,7 @@ export default function ProductCard({
             <Swatch
               key={v.id}
               variant={v}
-              active={selected?.id === v.id}
+              active={shown.id === v.id}
               onClick={() => toggle(v)}
               onMouseEnter={() => canHover && setHover(v)}
               onMouseLeave={() => canHover && setHover(null)}
@@ -128,13 +118,10 @@ export default function ProductCard({
           ))}
         </div>
 
-        {/* Active color name (mobile clarity) — reserves a line so no layout jump */}
+        {/* Active color name + set note */}
         <p className="min-h-[1.25rem] text-sm font-semibold text-ink">
-          {preview ? (
-            preview.colorName
-          ) : (
-            <span className="font-normal text-ink-soft">Complete set · top + bottom</span>
-          )}
+          {shown.colorName}
+          <span className="font-normal text-ink-soft"> · complete set, top + bottom</span>
         </p>
       </div>
     </motion.article>

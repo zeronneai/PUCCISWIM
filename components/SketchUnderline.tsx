@@ -2,13 +2,19 @@
 
 import { motion } from "motion/react";
 
-/** Hand-drawn marker underline that draws itself in when scrolled into view. */
+/** Hand-drawn marker underline that draws itself in when scrolled into view.
+ *  `delay` staggers the trace; `animate={false}` renders it statically (reduced
+ *  motion). */
 export function SketchUnderline({
   className = "",
   color = "#F06BB0",
+  delay = 0,
+  animate = true,
 }: {
   className?: string;
   color?: string;
+  delay?: number;
+  animate?: boolean;
 }) {
   return (
     <svg
@@ -23,10 +29,10 @@ export function SketchUnderline({
         stroke={color}
         strokeWidth="7"
         strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
+        initial={animate ? { pathLength: 0 } : false}
+        whileInView={animate ? { pathLength: 1 } : undefined}
         viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
       />
     </svg>
   );

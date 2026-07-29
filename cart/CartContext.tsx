@@ -25,6 +25,10 @@ type CartContextValue = {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+  // Whether a product sheet (QuickView) is open — lets global chrome (the
+  // persistent Shop Now button) get out of the way.
+  sheetOpen: boolean;
+  setSheetOpen: (v: boolean) => void;
   addItem: (
     styleId: string,
     variantId: string,
@@ -77,6 +81,7 @@ function readStorage(): CartLine[] {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [hydrated, setHydrated] = useState(false);
@@ -214,6 +219,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     isOpen,
     openCart,
     closeCart,
+    sheetOpen,
+    setSheetOpen,
     addItem,
     setQty,
     removeItem,

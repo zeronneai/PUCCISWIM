@@ -15,6 +15,10 @@ export const SITE = {
   priceCents: 3900,
 } as const;
 
+// Founder portrait for the story-hook block. Pending until Mya uploads a real
+// (non-AI) photo — leave "" and the block shows a soft color panel, no broken image.
+export const MYA_PORTRAIT = "";
+
 // Resolved at both build & runtime. Never trailing-slash it.
 export const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");

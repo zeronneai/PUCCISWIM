@@ -1,12 +1,12 @@
 // The single source of truth for the catalog. No DB.
 // SERVER re-derives every price from here at checkout - never trust the client.
 //
-// The catalog is FOUR styles, each with color VARIANTS (17 pieces total, all $39):
-//   imageModel - ONE on-model beach shot per style, shown FIRST on the card
-//   variant.imageFlat - the flat-lay for that color, revealed on swatch hover/tap
+// The catalog is FOUR styles, each with color VARIANTS (17 pieces total, all $39).
+// There are NO model photos — each variant carries its own flat-lay:
+//   variant.imageFlat - the flat-lay for that color; the card shows the active
+//   variant's flat and swaps on swatch hover (desktop) / tap (mobile).
 // Every Cloudinary URL runs through `cld()` so the transform path carries
-// f_auto,q_auto,w_1000 (CDN serves WebP/AVIF, capped width). Components degrade
-// gracefully (imageModel error -> imageFlat -> branded placeholder).
+// f_auto,q_auto,w_1000 (CDN serves WebP/AVIF, capped width).
 
 export type Size = "XS" | "S" | "M" | "L";
 
@@ -24,7 +24,6 @@ export type Style = {
   name: string;
   blurb: string; // <= 12 words, flirty
   priceUSD: 39;
-  imageModel: string; // ONE photo per style
   sizes: Size[]; // always ["XS","S","M","L"]
   variants: Variant[];
 };
@@ -47,7 +46,6 @@ export const STYLES: Style[] = [
     name: "The Bandeau",
     blurb: "Strapless up top, high-leg below, made for zero tan lines.",
     priceUSD: 39,
-    imageModel: cld("v1785252641/Woman_laughing_on_beach_2K_202607280858_k21urr.jpg"),
     sizes: ALL_SIZES,
     variants: [
       {
@@ -81,7 +79,6 @@ export const STYLES: Style[] = [
     name: "The Halter",
     blurb: "A wide bow at the neck, smooth and sultry the rest of the way.",
     priceUSD: 39,
-    imageModel: cld("v1785252641/Woman_laughing_on_beach_2K_202607280853_dgksdk.jpg"),
     sizes: ALL_SIZES,
     variants: [
       {
@@ -109,7 +106,6 @@ export const STYLES: Style[] = [
     name: "The Underwire",
     blurb: "Structured cups and ruched sides that hug every curve just right.",
     priceUSD: 39,
-    imageModel: cld("v1785252641/Woman_laughing_on_beach_2K_202607280924_dmg209.jpg"),
     sizes: ALL_SIZES,
     variants: [
       {
@@ -143,7 +139,6 @@ export const STYLES: Style[] = [
     name: "The Triangle",
     blurb: "String triangle, tied at the neck and hips — flirt, your way.",
     priceUSD: 39,
-    imageModel: cld("v1785279438/Woman_in_polka_dot_bikini_202607281657_orl6iv.jpg"),
     sizes: ALL_SIZES,
     variants: [
       {
@@ -219,5 +214,5 @@ export const TOTAL_PIECES = STYLES.reduce((n, s) => n + s.variants.length, 0);
 export const MODEL_REFERENCE = {
   name: "Mya",
   height: "", // e.g. `5'8"` — owner fills this, then the line appears
-  wears: "M" as Size,
+  wears: "XS" as Size,
 };

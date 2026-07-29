@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCart } from "@/cart/CartContext";
 import { STYLES, type Style } from "@/lib/products";
 import ProductCard from "./ProductCard";
 import QuickView from "./QuickView";
@@ -10,6 +11,12 @@ export type ActiveSheet = { style: Style; variantId: string };
 
 export default function Catalog() {
   const [active, setActive] = useState<ActiveSheet | null>(null);
+  const { setSheetOpen } = useCart();
+
+  // Let global chrome know when the product sheet is open.
+  useEffect(() => {
+    setSheetOpen(!!active);
+  }, [active, setSheetOpen]);
 
   return (
     <section id="shop" className="scroll-mt-20 bg-cream py-14 sm:py-20">
