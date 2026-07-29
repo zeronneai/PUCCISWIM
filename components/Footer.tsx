@@ -40,7 +40,7 @@ export default function Footer() {
         <div className="mt-10 flex flex-col gap-4 border-t border-cream/15 pt-6 text-sm text-cream/60 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 {SITE.legalName}. All rights reserved.</p>
           <nav className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link href="/preorder-policy" className="hover:text-cream">Pre-order Policy</Link>
+            <Link href="/delivery-policy" className="hover:text-cream">Delivery Policy</Link>
             <Link href="/return-policy" className="hover:text-cream">Return Policy</Link>
             <Link href="/terms" className="hover:text-cream">Terms</Link>
             <Link href="/privacy" className="hover:text-cream">Privacy</Link>

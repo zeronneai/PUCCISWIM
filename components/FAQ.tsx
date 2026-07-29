@@ -4,11 +4,11 @@ import Accordion, { type AccordionItem } from "./Accordion";
 
 const ITEMS: AccordionItem[] = [
   {
-    q: "What does pre-order mean?",
+    q: "How does checkout work?",
     a: (
       <p>
-        You&apos;re reserving your set from the Endless Summer drop now and paying $39 to lock it in.
-        Right after checkout we email you your order number and delivery details.
+        Add your set to the bag and check out securely, we charge $39 at checkout. Right after, we
+        email you your order number and delivery details.
       </p>
     ),
   },
@@ -17,7 +17,7 @@ const ITEMS: AccordionItem[] = [
     a: (
       <p>
         We email your order number and delivery details right after checkout. Choose shipping or free
-        local pickup in El Paso when you check out. See our pre-order policy for rates, hours and details.
+        local pickup in El Paso when you check out. See our delivery policy for rates, hours and details.
       </p>
     ),
   },

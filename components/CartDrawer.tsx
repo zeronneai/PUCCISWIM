@@ -10,7 +10,7 @@ import { DELIVERY } from "@/lib/shipping";
 import SmartImage from "./SmartImage";
 
 export default function CartDrawer() {
-  const { isOpen, closeCart, lines, setQty, removeItem, subtotalCents, count, checkout, isCheckingOut } =
+  const { isOpen, closeCart, lines, setQty, removeItem, subtotalCents, count, checkout } =
     useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -96,7 +96,7 @@ export default function CartDrawer() {
               <div>
                 <h2 className="font-display text-xl font-extrabold text-ink">Your bag</h2>
                 <p className="text-xs font-semibold uppercase tracking-wide text-puccii-pink">
-                  Pre-order · Endless Summer
+                  Endless Summer collection
                 </p>
               </div>
               <button
@@ -230,15 +230,12 @@ export default function CartDrawer() {
                   </div>
                   <button
                     onClick={checkout}
-                    disabled={isCheckingOut}
-                    className="flex h-14 w-full items-center justify-center rounded-full bg-puccii-pink text-lg font-bold text-cream shadow-[0_16px_34px_-14px_rgba(240,107,176,0.8)] transition-transform active:scale-[0.98] disabled:opacity-70"
+                    className="flex h-14 w-full items-center justify-center rounded-full bg-puccii-pink text-lg font-bold text-cream shadow-[0_16px_34px_-14px_rgba(240,107,176,0.8)] transition-transform active:scale-[0.98]"
                   >
-                    {isCheckingOut
-                      ? "Taking you to checkout…"
-                      : `Pre-order · ${formatCents(subtotalCents)}`}
+                    Checkout
                   </button>
                   <p className="mt-2 text-center text-xs text-ink-soft">
-                    {count} item{count === 1 ? "" : "s"} · Secure checkout
+                    {count} item{count === 1 ? "" : "s"} · Secure checkout on Shopify
                   </p>
                 </div>
               </>

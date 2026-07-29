@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms of Service | PUCCII Swim",
-  description: "The terms for shopping the PUCCII Swim pre-order drop.",
+  description: "The terms for shopping the PUCCII Swim Endless Summer drop.",
 };
 
 export default function Terms() {
@@ -12,22 +12,22 @@ export default function Terms() {
     <LegalLayout title="Terms of Service">
       <p>
         Welcome to {SITE.name}, operated by {SITE.legalName} (&quot;we,&quot; &quot;us&quot;). By placing
-        a pre-order through this site you agree to these terms.
+        an order through this site you agree to these terms.
       </p>
 
-      <h2>Pre-orders &amp; pricing</h2>
+      <h2>Orders &amp; pricing</h2>
       <p>
-        All products are sold as pre-orders at $39.00 USD per two-piece set. Prices are shown in US
-        dollars and are charged at checkout. We reserve the right to correct pricing errors and to
-        cancel and fully refund any order affected by an obvious error.
+        All products are sold at $39.00 USD per two-piece set. Prices are shown in US dollars and are
+        charged at checkout. We reserve the right to correct pricing errors and to cancel and fully
+        refund any order affected by an obvious error.
       </p>
 
       <h2>Payment</h2>
       <p>
-        Payments are processed securely by Stripe. We do not store your full card details. By checking
-        out you authorize the charge for the items in your bag. See our{" "}
-        <a href="/preorder-policy">Pre-order Policy</a>{" "}
-        for fulfillment and our{" "}
+        Checkout, payment and fulfillment are handled securely by Shopify. We do not store your card
+        details. See our{" "}
+        <a href="/delivery-policy">Delivery Policy</a>{" "}
+        for shipping and pickup and our{" "}
         <a href="/return-policy">Return Policy</a>{" "}
         for returns and exchanges.
       </p>

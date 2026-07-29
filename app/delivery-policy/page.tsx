@@ -4,18 +4,17 @@ import { SITE } from "@/lib/site";
 import { DELIVERY } from "@/lib/shipping";
 
 export const metadata: Metadata = {
-  title: "Pre-order Policy | PUCCII Swim",
+  title: "Delivery Policy | PUCCII Swim",
   description:
-    "How PUCCII Swim pre-orders work: shipping or free El Paso pickup, timing, store credit and returns.",
+    "How PUCCII Swim delivery works: shipping or free El Paso pickup, timing, store credit and returns.",
 };
 
-export default function PreorderPolicy() {
+export default function DeliveryPolicy() {
   return (
-    <LegalLayout title="Pre-order Policy">
+    <LegalLayout title="Delivery Policy">
       <p>
-        Every item in the Endless Summer collection is sold as a <strong>pre-order</strong>. When you
-        place an order you are reserving your two-piece set and paying in full ($39.00 USD per set) to
-        secure it from the drop.
+        Every item in the Endless Summer collection is a complete two-piece set at $39.00 USD. You pay
+        at checkout, and you choose how to get it: shipping or free local pickup.
       </p>
 
       <h2>Delivery</h2>
@@ -54,7 +53,7 @@ export default function PreorderPolicy() {
 
       <h2>Cancellations &amp; store credit</h2>
       <p>
-        Because this is a limited pre-order drop, we ask that you order thoughtfully. If you need to
+        Because this is a limited drop, we ask that you order thoughtfully. If you need to
         cancel, contact us within <strong>24 hours</strong>{" "}
         of your order and before it&apos;s ready for pickup, and we&apos;ll set you up with{" "}
         <strong>store credit</strong>. We do not issue refunds to the original payment method. After

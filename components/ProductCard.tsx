@@ -82,9 +82,6 @@ export default function ProductCard({
             />
           ))}
 
-          <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink backdrop-blur">
-            Pre-order
-          </span>
           <span className="absolute right-3 top-3 rounded-full bg-ink/70 px-3 py-1 text-[11px] font-semibold text-cream backdrop-blur">
             {style.variants.length} colors
           </span>

@@ -56,7 +56,7 @@ export const STYLES: Style[] = [
       },
       {
         id: "bubblegum",
-        colorName: "Bubblegum",
+        colorName: "Bubble Gum",
         swatch: "#F4B6CE",
         imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.20_PM_1_z2almc.jpg"),
       },
@@ -116,7 +116,7 @@ export const STYLES: Style[] = [
       },
       {
         id: "bubblegum",
-        colorName: "Bubblegum",
+        colorName: "Bubble Gum",
         swatch: "#F4B6CE",
         imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_3_mbkzif.jpg"),
       },
@@ -143,7 +143,7 @@ export const STYLES: Style[] = [
     variants: [
       {
         id: "bubblegum",
-        colorName: "Bubblegum",
+        colorName: "Bubble Gum",
         swatch: "#F4B6CE",
         imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.22_PM_4_dlttuh.jpg"),
       },

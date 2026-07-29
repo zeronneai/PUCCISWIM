@@ -12,14 +12,14 @@ export default function Privacy() {
     <LegalLayout title="Privacy Policy">
       <p>
         {SITE.legalName} (&quot;we&quot;) respects your privacy. This policy explains what we collect
-        when you pre-order from {SITE.name} and how we use it.
+        when you order from {SITE.name} and how we use it.
       </p>
 
       <h2>What we collect</h2>
       <p>
-        To process your pre-order and coordinate delivery, we collect your name, email address, phone
-        number, and Instagram handle. Payment is handled by Stripe, so we receive confirmation of your
-        purchase but never see your full card number.
+        To process your order and coordinate delivery, we collect your name, email address, phone
+        number, and Instagram handle. Checkout and payment are handled by Shopify, so we receive
+        confirmation of your purchase but never see your full card number.
       </p>
 
       <h2>How we use it</h2>
@@ -30,9 +30,9 @@ export default function Privacy() {
 
       <h2>Who we share it with</h2>
       <p>
-        We share information only with the services that make your order work: Stripe for payment
-        processing and Google (Apps Script) to record your order and send your confirmation email. Each
-        processes data under its own privacy terms.
+        We share information only with the services that make your order work: Shopify handles
+        checkout, payment and your order confirmation. It processes that data under its own privacy
+        terms.
       </p>
 
       <h2>Analytics</h2>

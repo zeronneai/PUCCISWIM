@@ -8,6 +8,7 @@ import { CARE, FABRIC, FIT, MODEL_REFERENCE, type Size } from "@/lib/products";
 import { SITE } from "@/lib/site";
 import { cldImage } from "@/lib/cloudinary";
 import { DELIVERY } from "@/lib/shipping";
+import { isAvailable } from "@/lib/shopify";
 import { onFlatLayLoad } from "./imageRatio";
 import type { ActiveSheet } from "./Catalog";
 import SmartImage from "./SmartImage";
@@ -65,6 +66,11 @@ export default function QuickView({
   const variant =
     style?.variants.find((v) => v.id === variantId) ?? style?.variants[0] ?? null;
 
+  // This color has no Shopify product yet if none of its sizes map. The map is
+  // the single source of truth (lib/shopify), so there is no separate list.
+  const comingSoon =
+    !!style && !!variant && !style.sizes.some((s) => isAvailable(style.id, variant.id, s));
+
   // Reset when a new STYLE opens (adopt the variant the card was showing).
   useEffect(() => {
     if (!active) return;
@@ -115,12 +121,13 @@ export default function QuickView({
   }, [active, onClose]);
 
   function handleAdd() {
-    if (!style || !variant) return;
+    if (!style || !variant || comingSoon) return;
     if (!size) {
       setHint(true);
       sizeRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
       return;
     }
+    if (!isAvailable(style.id, variant.id, size)) return;
     addItem(style.id, variant.id, size, 1, imgRef.current, variant.imageFlat);
     onClose();
     openCart();
@@ -202,9 +209,11 @@ export default function QuickView({
                     fallbackLabel={style.name}
                   />
                 ))}
-                <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-puccii-pink">
-                  Pre-order
-                </span>
+                {comingSoon && (
+                  <span className="absolute left-3 top-3 rounded-full bg-ink/80 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-cream">
+                    Coming soon
+                  </span>
+                )}
               </div>
             </div>
 
@@ -353,9 +362,12 @@ export default function QuickView({
             >
               <button
                 onClick={handleAdd}
-                className="flex h-14 w-full items-center justify-center rounded-full bg-puccii-pink text-lg font-bold text-cream shadow-[0_16px_34px_-14px_rgba(240,107,176,0.8)] transition-transform active:scale-[0.98]"
+                disabled={comingSoon}
+                className={`flex h-14 w-full items-center justify-center rounded-full text-lg font-bold text-cream shadow-[0_16px_34px_-14px_rgba(240,107,176,0.8)] transition-transform active:scale-[0.98] ${
+                  comingSoon ? "cursor-not-allowed bg-ink/30 shadow-none" : "bg-puccii-pink"
+                }`}
               >
-                Add to bag · Pre-order {formatUSD(style.priceUSD)}
+                {comingSoon ? "Coming soon" : "Add to bag"}
               </button>
 
               {/* Delivery line, reads the free-shipping promise from the constant */}

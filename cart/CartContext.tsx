@@ -10,7 +10,8 @@ import {
   useState,
 } from "react";
 import { getStyle, getVariant, type Size } from "@/lib/products";
-import { SITE, PAYMENTS_MODE, WHATSAPP_NUMBER } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { checkoutUrl } from "@/lib/shopify";
 
 // A cart line is a style + a color + a size. The same style in two colors, or two
 // sizes, is two distinct lines.
@@ -40,8 +41,7 @@ type CartContextValue = {
   setQty: (styleId: string, variantId: string, size: Size, qty: number) => void;
   removeItem: (styleId: string, variantId: string, size: Size) => void;
   clear: () => void;
-  checkout: () => Promise<void>;
-  isCheckingOut: boolean;
+  checkout: () => void;
   announcement: string;
   cartIconRef: React.RefObject<HTMLElement | null>;
   flights: Flight[];
@@ -82,7 +82,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -160,57 +159,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const count = useMemo(() => lines.reduce((n, l) => n + l.qty, 0), [lines]);
   const subtotalCents = useMemo(() => count * SITE.priceCents, [count]);
 
-  const checkout = useCallback(async () => {
+  // Hand off to Shopify: build a cart permalink and redirect in the same tab.
+  // Shopify owns checkout, payment and fulfillment now, so there is no API call
+  // and no loading state. The local bag is cleared as we leave.
+  const checkout = useCallback(() => {
     if (lines.length === 0) return;
-    setIsCheckingOut(true);
+    const url = checkoutUrl(
+      lines.map((l) => ({ styleId: l.styleId, variantId: l.variantId, size: l.size, qty: l.qty })),
+    );
+    if (!url) return; // never send a link with a missing variant id
     try {
-      if (PAYMENTS_MODE === "preorder_dm") {
-        // Fallback path - no Stripe. Build a pre-filled DM (BRIEF §3.3).
-        const summary = lines
-          .map((l) => {
-            const s = getStyle(l.styleId);
-            const v = getVariant(l.styleId, l.variantId);
-            const label = s ? `${s.name}, ${v?.colorName ?? ""}` : l.styleId;
-            return `• ${label}, Size ${l.size} × ${l.qty}`;
-          })
-          .join("\n");
-        const total = (subtotalCents / 100).toFixed(2);
-        const text = `Hi PUCCII! I'd like to pre-order:\n${summary}\nTotal: $${total}`;
-        const url = WHATSAPP_NUMBER
-          ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
-          : `${SITE.igUrl}`;
-        window.location.href = url;
-        return;
-      }
-
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: lines.map((l) => ({
-            styleId: l.styleId,
-            variantId: l.variantId,
-            size: l.size,
-            qty: l.qty,
-          })),
-        }),
-      });
-      if (!res.ok) {
-        const msg = await res.text().catch(() => "");
-        throw new Error(msg || `Checkout failed (${res.status})`);
-      }
-      const data = (await res.json()) as { url?: string };
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned.");
-      }
-    } catch (err) {
-      console.error(err);
-      setAnnouncement("Something went wrong starting checkout. Please try again.");
-      setIsCheckingOut(false);
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
     }
-  }, [lines, subtotalCents]);
+    setLines([]);
+    window.location.href = url;
+  }, [lines]);
 
   const value: CartContextValue = {
     lines,
@@ -226,7 +191,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     removeItem,
     clear,
     checkout,
-    isCheckingOut,
     announcement,
     cartIconRef,
     flights,

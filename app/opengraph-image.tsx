@@ -34,7 +34,7 @@ export default function OG() {
             color: "#FFF8F1",
           }}
         >
-          Pre-order · Endless Summer
+          Shop · Endless Summer
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 20, marginTop: 20 }}>
           <div style={{ fontSize: 150, fontWeight: 800, color: "#2B1B24", lineHeight: 1 }}>
