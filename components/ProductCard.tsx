@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { formatUSD } from "@/lib/format";
 import type { Style, Variant } from "@/lib/products";
 import { SITE } from "@/lib/site";
+import { useFlatLayRatio, onFlatLayLoad } from "./imageRatio";
 import Swatch from "./Swatch";
 
 const SWAP =
@@ -27,6 +28,7 @@ export default function ProductCard({
   const [selected, setSelected] = useState<Variant | null>(null);
   const [hover, setHover] = useState<Variant | null>(null);
   const [canHover, setCanHover] = useState(false);
+  const flatRatio = useFlatLayRatio();
 
   useEffect(() => {
     setCanHover(window.matchMedia("(hover: hover)").matches);
@@ -55,8 +57,13 @@ export default function ProductCard({
         className="relative block w-full overflow-hidden"
         aria-label={`View ${style.name}`}
       >
-        {/* 4/5 box, flats stacked absolute -> zero layout shift on swap */}
-        <div className="relative aspect-[4/5] w-full bg-gradient-to-br from-puccii-blush to-paper-pink">
+        {/* Natural flat-lay box (shared ratio), flats stacked absolute -> zero
+            layout shift on swap. object-contain on cream so the full suit and
+            its printed logo always show, never cropped. */}
+        <div
+          className="relative w-full bg-cream"
+          style={{ aspectRatio: flatRatio ?? "1 / 1" }}
+        >
           {/* One flat per variant, stacked; only the active one is visible.
               In-DOM so the browser decodes ahead -> the swap is instant. */}
           {style.variants.map((v, i) => (
@@ -67,8 +74,9 @@ export default function ProductCard({
               fill
               priority={priority && i === 0}
               loading={eagerFlats ? "eager" : undefined}
+              onLoad={onFlatLayLoad}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className={`object-cover ${SWAP} ${
+              className={`object-contain ${SWAP} ${
                 shown.id === v.id ? "opacity-100" : "opacity-0"
               }`}
             />

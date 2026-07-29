@@ -7,6 +7,7 @@ import { formatUSD } from "@/lib/format";
 import { CARE, FABRIC, FIT, MODEL_REFERENCE, type Size } from "@/lib/products";
 import { SITE } from "@/lib/site";
 import { cldImage } from "@/lib/cloudinary";
+import { useFlatLayRatio, onFlatLayLoad } from "./imageRatio";
 import type { ActiveSheet } from "./Catalog";
 import SmartImage from "./SmartImage";
 import Swatch from "./Swatch";
@@ -54,6 +55,7 @@ export default function QuickView({
   const [hint, setHint] = useState(false);
   const [atEnd, setAtEnd] = useState(true);
   const [zoom, setZoom] = useState(false);
+  const flatRatio = useFlatLayRatio();
   const imgRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
@@ -185,10 +187,13 @@ export default function QuickView({
                 className="absolute inset-0 overflow-y-auto overscroll-contain px-5 pb-4"
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
-                {/* The active variant's flat-lay. Swatches below switch it. */}
+                {/* The active variant's flat-lay. Swatches below switch it.
+                    Natural ratio (shared) + object-contain on cream: the full
+                    suit and its logo always show, never cropped. */}
                 <div
                   ref={imgRef}
-                  className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-gradient-to-br from-puccii-blush to-paper-pink"
+                  className="relative mx-auto w-full overflow-hidden rounded-[24px] bg-cream"
+                  style={{ aspectRatio: flatRatio ?? "1 / 1" }}
                 >
                   {style.variants.map((v) => (
                     <SmartImage
@@ -197,7 +202,8 @@ export default function QuickView({
                       alt={`${SITE.name} ${style.name} in ${v.colorName}`}
                       fill
                       sizes="(max-width: 640px) 100vw, 32rem"
-                      className={`object-cover transition-opacity duration-300 ${
+                      onLoad={onFlatLayLoad}
+                      className={`object-contain transition-opacity duration-300 ${
                         v.id === variant.id ? "opacity-100" : "opacity-0"
                       }`}
                       fallbackLabel={style.name}

@@ -110,13 +110,13 @@ export default function CartDrawer() {
                     if (!s || !v) return null;
                     return (
                       <li key={`${l.styleId}-${l.variantId}-${l.size}`} className="flex gap-3 py-4">
-                        <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-[16px] bg-sand/60">
+                        <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-[16px] bg-cream">
                           <SmartImage
                             src={v.imageFlat}
                             alt={`${s.name} in ${v.colorName}`}
                             fill
                             sizes="80px"
-                            className="object-cover"
+                            className="object-contain"
                             fallbackLabel={s.name}
                           />
                         </div>

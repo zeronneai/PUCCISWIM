@@ -31,9 +31,10 @@ export default function PreorderPolicy() {
         {PICKUP.hours.join(" · ")}
       </p>
       <p>
-        We hold your order at {PICKUP.storeName} for <strong>{PICKUP.holdDays} days</strong> from the
-        day it&apos;s ready. If you can&apos;t make it in that window, message us at{" "}
-        <a href={SITE.igUrl}>@{SITE.igHandle}</a> and we&apos;ll do our best to arrange something.
+        We hold your order at {PICKUP.storeName} for <strong>{PICKUP.holdDays} days</strong>{" "}
+        from the day it&apos;s ready. If you can&apos;t make it in that window, message us at{" "}
+        <a href={SITE.igUrl}>@{SITE.igHandle}</a>{" "}
+        and we&apos;ll do our best to arrange something.
       </p>
 
       <h2>What&apos;s included</h2>
@@ -45,7 +46,8 @@ export default function PreorderPolicy() {
       <h2>Refunds &amp; cancellations</h2>
       <p>
         Because this is a limited pre-order drop, we ask that you order thoughtfully. If you need to
-        cancel, contact us within <strong>24 hours</strong> of your order and before it&apos;s ready for
+        cancel, contact us within <strong>24 hours</strong>{" "}
+        of your order and before it&apos;s ready for
         pickup, and we will issue a full refund to your original payment method. After that,
         cancellations and refunds are handled on a case-by-case basis. Refunds are processed through
         Stripe and may take 5 to 10 business days to appear. Orders left unclaimed after{" "}

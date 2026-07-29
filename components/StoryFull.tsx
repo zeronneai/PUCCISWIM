@@ -64,8 +64,8 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
     body: (
       <>
         When I began modeling just two years ago, she gave a young girl with only two months of
-        experience the opportunity of a lifetime: to walk in a <Pink>New York Fashion Week</Pink> show.
-        I modeled swimwear that day, and I haven&apos;t looked back since.
+        experience the opportunity of a lifetime: to walk in a <Pink>New York Fashion Week</Pink>{" "}
+        show. I modeled swimwear that day, and I haven&apos;t looked back since.
       </>
     ),
   },
@@ -73,7 +73,8 @@ const PARAGRAPHS: { icon: ReactNode; body: ReactNode }[] = [
     icon: <HeartDoodle className="h-full w-full" />,
     body: (
       <>
-        The name <Pink>PUCCII</Pink> has been part of me since the very beginning. It was the nickname
+        The name <Pink>PUCCII</Pink>{" "}
+        has been part of me since the very beginning. It was the nickname
         my dad gave me, and it&apos;s stayed with me ever since. What started as a family nickname became
         something much bigger: a brand built on confidence, self-expression, and embracing who you are.
       </>
@@ -127,7 +128,7 @@ function MemoryClip() {
           playsInline
           preload="metadata"
           aria-label={STORY_MEMORY_VIDEO.alt}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-contain"
         />
         {needsTap && (
           <button

@@ -3,10 +3,12 @@
 import { motion } from "motion/react";
 import { MYA_PORTRAIT } from "@/lib/site";
 import { cldImage } from "@/lib/cloudinary";
+import { useImageRatio } from "./imageRatio";
 import SmartImage from "./SmartImage";
 
 // Short teaser that sits right after the hero. Links down to the full story.
 export default function StoryHook() {
+  const [portraitRatio, onPortraitLoad] = useImageRatio();
   return (
     <section id="story-hook" className="relative scroll-mt-20 overflow-hidden bg-cream py-16 sm:py-24">
       <div className="paper-lines pointer-events-none absolute inset-0 opacity-25" aria-hidden />
@@ -37,7 +39,7 @@ export default function StoryHook() {
             </p>
           </div>
 
-          <p className="mt-5 font-hand text-3xl text-ink">love, Mya</p>
+          <p className="mt-5 font-hand text-3xl text-ink">Love, Mya Mercedes</p>
 
           <a
             href="#the-story"
@@ -59,14 +61,18 @@ export default function StoryHook() {
         >
           <div className="absolute -inset-3 -rotate-3 rounded-[30px] bg-puccii-blush" aria-hidden />
           <div className="absolute -right-4 -top-4 h-16 w-16 rotate-6 rounded-[18px] bg-butter" aria-hidden />
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[26px] bg-gradient-to-br from-puccii-blush via-paper-pink to-butter shadow-[0_26px_60px_-22px_rgba(240,107,176,0.45)]">
+          <div
+            className="relative w-full overflow-hidden rounded-[26px] bg-cream shadow-[0_26px_60px_-22px_rgba(240,107,176,0.45)]"
+            style={{ aspectRatio: portraitRatio ?? "4 / 5" }}
+          >
             {MYA_PORTRAIT ? (
               <SmartImage
                 src={cldImage(MYA_PORTRAIT)}
                 alt="Mya Mercedes and a friend on the beach in PUCCII Swim"
                 fill
                 sizes="(max-width: 1024px) 80vw, 24rem"
-                className="object-cover"
+                onLoad={onPortraitLoad}
+                className="object-contain"
                 fallbackLabel="Mya"
               />
             ) : (

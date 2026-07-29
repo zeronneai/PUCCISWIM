@@ -39,8 +39,8 @@ export default function FlyToCart() {
               className="overflow-hidden shadow-lg"
               style={{ position: "fixed" }}
             >
-              <div className="relative h-full w-full">
-                <SmartImage src={f.src} alt="" fill sizes="200px" className="object-cover" />
+              <div className="relative h-full w-full bg-cream">
+                <SmartImage src={f.src} alt="" fill sizes="200px" className="object-contain" />
               </div>
             </motion.div>
           );
