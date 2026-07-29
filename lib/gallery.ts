@@ -39,7 +39,7 @@ export const VIDEO_GROUPS: VideoGroup[] = [
     heading: "on the runway",
     items: [
       {
-        url: "https://res.cloudinary.com/dsprn0ew4/video/upload/v1785335103/event2_cl61lo.mp4",
+        url: "https://res.cloudinary.com/dsprn0ew4/video/upload/v1785345940/copy_B72EC3A0-4CDF-46D2-A8A3-C283B5752E8D_kh5qsa.mov",
         alt: "Mya Mercedes walking a swimwear runway show",
       },
     ],

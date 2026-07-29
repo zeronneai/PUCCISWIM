@@ -41,6 +41,7 @@ export default function Footer() {
           <p>© 2026 {SITE.legalName}. All rights reserved.</p>
           <nav className="flex flex-wrap gap-x-5 gap-y-2">
             <Link href="/preorder-policy" className="hover:text-cream">Pre-order Policy</Link>
+            <Link href="/return-policy" className="hover:text-cream">Return Policy</Link>
             <Link href="/terms" className="hover:text-cream">Terms</Link>
             <Link href="/privacy" className="hover:text-cream">Privacy</Link>
           </nav>
