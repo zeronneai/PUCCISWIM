@@ -10,7 +10,7 @@ const CLOUD = "https://res.cloudinary.com/dsprn0ew4/video/upload";
 
 const MASTERS = {
   landscape: {
-    id: "v1785339368/hf_20260729_150441_3c675dd5-9d54-44b9-813e-bff0bf18f9cb_vv5bmg",
+    id: "v1785453347/hf_20260730_230608_84bd1252-e7c2-4559-9a3f-0c9282dc0400_bcgqdg",
     width: 1600,
     quality: 70,
   },
