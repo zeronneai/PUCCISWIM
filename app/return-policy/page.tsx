@@ -27,7 +27,6 @@ export default function ReturnPolicy() {
             <li>Unwashed</li>
             <li>Free of makeup, deodorant, perfume, or sunscreen stains</li>
             <li>Hygienic liner intact</li>
-            <li>Tried on over underwear</li>
           </ul>
         </li>
         <li>Sale items (20%+ off) are Final Sale.</li>
