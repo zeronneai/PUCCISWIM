@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Caveat, Hanken_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { CartProvider } from "@/cart/CartContext";
-import VercelAnalytics from "@/components/VercelAnalytics";
 import { SITE, SITE_URL } from "@/lib/site";
 import { DELIVERY } from "@/lib/shipping";
 import "./globals.css";
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${bricolage.variable} ${caveat.variable} ${hanken.variable}`}>
       <body>
         <CartProvider>{children}</CartProvider>
-        <VercelAnalytics />
+        <Analytics />
       </body>
     </html>
   );
