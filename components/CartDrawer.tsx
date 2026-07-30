@@ -14,14 +14,16 @@ export default function CartDrawer() {
     useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  // Saved scroll position in a ref (survives re-renders, never re-captured
+  // while open) so closing restores it exactly instead of jumping to the top.
+  const scrollYRef = useRef(0);
 
+  // iOS-safe scroll lock. Depends ONLY on isOpen so it never re-runs mid-open
+  // and re-captures a bad (0) scroll position; restores the saved scroll on close.
   useEffect(() => {
     if (!isOpen) return;
-    // iOS-safe scroll lock: pin the body with position:fixed at a negative top,
-    // then restore the exact scroll position on close. A plain overflow:hidden
-    // lets the page jump to the top, so closing with the X would bounce you back
-    // to the hero instead of leaving you where you were.
-    const scrollY = window.scrollY;
+    const y = window.scrollY;
+    scrollYRef.current = y;
     const body = document.body;
     const prev = {
       position: body.style.position,
@@ -32,12 +34,27 @@ export default function CartDrawer() {
       overflow: body.style.overflow,
     };
     body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
+    body.style.top = `-${y}px`;
     body.style.left = "0";
     body.style.right = "0";
     body.style.width = "100%";
     body.style.overflow = "hidden";
     closeRef.current?.focus({ preventScroll: true });
+    return () => {
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.left = prev.left;
+      body.style.right = prev.right;
+      body.style.width = prev.width;
+      body.style.overflow = prev.overflow;
+      window.scrollTo(0, scrollYRef.current);
+    };
+  }, [isOpen]);
+
+  // Escape to close + focus trap. Separate so the scroll lock never re-runs
+  // when closeCart changes reference.
+  useEffect(() => {
+    if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeCart();
       if (e.key === "Tab" && panelRef.current) {
@@ -57,16 +74,7 @@ export default function CartDrawer() {
       }
     };
     window.addEventListener("keydown", onKey);
-    return () => {
-      body.style.position = prev.position;
-      body.style.top = prev.top;
-      body.style.left = prev.left;
-      body.style.right = prev.right;
-      body.style.width = prev.width;
-      body.style.overflow = prev.overflow;
-      window.scrollTo(0, scrollY);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, closeCart]);
 
   return (
@@ -101,6 +109,7 @@ export default function CartDrawer() {
               </div>
               <button
                 ref={closeRef}
+                type="button"
                 onClick={closeCart}
                 className="grid h-11 w-11 place-items-center rounded-full text-ink hover:bg-puccii-blush/50"
                 aria-label="Close bag"

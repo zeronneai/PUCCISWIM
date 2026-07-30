@@ -17,21 +17,51 @@ export default function MobileMenu({
   links: Link[];
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  // Saved scroll position in a ref so closing restores it exactly.
+  const scrollYRef = useRef(0);
 
-  // Lock scroll + focus the close button + esc to close + basic focus trap.
+  // iOS-safe scroll lock (position:fixed + negative top), restored on close.
+  // Depends ONLY on `open` so it never re-runs mid-open and re-captures a bad
+  // scroll position.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
+    const y = window.scrollY;
+    scrollYRef.current = y;
+    const body = document.body;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${y}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    closeRef.current?.focus({ preventScroll: true });
+    return () => {
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.left = prev.left;
+      body.style.right = prev.right;
+      body.style.width = prev.width;
+      body.style.overflow = prev.overflow;
+      window.scrollTo(0, scrollYRef.current);
+    };
+  }, [open]);
+
+  // Esc to close, separate from the scroll lock.
+  useEffect(() => {
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
   return (
@@ -56,6 +86,7 @@ export default function MobileMenu({
             />
             <button
               ref={closeRef}
+              type="button"
               onClick={onClose}
               className="grid h-12 w-12 place-items-center rounded-full hover:bg-cream/15"
               aria-label="Close menu"

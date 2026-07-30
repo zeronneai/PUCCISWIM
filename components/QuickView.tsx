@@ -60,6 +60,9 @@ export default function QuickView({
   const imgRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const sizeRef = useRef<HTMLDivElement>(null);
+  // Saved scroll position, in a ref so it survives any re-render and is never
+  // re-captured while the sheet is open (that is what sent the page to the top).
+  const scrollYRef = useRef(0);
   const dragControls = useDragControls();
 
   const style = active?.style ?? null;
@@ -85,10 +88,14 @@ export default function QuickView({
   }, [active]);
 
   // Background scroll lock (iOS-safe): overflow:hidden alone doesn't hold on
-  // iOS, so pin the body with position:fixed + a negative top, then restore.
+  // iOS, so pin the body with position:fixed + a negative top, then restore the
+  // exact scroll on close. Depends ONLY on `active` (open/close), so it never
+  // re-runs mid-open and re-captures a bad (0) scroll position. The saved value
+  // lives in a ref, not state, so it survives re-renders.
   useEffect(() => {
     if (!active) return;
-    const scrollY = window.scrollY;
+    const y = window.scrollY;
+    scrollYRef.current = y;
     const body = document.body;
     const prev = {
       position: body.style.position,
@@ -99,14 +106,11 @@ export default function QuickView({
       overflow: body.style.overflow,
     };
     body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
+    body.style.top = `-${y}px`;
     body.style.left = "0";
     body.style.right = "0";
     body.style.width = "100%";
     body.style.overflow = "hidden";
-
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
 
     return () => {
       body.style.position = prev.position;
@@ -115,9 +119,17 @@ export default function QuickView({
       body.style.right = prev.right;
       body.style.width = prev.width;
       body.style.overflow = prev.overflow;
-      window.scrollTo(0, scrollY);
-      window.removeEventListener("keydown", onKey);
+      window.scrollTo(0, scrollYRef.current);
     };
+  }, [active]);
+
+  // Close on Escape. Kept separate so the scroll lock never re-runs when the
+  // onClose reference changes between renders.
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [active, onClose]);
 
   function handleAdd() {
@@ -169,6 +181,7 @@ export default function QuickView({
           >
             {/* Close, floats above EVERYTHING (image can never cover it) */}
             <button
+              type="button"
               onClick={onClose}
               className="absolute right-3 top-3 z-40 grid h-10 w-10 place-items-center rounded-full bg-cream text-ink shadow-md ring-1 ring-ink/10 transition-transform active:scale-95"
               aria-label="Close"
