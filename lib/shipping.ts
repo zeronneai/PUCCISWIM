@@ -8,8 +8,8 @@
 // reads `freeLabel` from here instead of hardcoding it.
 export const DELIVERY = {
   shipping: {
-    standard: { label: "Standard shipping", price: 6 },
-    priority: { label: "Priority shipping", price: 12 },
+    standard: { label: "Standard shipping", price: 8 },
+    priority: { label: "Priority shipping", price: 15 },
     freeAtItems: 2,
     freeThreshold: 78, // dollar equivalent while every item is $39
     freeLabel: "Free shipping on 2 or more items",
