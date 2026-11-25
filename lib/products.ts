@@ -5,8 +5,7 @@
 // There are NO model photos. Each variant carries its own flat-lay:
 //   variant.imageFlat - the flat-lay for that color; the card shows the active
 //   variant's flat and swaps on swatch hover (desktop) / tap (mobile).
-// Every Cloudinary URL runs through `cld()` so the transform path carries
-// f_auto,q_auto,w_1000 (CDN serves WebP/AVIF, capped width).
+// Product photos live in public/media/products, already sized to 1000px.
 
 export type Size = "XS" | "S" | "M" | "L";
 
@@ -16,7 +15,7 @@ export type Variant = {
   swatch: string; // hex base
   swatchPattern?: "dots" | "stripes";
   swatchAccent?: string; // hex of the dots or stripes
-  imageFlat: string; // Cloudinary URL
+  imageFlat: string; // path in public/media/products
 };
 
 export type Style = {
@@ -35,11 +34,6 @@ export const FABRIC = "Buttery-soft four-way stretch. Fully lined, front and bac
 export const CARE = "Hand wash cold, lay flat to dry. No wringing, no dryer, no chlorine soak.";
 export const FIT = "Runs true to size. Between sizes? Size up on top for more coverage.";
 
-// Inject the transform into the Cloudinary path: everything passed in is the
-// part AFTER /image/upload/ (i.e. the version + filename).
-const cld = (versionPath: string) =>
-  `https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_1000/${versionPath}`;
-
 export const STYLES: Style[] = [
   {
     id: "bandeau",
@@ -52,19 +46,19 @@ export const STYLES: Style[] = [
         id: "ivory",
         colorName: "Coconut Milk",
         swatch: "#F7F5F2",
-        imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.21_PM_c8h4w7.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-c8h4w7.webp",
       },
       {
         id: "bubblegum",
         colorName: "Bubble Gum",
         swatch: "#F4B6CE",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.20_PM_1_z2almc.jpg"),
+        imageFlat: "/media/products/4-35-20-pm-1-z2almc.webp",
       },
       {
         id: "sky",
         colorName: "Sky",
         swatch: "#A8D2ED",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.20_PM_n3wdj1.jpg"),
+        imageFlat: "/media/products/4-35-20-pm-n3wdj1.webp",
       },
     ],
   },
@@ -79,19 +73,19 @@ export const STYLES: Style[] = [
         id: "ivory",
         colorName: "Coconut Milk",
         swatch: "#F7F5F2",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_2_nmmita.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-2-nmmita.webp",
       },
       {
         id: "sky",
         colorName: "Sky",
         swatch: "#A8D2ED",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_1_hncpil.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-1-hncpil.jpg",
       },
       {
         id: "sunbutter",
         colorName: "Sunbutter",
         swatch: "#F6DFA0",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_4_xkuxri.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-4-xkuxri.webp",
       },
     ],
   },
@@ -106,25 +100,25 @@ export const STYLES: Style[] = [
         id: "ivory",
         colorName: "Coconut Milk",
         swatch: "#F7F5F2",
-        imageFlat: cld("v1785279409/WhatsApp_Image_2026-07-28_at_4.35.22_PM_wdu0fk.jpg"),
+        imageFlat: "/media/products/4-35-22-pm-wdu0fk.webp",
       },
       {
         id: "bubblegum",
         colorName: "Bubble Gum",
         swatch: "#F4B6CE",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_3_mbkzif.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-3-mbkzif.webp",
       },
       {
         id: "sky",
         colorName: "Sky",
         swatch: "#A8D2ED",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_6_n91z93.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-6-n91z93.webp",
       },
       {
         id: "sunbutter",
         colorName: "Sunbutter",
         swatch: "#F6DFA0",
-        imageFlat: cld("v1785279401/WhatsApp_Image_2026-07-28_at_4.35.21_PM_5_ti7oel.jpg"),
+        imageFlat: "/media/products/4-35-21-pm-5-ti7oel.webp",
       },
     ],
   },
@@ -139,13 +133,13 @@ export const STYLES: Style[] = [
         id: "bubblegum",
         colorName: "Bubble Gum",
         swatch: "#F4B6CE",
-        imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.22_PM_4_dlttuh.jpg"),
+        imageFlat: "/media/products/4-35-22-pm-4-dlttuh.webp",
       },
       {
         id: "sky",
         colorName: "Sky",
         swatch: "#A8D2ED",
-        imageFlat: cld("v1785279418/WhatsApp_Image_2026-07-28_at_4.35.23_PM_1_ea5frw.jpg"),
+        imageFlat: "/media/products/4-35-23-pm-1-ea5frw.webp",
       },
       {
         id: "cherry-dot",
@@ -153,7 +147,7 @@ export const STYLES: Style[] = [
         swatch: "#F79ABF",
         swatchPattern: "dots",
         swatchAccent: "#E23B3B",
-        imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.22_PM_1_s0h8jp.jpg"),
+        imageFlat: "/media/products/4-35-22-pm-1-s0h8jp.webp",
       },
       {
         id: "powder-dot",
@@ -161,7 +155,7 @@ export const STYLES: Style[] = [
         swatch: "#F4B6CE",
         swatchPattern: "dots",
         swatchAccent: "#FFFFFF",
-        imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.22_PM_3_m97qbz.jpg"),
+        imageFlat: "/media/products/4-35-22-pm-3-m97qbz.webp",
       },
       {
         id: "sunspot",
@@ -169,7 +163,7 @@ export const STYLES: Style[] = [
         swatch: "#F6DFA0",
         swatchPattern: "dots",
         swatchAccent: "#2B1B24",
-        imageFlat: cld("v1785279402/WhatsApp_Image_2026-07-28_at_4.35.22_PM_2_v4gb7w.jpg"),
+        imageFlat: "/media/products/4-35-22-pm-2-v4gb7w.webp",
       },
       {
         id: "cabana-stripe",
@@ -177,7 +171,7 @@ export const STYLES: Style[] = [
         swatch: "#F4B6CE",
         swatchPattern: "stripes",
         swatchAccent: "#FFF8F1",
-        imageFlat: cld("v1785279418/WhatsApp_Image_2026-07-28_at_4.35.23_PM_xityyy.jpg"),
+        imageFlat: "/media/products/4-35-23-pm-xityyy.jpg",
       },
     ],
   },
@@ -203,13 +197,13 @@ export function isValidSize(style: Style, size: string): size is Size {
 export const TOTAL_PIECES = STYLES.reduce((n, s) => n + s.variants.length, 0);
 
 // Model reference shown in the product sheet, under the size selector.
-// `photo` is a raw Cloudinary source of Mya in a PUCCII set: when set, the sheet
+// `photo` is a local photo of Mya in a PUCCII set: when set, the sheet
 // shows a small circular thumbnail with "Mya wears a size {wears}" and a tap or
 // hover opens it in a lightbox. `height` is still pending: fill it with her real
 // height and the extra height line renders; left blank that line stays hidden.
 export const MODEL_REFERENCE = {
   name: "Mya",
-  photo: "https://res.cloudinary.com/dsprn0ew4/image/upload/v1785335024/IMG_1348_txjohs.jpg",
+  photo: "/media/model.webp",
   height: "", // e.g. `5'8"` (owner fills this, then the height line appears)
   wears: "XS" as Size,
 };

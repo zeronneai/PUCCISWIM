@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-// Cloudinary strips the white background (make_transparent) and trims the artwork.
+// Wordmark with the white background already removed and trimmed.
 const LOGO_URL =
-  "https://res.cloudinary.com/dsprn0ew4/image/upload/e_make_transparent:25/e_trim/f_png/v1785192067/Replicate_logo_on_white_background_202607271634_oe5ehk.png";
+  "/media/logo.png";
 
 /**
  * Brand wordmark image with a typographic fallback (BRIEF: keep the text

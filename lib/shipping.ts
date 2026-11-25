@@ -27,7 +27,7 @@ export const DELIVERY = {
     // Operational data folded in from the old lib/pickup.ts so this stays the
     // one place to edit delivery info.
     storeLogo:
-      "https://res.cloudinary.com/dsprn0ew4/image/upload/f_auto,q_auto,w_240/v1785272658/KISSLAB_jo3f4w.png",
+      "/media/kisslab.webp",
     mapsUrl: "https://maps.google.com/?q=344+Vin+Rambla+Dr+B-1+El+Paso+TX+79912",
     holdDays: 7,
     contactIg: "@pucciiswim",

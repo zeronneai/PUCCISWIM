@@ -1,43 +1,27 @@
-// Scroll-scrub hero frames generated ON-DEMAND by Cloudinary (so_ = start
-// offset in %). We never download the videos or store frames in public/ - each
-// frame is just a URL. Percentages (not seconds) map any master cleanly onto
-// 100 frames with zero per-video tuning: both masters here run 5 seconds, so
-// the so_ percentages land on the same moments in each.
+// Scroll-scrub hero frames. Each master video was cut into 100 stills (one per
+// percent of its length) and they live in public/hero/<orientation>/ as
+// frame-000.webp .. frame-099.webp, next to poster.jpg and fallback.mp4.
+// Landscape frames are 1600px wide, portrait frames 900px.
 
 export const HERO_FRAME_COUNT = 100;
 
-const CLOUD = "https://res.cloudinary.com/dsprn0ew4/video/upload";
+const BASE = "/hero";
 
-const MASTERS = {
-  landscape: {
-    id: "v1785453347/hf_20260730_230608_84bd1252-e7c2-4559-9a3f-0c9282dc0400_bcgqdg",
-    width: 1600,
-    quality: 70,
-  },
-  portrait: {
-    id: "v1785339370/hf_20260729_150422_57a0fa85-e360-4125-b8cd-f2bc7140f031_erdwxl",
-    width: 900,
-    quality: 65,
-  },
-} as const;
+export type Orientation = "landscape" | "portrait";
 
-export type Orientation = keyof typeof MASTERS;
-
-// i goes 0..99 -> so_0p .. so_99p (percentage of the video)
+// i goes 0..99
 export function frameSrc(o: Orientation, i: number) {
-  const m = MASTERS[o];
-  return `${CLOUD}/so_${i}p,w_${m.width},c_scale,q_${m.quality}/${m.id}.webp`;
+  return `${BASE}/${o}/frame-${String(i).padStart(3, "0")}.webp`;
 }
 
 export function posterSrc(o: Orientation) {
-  const m = MASTERS[o];
-  return `${CLOUD}/so_0p,w_${m.width},c_scale,q_60/${m.id}.jpg`;
+  return `${BASE}/${o}/poster.jpg`;
 }
 
-// The last-resort fallback (the frame sequence already failed): force H.264 in
-// MP4 so Safari cannot fail a second time on WebM or HEVC.
+// The last-resort fallback (the frame sequence already failed): H.264 in MP4 so
+// Safari cannot fail a second time on WebM or HEVC.
 export function videoFallbackSrc(o: Orientation) {
-  return `${CLOUD}/f_mp4,vc_h264,q_auto/${MASTERS[o].id}.mp4`;
+  return `${BASE}/${o}/fallback.mp4`;
 }
 
 // ---- Tuning (editable) -----------------------------------------------------

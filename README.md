@@ -44,10 +44,8 @@ Triangle style) shows its swatch but the add button is disabled with **Coming so
 can never be added to the bag or put in a checkout link.
 
 ## Before you launch: checklist
-1. **Product photos** are served from **Cloudinary** (URLs in `lib/products.ts`, transformed
-   for automatic WebP/AVIF at a capped width). Each color has one flat-lay (`variant.imageFlat`).
-   If a URL ever fails to load, the card falls back to a branded placeholder.
-2. **(Optional) media:** hero sequence frames and gallery clips are Cloudinary URLs; all degrade
+1. **Product photos** live in the repo (`public/media/products`, paths in `lib/products.ts`).
+2. **(Optional) media:** hero sequence frames (`public/hero`) and gallery clips (`public/media`) are local files; all degrade
    gracefully if absent.
 3. **Shopify variant ids.** Keep `SHOPIFY_VARIANTS` in `lib/shopify.ts` in sync with the store.
    Add ids for the Bandeau in Sunbutter and the Triangle style as those products go live, and
